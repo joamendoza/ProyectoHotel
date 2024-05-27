@@ -8,18 +8,22 @@
     --colorTexto-navbarPrincipal: #D3D3D3; /* color del texto del navBar */
     --colorHover-textoNavbarPrincipal: #FFFFFF; /* color del texto del navBar al pasar el ratón encima */
     --colorHover-bloqueTextoNavbarPrincipal: rgba(39, 55, 12, 0.5); /* color del bloque que aparece en el texto del navBar al pasar el ratón encima*/
+
+    /*---- COLORES MODALES INICIAR SESION Y REGISTRO USUARIO ----*/
+    --colorBg-modalesInicioYRegistro: #556B2F; /* color de fondo de los modales de iniciar sesion y registro de usuario*/
+    --colorTexto-modalesInicioYRegistro: #FFFFFF; /* color del texto de los modales de iniciar sesion y registro de usuario*/
 }
 
-/*--- Editar color de fondo de la página ---*/
+
+/*--- EDITAR COLOR DE FONDO DE LA PÁGINA ---*/
 body {
     background-color: var(--colorBg-pagina);
 }
 
-/*--- Configurar NavBar ---*/
+
+/*--- CONFIGURAR NAVBAR ---*/
 #navbarPrincipal {
     background-color: var(--colorBg-navbarPrincipal);
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
 }
 
 #tamañoTextoNav {
@@ -127,4 +131,35 @@ body {
 }
 .custom-dropdown {
     margin-left: -45px; /* Ajusta el valor para mover el dropdown hacia la izquierda */
+}
+
+
+/*--- CONFIGURAR MODAL REGISTRO E INICIO DE SESIÓN ---*/
+#modalRegistro .modal-content, #modalIniciarSesion .modal-content {
+    background-color: var(--colorBg-modalesInicioYRegistro);
+    color: var(--colorTexto-modalesInicioYRegistro);
+}
+
+#botonRegistro, #botonIniciarSesion {
+    margin-top: 0px;
+    align-items: center;
+    justify-content: center;
+    width: 465px;
+}
+#iconoUsuario {
+    width: 120px;
+    height: 120px;
+}
+#chkMayorEdad, #chkTerminosYCondiciones {
+    margin-left: 50px;
+}
+
+#botonRegistro, #botonIniciarSesion,
+#registroEmail, #registroContraseña, 
+#registroConfirmarContraseña, #registroNombreUsuario, 
+#modalRegistro .modal-content, #modalIniciarSesion .modal-content {
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
 }

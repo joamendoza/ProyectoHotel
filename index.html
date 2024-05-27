@@ -43,10 +43,14 @@
   
   4) Hay que buscar un logo ('logoPagina') más llamativo y colorido que encaje con los colores de la pág.
 
-  5) En el menú usuario, tanto en "Regístrate" como en "Inicia sesión" hay que implementar modales
-    para que quede como en los mockups.
+  5) En los modales, tanto en "Regístrate" como en "Inicia sesión" hay que implementar el form
+    y hacer verificaciones como que ambos checkbox en "Regístrate" estén si o si activos.
 
-  6) Si los modales de registro e inicio ya están hechos, hay que hacer la conexión con la base de datos.
+  6) Hay que hacer la conexión de los modales de registro/inicio sesion con la base de datos.
+
+  7) La página tiene que ser responsiva?? eso de que se vaya ajustando según el tamaño de la misma.
+
+  8) Mejorar ciertas cositas con los colores en general para que no se note tan plano y sea más legible
 -->
 <body>
   <!-- ### INICIO NAVBAR PRINCIPAL ### -->
@@ -96,8 +100,8 @@
             <img src="imagenes/iconos/menuUsuarioUnfocus.png" alt="Menú Usuario" width="100"/>
           </a>
           <ul class="dropdown-menu custom-dropdown" aria-labelledby="menuUsuario">
-            <li><a class="dropdown-item" href="#">Regístrate</a></li>
-            <li><a class="dropdown-item" href="#">Iniciar sesión</a></li>
+            <li><a class="dropdown-item" href="#" id="registrate">Regístrate</a></li>
+            <li><a class="dropdown-item" href="#" id="iniciarSesion">Iniciar sesión</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="#">Centro de ayuda</a></li>
           </ul>
@@ -107,11 +111,153 @@
   </nav>
   <!-- ### FIN NAVBAR PRINCIPAL ### -->
 
+  <!-- ### INICIO MODAL DE REGISTRO ### -->
+  <div class="modal fade" id="modalRegistro" tabindex="-1" aria-labelledby="modalRegistroLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <!-- Titulo del formulario de registro -->
+        <div class="modal-header flex-column align-items-center">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <img class="img-fluid" src="imagenes/iconos/iconoUsuario.png" alt="Icono usuario" id="iconoUsuario">
+          <h5 class="modal-title" id="modalRegistroLabel">Regístrate</h5>
+        </div>
+        <div class="modal-body">
+          <!-- Contenido del formulario de registro -->
+          <form>
+            <div class="mb-3">
+              <input 
+                type="text" 
+                class="form-control" 
+                id="registroNombreUsuario" 
+                placeholder="Nombre usuario"
+                required
+              >
+            </div>
+            <div class="mb-3">
+              <input 
+                type="email" 
+                class="form-control" 
+                id="registroEmail" 
+                placeholder="Correo electrónico"
+                required
+              >
+            </div>
+            <div class="mb-3">
+              <input 
+                type="password" 
+                class="form-control" 
+                id="registroContraseña" 
+                placeholder="Contraseña"
+                required
+              >
+            </div>
+            <div class="mb-3">
+              <input 
+                type="password" 
+                class="form-control" 
+                id="registroConfirmarContraseña" 
+                placeholder="Confirmar contraseña"
+                required
+              >
+            </div>
+            <div class="form-check mb-3" id="chkMayorEdad">
+              <input class="form-check-input" type="checkbox" id="mayorEdad" required>
+              <label class="form-check-label" for="mayorEdad">
+                Confirmo que soy mayor de 18 años
+              </label>
+            </div>
+            <div class="form-check mb-3" id="chkTerminosYCondiciones">
+              <input class="form-check-input" type="checkbox" id="terminosCondiciones" required>
+              <label class="form-check-label" for="terminosCondiciones">
+                He leído y estoy de acuerdo con los 
+                <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">
+                  términos y condiciones
+                </a>
+              </label>
+            </div>
+            <button 
+              type="submit" 
+              class="btn btn-primary"
+              id="botonRegistro"
+              >
+              Crear usuario
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ### FIN MODAL DE REGISTRO ### -->
+
+  <!-- ### INICIO MODAL INICIAR SESIÓN ###-->
+  <div class="modal fade" id="modalIniciarSesion" tabindex="-1" aria-labelledby="modalIniciarSesionLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <!-- Titulo del formulario de iniciar sesión -->
+        <div class="modal-header flex-column align-items-center">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <img class="img-fluid" src="imagenes/iconos/iconoUsuario.png" alt="Icono usuario" id="iconoUsuario">
+          <h5 class="modal-title" id="modalIniciarSesionLabel">Iniciar sesión</h5>
+        </div>
+        <div class="modal-body">
+          <!-- Contenido del formulario de iniciar sesión -->
+          <form>
+            <div class="mb-3">
+              <input 
+                type="email" 
+                class="form-control" 
+                id="registroEmail" 
+                placeholder="Correo electrónico"
+                required
+              >
+            </div>
+            <div class="mb-3">
+              <input 
+                type="password" 
+                class="form-control" 
+                id="registroContraseña" 
+                placeholder="Contraseña"
+                required
+              >
+            </div>
+            <div class="mb-3 text-center">
+              <label class="form-label">
+                ¿Aún no tienes cuenta? 
+                <a 
+                  href="#" 
+                  class="link-primary" 
+                  data-bs-target="#modalRegistro" 
+                  data-bs-toggle="modal" 
+                  >
+                    Regístrate acá
+                </a>
+              </label>
+            </div>
+            <button 
+              type="submit" 
+              class="btn btn-primary"
+              id="botonIniciarSesion"
+              >
+              Iniciar sesión
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ### FIN MODAL INICIAR SESIÓN ###-->
+
   <!-- importaciones de código -->
+  <script 
+    src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js" 
+    integrity="sha384-oBqDVmMz4fnFO9gybiiCiQRBzE74KAmO8E2yKFcEFP6wLCKkuxnDew+z4tlgd7cC" 
+    crossorigin="anonymous"
+  ></script>
   <script
     src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
     crossorigin="anonymous"
   ></script>
+  <script src="scriptGeneral.js"></script>
 </body>
 </html>

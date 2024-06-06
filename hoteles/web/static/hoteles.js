@@ -116,9 +116,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (hotelSeleccionado) {
         hotelInfoContainer.innerHTML = `
-            <h1>${hotelSeleccionado.nombre}</h1>
-            <p><strong>Precio: </strong>${new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(hotelSeleccionado.precio)}</p>
-            <p><strong>Descripción detallada: </strong>${hotelSeleccionado.descripcionDetallada}</p>
+            <div class="card mb-3" style="max-width: 1240px;">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="..." class="img-fluid rounded-start" alt="Imagen hotel">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">${hotelSeleccionado.nombre}</h5>
+                            <p class="card-text"><strong>Precio: </strong>${new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(hotelSeleccionado.precio)}</p>
+                            <p class="card-text">Descripción: </strong>${hotelSeleccionado.descripcionDetallada}</p>
+                        </div>   
+                    </div>
+                </div>
+            </div>
+        
         `;
     } else {
         hotelInfoContainer.innerHTML = '<p>No se encontró información del hotel seleccionado.</p>';

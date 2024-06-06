@@ -35,6 +35,11 @@ body {
     margin-left: 50px;
 }
 
+#barraBusquedaNavbar {
+    display: flex;
+    justify-content: center;
+}
+
 #textoOfertas, #textoTodos, #textoFrenteAlMar, #textoCabañas {
     color: var(--colorTexto-navbarPrincipal);
     transition: color 0.3s, background-color 0.3s;
@@ -46,6 +51,7 @@ body {
     border-radius: 20px;
 }
 
+/* ESTO DE AQUI PARECE NO SER IMPORTANTE LOL */
 .navbar-brand { /* .navbar-brand está asociado al logo de la pág*/
     margin-top: -30px;
     margin-bottom: 10px;
@@ -70,6 +76,7 @@ body {
     width: 110px; /* establece una anchura fija para los elementos */
     border-radius: 10px; /* bordes redondeados */
 }
+/* LO DE ARRIBA PARECE NO SER IMPORTANTE LOL */
 
 #iconoOfertas {
     width: 40px;
@@ -77,7 +84,7 @@ body {
     transition: transform 0.3s, filter 0.3s;
 }
 #textoOfertas:hover #iconoOfertas {
-    content: url('imagenes/iconos/ofertasFocus.png');
+    content: url('imagenes/iconos/ofertasFocus.png' );
     transform: scale(1.1); /* Efecto de escala para agrandar la imagen ligeramente */
 }
 
@@ -114,11 +121,6 @@ body {
     transform: scale(1.1); /* Efecto de escala para agrandar la imagen ligeramente */
 }
 
-#barraBusquedaNavbar {
-    justify-content: center;
-    width: 100;
-}
-
 .search-input {
     width: 600px; /* Define la anchura deseada para la barra de búsqueda */
 }
@@ -148,8 +150,6 @@ body {
 #lblPreguntaIniciarSesion, #lblPreguntaRegistroUsuario { /* Estilo para el placeholder de todos los inputs */
     font-style: italic; /* Hacer el texto en cursiva */
 }
-
-
 
 #botonRegistro, #botonIniciarSesion {
     margin-top: 0px;
@@ -189,4 +189,14 @@ body {
     border-top-right-radius: 30px;
     border-bottom-left-radius: 30px;
     border-bottom-right-radius: 30px;
+}
+
+/* En tu archivo style.css */
+@media screen and (max-width: 992px) {
+    .navbar-nav {
+        justify-content: center;
+    }
+    .nav-item {
+        margin-left: 20px;
+    }
 }

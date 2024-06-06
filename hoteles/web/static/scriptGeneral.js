@@ -22,4 +22,24 @@ document.addEventListener('DOMContentLoaded', function () {
         event.preventDefault();
         modalIniciarSesion.show();
     });
+
+    function handleNavbarItems() {
+        const navbarItems = document.querySelectorAll("#navbarNav .nav-item");
+        const dropdownMenu = document.querySelector("#navbarDropdown .dropdown-menu");
+        const navbarContainer = document.querySelector("#navbarNav .navbar-nav");
+        const windowWidth = window.innerWidth;
+    
+        if (windowWidth < 768) {
+            navbarItems.forEach(item => {
+              dropdownMenu.appendChild(item);
+            });
+        } else {
+            navbarItems.forEach(item => {
+              navbarContainer.appendChild(item);
+            });
+        }
+    }
+    
+    window.addEventListener("resize", handleNavbarItems);
+    handleNavbarItems();
 });

@@ -55,7 +55,7 @@
 -->
 <body>
   <!-- ### INICIO NAVBAR PRINCIPAL ### -->
-  <nav class="navbar navbar-expand-lg flex-column" id="navbarPrincipal">
+  <nav class="navbar navbar-expand-md flex-column" id="navbarPrincipal">
     <!-- barra de busqueda -->
     <div class="search-bar" id="barraBusquedaNavbar">
       <input class="form-control mr-sm-2 search-input" type="search" placeholder="Buscar" aria-label="Buscar">
@@ -63,42 +63,49 @@
     <div class="container-fluid">
       <!-- logo de la página -->
       <a class="navbar-brand" href="/index/" id="logoPagina">
-        <img src="{% static '/imagenes/iconos/logoPagina.png' %}" alt="Logo página" width="85"/>
+        <img src="{% static '/imagenes/iconos/logoPagina.png' %}" alt="Logo página" class="img-fluid" width="85"/>
       </a>
-      <div class="collapse navbar-collapse">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0" id="tamañoTextoNav">
-          <!-- elementos del navbar -->
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto mb-2 mb-md-0" id="tamañoTextoNav">
           <li class="nav-item">
-            <a class="nav-link" href="#" id="textoOfertas">
-              <img src="{% static '/imagenes/iconos/ofertasUnfocus.png' %}" alt="Ofertas" id="iconoOfertas">
+            <a class="nav-link d-flex align-items-center" href="#" id="textoOfertas">
+              <img src="{% static '/imagenes/iconos/ofertasUnfocus.png' %}" class="img-fluid" alt="Ofertas" id="iconoOfertas">
               Ofertas
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#" id="textoTodos">
-              <img src="{% static '/imagenes/iconos/todosUnfocus.png' %}" alt="Todos" id="iconoTodos">
+            <a class="nav-link d-flex align-items-center" href="#" id="textoTodos">
+              <img src="{% static '/imagenes/iconos/todosUnfocus.png' %}" class="img-fluid" alt="Todos" id="iconoTodos">
               Todos
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#" id="textoFrenteAlMar">
-              <img src="{% static '/imagenes/iconos/frente-al-marUnfocus.png' %}" alt="Frente al Mar" id="iconoFrenteAlMar">
+            <a class="nav-link d-flex align-items-center" href="#" id="textoFrenteAlMar">
+              <img src="{% static '/imagenes/iconos/frente-al-marUnfocus.png' %}" class="img-fluid" alt="Frente al Mar" id="iconoFrenteAlMar">
               Frente al mar
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#" id="textoCabañas">
-              <img src="{% static '/imagenes/iconos/cabañasUnfocus.png' %}" alt="Cabañas" id="iconoCabañas">
+            <a class="nav-link d-flex align-items-center" href="#" id="textoCabañas">
+              <img src="{% static '/imagenes/iconos/cabañasUnfocus.png' %}" class="img-fluid" alt="Cabañas" id="iconoCabañas">
               Cabañas
             </a>
           </li>
+        </ul>
+      </div>
+      <div class="dropdown d-md-none" id="navbarDropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="navbarDropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+          Menú
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuButton">
+          <!-- Los elementos del navbar se moverán aquí en pantallas pequeñas -->
         </ul>
       </div>
       <!-- menú usuario -->
       <div class="navbar-brand" id="menuUsuario">
         <div class="dropdown" id="dropdownMenuUsuario">
           <a class="navbar-brand dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="{% static '/imagenes/iconos/menuUsuarioUnfocus.png' %}" alt="Menú Usuario" width="100"/>
+            <img src="{% static '/imagenes/iconos/menuUsuarioUnfocus.png' %}" class="img-fluid" alt="Menú Usuario" width="100"/>
           </a>
           <ul class="dropdown-menu custom-dropdown" aria-labelledby="menuUsuario">
             <li><a class="dropdown-item" href="#" id="registrate">Regístrate</a></li>
@@ -261,6 +268,13 @@
   </div>
   <!-- ### FIN MODAL INICIAR SESIÓN ###-->
 
+ <!-- CONTAINER DE PRUEBA PARA CARGAR CARDS CON LOS HOTELES DISPONIBLES -->
+  <div class="container mt-2 d-flex justify-content-center align-items-center">
+    <div class="row" id="hoteles-container"> <!-- Para agregar hoteles, hacerlo en "hoteles.js"-->
+      <div class="col-md-12">
+    </div>
+  </div>
+
   <!-- importaciones de código -->
   <script 
     src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js" 
@@ -273,5 +287,6 @@
     crossorigin="anonymous"
   ></script>
   <script src="{% static '/scriptGeneral.js' %}"></script>
+  <script src="{% static '/hoteles.js' %}"></script>
 </body>
 </html>

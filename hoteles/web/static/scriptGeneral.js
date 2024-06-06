@@ -22,24 +22,27 @@ document.addEventListener('DOMContentLoaded', function () {
         event.preventDefault();
         modalIniciarSesion.show();
     });
+});
 
+document.addEventListener("DOMContentLoaded", function () {
     function handleNavbarItems() {
-        const navbarItems = document.querySelectorAll("#navbarNav .nav-item");
-        const dropdownMenu = document.querySelector("#navbarDropdown .dropdown-menu");
-        const navbarContainer = document.querySelector("#navbarNav .navbar-nav");
-        const windowWidth = window.innerWidth;
-    
-        if (windowWidth < 768) {
-            navbarItems.forEach(item => {
-              dropdownMenu.appendChild(item);
-            });
-        } else {
-            navbarItems.forEach(item => {
-              navbarContainer.appendChild(item);
-            });
-        }
+      const navbarItems = document.querySelectorAll("#navbarNav .nav-item");
+      const dropdownMenu = document.querySelector("#navbarDropdown .dropdown-menu");
+      const navbarContainer = document.querySelector("#navbarNav .navbar-item");
+      const windowWidth = window.innerWidth;
+
+      if (windowWidth < 768) {
+        navbarItems.forEach(item => {
+          dropdownMenu.appendChild(item);
+        });
+      } else {
+        const dropdownItems = document.querySelectorAll("#navbarDropdown .dropdown-menu .nav-item");
+        dropdownItems.forEach(item => {
+          navbarContainer.appendChild(item);
+        });
+      }
     }
-    
+
     window.addEventListener("resize", handleNavbarItems);
     handleNavbarItems();
 });

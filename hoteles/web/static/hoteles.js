@@ -1,13 +1,45 @@
+/* 
+    ## En este script se maneja la información recolectada de una base de datos de los hoteles,
+    ## esto con el fin de generar cartas en el index y también rellenar la página de
+    ## 'infoHoteles.html' con la información en cuestión de cada hotel de manera dinamica.
+
+*/
+
+/* --- BASE DE DATOS LOCAL --- */
+const hoteles = [
+    // Agregar hoteles
+    { 
+        id: 1, 
+        nombre: 'Nombre Hotel', 
+        descripcionBreve: 'Descripción breve hotel',
+        descripcionDetallada: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel placeat delectus ut accusamus, impedit autem! Amet voluptates rerum labore ab, molestias et libero dolores inventore exercitationem minima optio, at praesentium!',
+        precio: 529990
+    },
+    { 
+        id: 2, 
+        nombre: 'Nombre Hotel', 
+        descripcionBreve: 'Descripción breve hotel',
+        descripcionDetallada: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel placeat delectus ut accusamus, impedit autem! Amet voluptates rerum labore ab, molestias et libero dolores inventore exercitationem minima optio, at praesentium!',
+        precio: 779990 
+    },
+    { 
+        id: 3, 
+        nombre: 'Nombre Hotel', 
+        descripcionBreve: 'Descripción breve hotel',
+        descripcionDetallada: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel placeat delectus ut accusamus, impedit autem! Amet voluptates rerum labore ab, molestias et libero dolores inventore exercitationem minima optio, at praesentium!',
+        precio: 332488 },
+    { 
+        id: 4, 
+        nombre: 'Nombre Hotel', 
+        descripcionBreve: 'Descripción breve hotel',
+        descripcionDetallada: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel placeat delectus ut accusamus, impedit autem! Amet voluptates rerum labore ab, molestias et libero dolores inventore exercitationem minima optio, at praesentium!',
+        precio: 14315 
+    },
+];
+
+/* --- GESTIÓN DE CARTAS DINAMICAS --- */
 document.addEventListener('DOMContentLoaded', () => {
     const hotelesContainer = document.getElementById('hoteles-container');
-
-    const hoteles = [
-        // Agrega hoteles
-        { id: 1, nombre: 'Nombre Hotel', descripcion: 'Descripción hotel', precio: 529990 },
-        { id: 2, nombre: 'Nombre Hotel', descripcion: 'Descripción hotel', precio: 779990 },
-        { id: 3, nombre: 'Nombre Hotel', descripcion: 'Descripción hotel', precio: 332488 },
-        { id: 4, nombre: 'Nombre Hotel', descripcion: 'Descripción hotel', precio: 14315 },
-    ];
 
     hoteles.forEach(hotel => {
         const card = crearCardProducto(hotel);
@@ -35,9 +67,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="card-body">
                     <h4 class="card-title">${formatearPrecio(hotel.precio)}</h4>
                     <p class="card-title">${hotel.nombre}</p>
-                    <p class="card-text">${hotel.descripcion}</p>
+                    <p class="card-text">${hotel.descripcionBreve}</p>
                     <button 
-                        class="btn btn-primary agregar-carrito" 
+                        class="btn btn-primary ver-mas-info" 
                         data-id="${hotel.id}" 
                         data-nombre="${hotel.nombre}"
                         data-precio="${hotel.precio}"
@@ -66,6 +98,29 @@ document.addEventListener('DOMContentLoaded', () => {
         cuerpoTarjeta.style.justifyContent = 'center';
         cuerpoTarjeta.style.height = '100%'; // Ajusta la altura del contenedor del cuerpo de la carta
 
+        // Añadir evento al botón para redireccionar a la página con info más detalla del hotel seleccionado
+        const botonVerMas = card.querySelector('.ver-mas-info');
+        botonVerMas.addEventListener('click', () => {
+            localStorage.setItem('hotelSeleccionado', JSON.stringify(hotel));
+            window.location.href = '/informacion-hotel/';
+        });
+
         return card;
+    }
+});
+
+/* --- GESTIÓN DE MANEJO DE INFORMACIÓN POR HOTEL --- */
+document.addEventListener('DOMContentLoaded', () => {
+    const hotelInfoContainer = document.getElementById('hotel-info');
+    const hotelSeleccionado = JSON.parse(localStorage.getItem('hotelSeleccionado'));
+
+    if (hotelSeleccionado) {
+        hotelInfoContainer.innerHTML = `
+            <h1>${hotelSeleccionado.nombre}</h1>
+            <p><strong>Precio: </strong>${new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(hotelSeleccionado.precio)}</p>
+            <p><strong>Descripción detallada: </strong>${hotelSeleccionado.descripcionDetallada}</p>
+        `;
+    } else {
+        hotelInfoContainer.innerHTML = '<p>No se encontró información del hotel seleccionado.</p>';
     }
 });

@@ -63,7 +63,7 @@
     <div class="container-fluid">
       <!-- logo de la página -->
       <a class="navbar-brand" href="/index/" id="logoPagina">
-        <img src="{% static '/imagenes/iconos/logoPagina.png' %}" alt="Logo página" class="img-fluid" width="85"/>
+        <img src="{% static '/imagenes/iconos/logoPagina.png' %}" alt="Logo página" width="85"/>
       </a>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav me-auto mb-2 mb-md-0" id="tamañoTextoNav">
@@ -97,7 +97,7 @@
         <button class="btn btn-secondary dropdown-toggle" type="button" id="navbarDropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
           Menú
         </button>
-        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuButton">
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuButton" id="navbarDropdownMenuButton">
           <!-- Los elementos del navbar se moverán aquí en pantallas pequeñas -->
         </ul>
       </div>
@@ -105,7 +105,7 @@
       <div class="navbar-brand" id="menuUsuario">
         <div class="dropdown" id="dropdownMenuUsuario">
           <a class="navbar-brand dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="{% static '/imagenes/iconos/menuUsuarioUnfocus.png' %}" class="img-fluid" alt="Menú Usuario" width="100"/>
+            <img src="{% static '/imagenes/iconos/menuUsuarioUnfocus.png' %}" alt="Menú Usuario" width="100"/>
           </a>
           <ul class="dropdown-menu custom-dropdown" aria-labelledby="menuUsuario">
             <li><a class="dropdown-item" href="#" id="registrate">Regístrate</a></li>
@@ -268,13 +268,15 @@
   </div>
   <!-- ### FIN MODAL INICIAR SESIÓN ###-->
 
- <!-- CONTAINER DE PRUEBA PARA CARGAR CARDS CON LOS HOTELES DISPONIBLES -->
-  <div class="container mt-2 d-flex justify-content-center align-items-center">
+  <!-- ### INICIO CONTAINER HOTELES DINAMICO ### -->
+  <div class="container mt-5 d-flex justify-content-center align-items-center">
     <div class="row" id="hoteles-container"> <!-- Para agregar hoteles, hacerlo en "hoteles.js"-->
       <div class="col-md-12">
     </div>
   </div>
+  <!-- ### FIN CONTAINER HOTELES DINAMICO ### -->
 
+  
   <!-- importaciones de código -->
   <script 
     src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js" 

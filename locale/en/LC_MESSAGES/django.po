@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-06 22:23-0400\n"
+"POT-Creation-Date: 2024-06-08 14:55-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,14 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: .\hoteles\settings.py:111
+msgid "English"
+msgstr ""
+
+#: .\hoteles\settings.py:112
+msgid "Español"
+msgstr ""
 
 #: .\hoteles\web\index.html:8
 msgid "Hoteles"
@@ -75,6 +83,14 @@ msgstr "Confirm password"
 msgid "Confirmo que soy mayor de 18 años"
 msgstr "I confirm that I am over 18 years old"
 
+#: .\hoteles\web\index.html:180
+msgid "\"He leído y estoy de acuerdo con los"
+msgstr "I have read and agree to the"
+
+#: .\hoteles\web\index.html:182
+msgid "términos y condiciones\""
+msgstr "terms and conditions"
+
 #: .\hoteles\web\index.html:188
 msgid "¿Ya tienes cuenta?"
 msgstr "Already have an account?"
@@ -99,7 +115,7 @@ msgstr "Sign-up here"
 msgid "Copyright 2024. Todos los derechos reservados. ProyectoHotel."
 msgstr "Copyright 2024. All rights reserved. ProjectHotel."
 
-#: .\hoteles\web\index.html:281
+#: .\hoteles\web\index.html:283
 msgid "Idioma:"
 msgstr "Language:"
 

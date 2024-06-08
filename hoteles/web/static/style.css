@@ -33,12 +33,33 @@ main {
     background-color: var(--colorBg-navbarPrincipal);
 }
 
+#navbarDropdown {
+    position: relative; /* Necesario para el posicionamiento absoluto del dropdown */
+}
+
+#navbarDropdownMenuButton {
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+#navbarDropdown .dropdown-menu {
+    position: absolute; 
+    top: 100%; /* Posiciona el dropdown justo debajo del botón */
+    left: 50%; /* Inicialmente coloca el dropdown en el centro horizontalmente */
+    transform: translateX(-50%); /* Ajusta para centrar completamente el dropdown */
+    margin-top: 10px; /* Opcional: agrega un poco de margen superior */
+} 
+
 #tamañoTextoNav {
     font-size: 80%;
 }
 
 #logoPagina {
     margin-left: 50px;
+}
+
+#logoPagina img {
+    width: 75px;
+    padding: 2%;
 }
 
 #barraBusquedaNavbar {
@@ -51,25 +72,10 @@ main {
     transition: height 0.3s; /* Agrega transición para cambios de altura */
 }
 
-@media (max-width: 768px) {
-    .navbar-brand {
-        max-width: 2rem;
-        margin-top: 10px; /* Cambia el margen superior */
-        margin-left: auto; /* Centra horizontalmente en pantallas pequeñas */
-        margin-right: auto; /* Centra horizontalmente en pantallas pequeñas */
-    }
-
-    .search-bar {
-      transition: height 0.3s; /* Agrega transición para cambios de altura */
-    }
-  
-    .search-input {
-      width: 100%; /* Ocupa todo el ancho disponible */
-      border-radius: 25px; /* Agrega un borde redondeado al input */
-      margin-bottom: 10px; /* Agrega un margen inferior */
-      margin-left: 10px;
-      margin-right: 10px;
-    }
+#menuUsuario {
+    margin-top: -30px;
+    margin-bottom: 10px;
+    margin-left: 20px;
 }
 
 #textoOfertas, #textoTodos, #textoFrenteAlMar, #textoCabañas {
@@ -84,19 +90,69 @@ main {
 }
 
 /* ESTO DE AQUI PARECE NO SER IMPORTANTE LOL */
+
+
 .navbar-brand { /* .navbar-brand está asociado al logo de la pág*/
     margin-top: -30px;
     margin-bottom: 10px;
     margin-left: 20px;
 }
+/* IMPORTANTE! ajusta todos los items de la navbar a la vez */
+@media (max-width: 767.98px) {
+    #navbarPrincipal {
+        padding-bottom: 0px;
+        margin-bottom: 0px;
+    }
 
+    #navbarPrincipal .container-fluid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content:space-evenly;
+      align-items: center;
+      margin-bottom: 0px;
+    }
+
+    #navbarPrincipal .navbar-brand,
+    #navbarPrincipal .collapse,
+    #navbarPrincipal .dropdown,
+    #navbarPrincipal #menuUsuario {
+      flex: 1 1 auto;
+      text-align: center;
+    }
+
+    #navbarPrincipal .search-bar {
+      flex: 1 1 100%;
+      order: -1;
+    }
+
+    #navbarPrincipal .dropdown .dropdown-menu {
+      width: 100%;
+    }
+
+    #navbarPrincipal .navbar-nav {
+      flex: 1 1 100%;
+      display: flex;
+      justify-content: space-around;
+    }
+
+    #navbarPrincipal .navbar-nav .nav-item {
+      flex: 1 1 auto;
+      text-align: center;
+    }
+}
+/*-----------------------↑↑↑↑!!!!↑↑↑↑-------------------------------------*/
 @media (max-width: 900px) {
     .navbar-brand {
-        min-width: 4rem;
         margin-top: 10px; /* Cambia el margen superior */
         margin-left: auto; /* Centra horizontalmente en pantallas pequeñas */
         margin-right: auto; /* Centra horizontalmente en pantallas pequeñas */
     }
+    #menuUsuario {
+        margin-top: 10px; /* Cambia el margen superior */
+        margin-left: auto; /* Centra horizontalmente en pantallas pequeñas */
+        margin-right: auto; /* Centra horizontalmente en pantallas pequeñas */
+    }
+
 }
 
 .navbar-nav {
@@ -172,9 +228,9 @@ main {
 }
 
 #menuUsuario {
-    justify-content: center; /* centra el contenido verticalmente */
-    margin-right: 50px;
+    margin-right: auto; /* Centra horizontalmente en pantallas medianas */
 }
+
 #dropdownMenuUsuario .dropdown-toggle::after { /* Eliminar la flecha (caret) */
     display: none; /* Oculta la flecha */
 }
@@ -247,11 +303,3 @@ main {
 }
 
 /* En tu archivo style.css */
-@media screen and (max-width: 992px) {
-    .navbar-nav {
-        justify-content: center;
-    }
-    .nav-item {
-        margin-left: 20px;
-    }
-}

@@ -63,7 +63,7 @@
     <div class="container-fluid">
       <!-- logo de la página -->
       <a class="navbar-brand" href="/index/" id="logoPagina">
-        <img src="{% static '/imagenes/iconos/logoPagina.png' %}" alt="Logo página" width="75"/>
+        <img src="{% static '/imagenes/iconos/veranium.png' %}" alt="Logo página" />
       </a>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav me-auto mb-2 mb-md-0" id="tamañoTextoNav">
@@ -102,9 +102,9 @@
         </ul>
       </div>
       <!-- menú usuario -->
-      <div class="navbar-brand" id="menuUsuario">
+      <div class="nav-item" id="menuUsuario">
         <div class="dropdown" id="dropdownMenuUsuario">
-          <a class="navbar-brand dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <a class="navbar-brand dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="botonMenuUsuario">
             <img src="{% static '/imagenes/iconos/menuUsuarioUnfocus.png' %}" alt="Menú Usuario" width="100"/>
           </a>
           <ul class="dropdown-menu custom-dropdown" aria-labelledby="menuUsuario">
@@ -177,9 +177,9 @@
               <div class="form-check mb-3" id="chkTerminosYCondiciones">
                 <input class="form-check-input" type="checkbox" id="terminosCondiciones" required>
                 <label class="form-check-label" for="terminosCondiciones">
-                  {% trans "He leído y estoy de acuerdo con los 
+                  {% trans '"He leído y estoy de acuerdo con los' %}
                     <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">
-                      términos y condiciones" %}
+                      {% trans 'términos y condiciones"' %}
                   </a>
                 </label>
               </div>
@@ -308,5 +308,6 @@
   ></script>
   <script src="{% static '/scriptGeneral.js' %}"></script>
   <script src="{% static '/hoteles.js' %}"></script>
+  <script src="{% static '/logoUpdate.js' %}"></script>
 </body>
 </html>

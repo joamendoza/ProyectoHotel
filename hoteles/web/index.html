@@ -49,8 +49,6 @@
 
   6) Hay que hacer la conexión de los modales de registro/inicio sesion con la base de datos.
 
-  7) La página tiene que ser responsiva?? eso de que se vaya ajustando según el tamaño de la misma.
-
   8) Mejorar ciertas cositas con los colores en general para que no se note tan plano y sea más legible
 -->
 <body>
@@ -118,8 +116,9 @@
     </div>
   </nav>
   <!-- ### FIN NAVBAR PRINCIPAL ### -->
+  
+  <!-- ### INICIO MODAL DE REGISTRO ### -->
   <main>
-    <!-- ### INICIO MODAL DE REGISTRO ### -->
     <div class="modal fade" id="modalRegistro" tabindex="-1" aria-labelledby="modalRegistroLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -268,14 +267,16 @@
     </div>
     <!-- ### FIN MODAL INICIAR SESIÓN ###-->
 
-    <!-- ### INICIO CONTAINER HOTELES DINAMICO ### -->
+    <!-- ### INICIO CONTAINER CARTAS DE HOTELES DINAMICAS ### -->
     <div class="container mt-5 d-flex justify-content-center align-items-center">
       <div class="row" id="hoteles-container"> <!-- Para agregar hoteles, hacerlo en "hoteles.js"-->
         <div class="col-md-12">
       </div>
     </div>
-    <!-- ### FIN CONTAINER HOTELES DINAMICO ### -->
+    <!-- ### FIN CONTAINER CARTAS DE HOTELES DINAMICAS ### -->
   </main>
+
+  <!-- ### INICIO FOOTER ### -->
   <footer class="footer">
     <p>{% trans "Copyright 2024. Todos los derechos reservados. ProyectoHotel." %}<br>
       <form action="{% url 'set_language' %}" method="post">
@@ -293,7 +294,7 @@
     </form>
     </p>
   </footer>
-  
+  <!-- ### FIN FOOTER ### -->
 
   <!-- importaciones de código -->
   <script 

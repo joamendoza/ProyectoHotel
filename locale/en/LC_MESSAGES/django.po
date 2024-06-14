@@ -26,96 +26,96 @@ msgstr ""
 msgid "Español"
 msgstr ""
 
-#: .\hoteles\web\index.html:8
+#: .\hoteles\templates\index.html:8
 msgid "Hoteles"
 msgstr "Hotel"
 
-#: .\hoteles\web\index.html:73
+#: .\hoteles\templates\index.html:73
 msgid "Ofertas"
 msgstr "Hotel offers"
 
-#: .\hoteles\web\index.html:79
+#: .\hoteles\templates\index.html:79
 msgid "Todos"
 msgstr "All"
 
-#: .\hoteles\web\index.html:85
+#: .\hoteles\templates\index.html:85
 msgid "Frente al Mar"
 msgstr "Oceanfront"
 
-#: .\hoteles\web\index.html:91
+#: .\hoteles\templates\index.html:91
 msgid "Cabañas"
 msgstr "Cabins"
 
-#: .\hoteles\web\index.html:98
+#: .\hoteles\templates\index.html:98
 msgid "Menú"
 msgstr "Menu"
 
-#: .\hoteles\web\index.html:111 .\hoteles\web\index.html:130
+#: .\hoteles\templates\index.html:111 .\hoteles\templates\index.html:130
 msgid "Regístrate"
 msgstr "Sign-up"
 
-#: .\hoteles\web\index.html:112 .\hoteles\web\index.html:221
-#: .\hoteles\web\index.html:262
+#: .\hoteles\templates\index.html:112 .\hoteles\templates\index.html:221
+#: .\hoteles\templates\index.html:262
 msgid "Iniciar sesión"
 msgstr "Log-in"
 
-#: .\hoteles\web\index.html:114
+#: .\hoteles\templates\index.html:114
 msgid "Centro de ayuda"
 msgstr "Help"
 
-#: .\hoteles\web\index.html:140
+#: .\hoteles\templates\index.html:140
 msgid "Nombre de usuario"
 msgstr "Username"
 
-#: .\hoteles\web\index.html:149 .\hoteles\web\index.html:231
+#: .\hoteles\templates\index.html:149 .\hoteles\templates\index.html:231
 msgid "Correo electrónico"
 msgstr "E-mail"
 
-#: .\hoteles\web\index.html:158 .\hoteles\web\index.html:240
+#: .\hoteles\templates\index.html:158 .\hoteles\templates\index.html:240
 msgid "Contraseña"
 msgstr "Password"
 
-#: .\hoteles\web\index.html:167
+#: .\hoteles\templates\index.html:167
 msgid "Confirmar contraseña"
 msgstr "Confirm password"
 
-#: .\hoteles\web\index.html:174
+#: .\hoteles\templates\index.html:174
 msgid "Confirmo que soy mayor de 18 años"
 msgstr "I confirm that I am over 18 years old"
 
-#: .\hoteles\web\index.html:180
+#: .\hoteles\templates\index.html:180
 msgid "\"He leído y estoy de acuerdo con los"
 msgstr "I have read and agree to the"
 
-#: .\hoteles\web\index.html:182
+#: .\hoteles\templates\index.html:182
 msgid "términos y condiciones\""
 msgstr "terms and conditions"
 
-#: .\hoteles\web\index.html:188
+#: .\hoteles\templates\index.html:188
 msgid "¿Ya tienes cuenta?"
 msgstr "Already have an account?"
 
-#: .\hoteles\web\index.html:195
+#: .\hoteles\templates\index.html:195
 msgid "Inicia sesión aquí"
 msgstr "Log-in here"
 
-#: .\hoteles\web\index.html:204
+#: .\hoteles\templates\index.html:204
 msgid "Crear usuario"
 msgstr "Create an user"
 
-#: .\hoteles\web\index.html:246
+#: .\hoteles\templates\index.html:246
 msgid "¿Aún no tienes cuenta?"
 msgstr "Don't have an account yet?"
 
-#: .\hoteles\web\index.html:253
+#: .\hoteles\templates\index.html:253
 msgid "Registrate aqui"
 msgstr "Sign-up here"
 
-#: .\hoteles\web\index.html:280
+#: .\hoteles\templates\index.html:280
 msgid "Copyright 2024. Todos los derechos reservados. ProyectoHotel."
 msgstr "Copyright 2024. All rights reserved. ProjectHotel."
 
-#: .\hoteles\web\index.html:283
+#: .\hoteles\templates\index.html:283
 msgid "Idioma:"
 msgstr "Language:"
 
@@ -1175,7 +1175,7 @@ msgstr ""
 #: .\venv\Lib\site-packages\django\views\csrf.py:34
 msgid ""
 "You are seeing this message because this HTTPS site requires a “Referer "
-"header” to be sent by your web browser, but none was sent. This header is "
+"header” to be sent by your templates browser, but none was sent. This header is "
 "required for security reasons, to ensure that your browser is not being "
 "hijacked by third parties."
 msgstr ""

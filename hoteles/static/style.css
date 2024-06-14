@@ -107,6 +107,8 @@ main {
 }
 
 /* IMPORTANTE! ajusta todos los items de la navbar a la vez */
+
+
 @media (max-width: 767.98px) {
     #navbarPrincipal {
         padding-bottom: 0px;
@@ -116,7 +118,7 @@ main {
     #navbarPrincipal .container-fluid {
       display: flex;
       flex-wrap: wrap;
-      justify-content:space-evenly;
+      justify-content: space-evenly;
       align-items: center;
       margin-bottom: 0px;
     }
@@ -150,7 +152,7 @@ main {
     }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 940px) {
     .navbar-brand {
         margin-top: 10px; /* Cambia el margen superior */
         margin-left: auto; /* Centra horizontalmente en pantallas pequeñas */
@@ -160,6 +162,18 @@ main {
         margin-top: 10px; /* Cambia el margen superior */
         margin-left: auto; /* Centra horizontalmente en pantallas pequeñas */
         margin-right: auto; /* Centra horizontalmente en pantallas pequeñas */
+    }
+
+    #logoPagina {
+        margin-left: auto;
+    }
+
+    #navbarPrincipal .navbar-nav .nav-item {
+        flex: 1 1 15%;
+    }
+
+    .nav-item a{
+        width: auto;
     }
 
 }
@@ -177,7 +191,6 @@ main {
     margin-top: 10px;
 }
 
-
 .nav-link { /* esto de aquí se encarga de mostrar los iconos arriba del texto (ofertas/todos/etc)*/
     display: flex;
     flex-direction: column;
@@ -187,7 +200,6 @@ main {
     width: 110px; /* establece una anchura fija para los elementos */
     border-radius: 10px; /* bordes redondeados */
 }
-
 
 #iconoOfertas {
     width: 40px;
@@ -304,7 +316,7 @@ main {
 }
 
 /*--- CONFIGURAR FOOTER ---*/
-.footer{
+.footer {
     color: var(--colorTexto-footer);
     background-color: var(--colorBg-footer);
     padding-top: 10px;

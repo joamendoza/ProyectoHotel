@@ -27,8 +27,8 @@ urlpatterns = [
     path('api/hoteles/', views.get_hoteles, name='get_hoteles'),
     path('index/', index),
     path('informacion-hotel/', infoHoteles),
-    
-]
+    path('perfil',perfilUsuario),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

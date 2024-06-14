@@ -29,3 +29,6 @@ def index(request):
 
 def infoHoteles(request):
     return render(request, 'infoHoteles.html')
+
+def perfilUsuario(request):
+    return render(request, 'perfilUsuario.html')

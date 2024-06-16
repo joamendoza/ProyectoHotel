@@ -130,12 +130,14 @@
                     </div>
                     <!-- Contenido del formulario de registro -->
                     <div class="modal-body">
-                        <form method="post">
+                        <form id="registroForm" action="/registrarUsuario/" method="post">
+                            {% csrf_token %}
                             <div class="mb-3">
                                 <input 
                                 type="text" 
                                 class="form-control" 
-                                id="registroNombreUsuario" 
+                                id="registroNombreUsuario"
+                                name="nombreUsuario"
                                 placeholder="{% trans 'Nombre de usuario' %}"
                                 required
                                 >
@@ -144,7 +146,8 @@
                                 <input 
                                 type="email" 
                                 class="form-control" 
-                                id="registroEmail" 
+                                id="registroEmail"
+                                name="email"
                                 placeholder="{% trans 'Correo electrónico' %}"
                                 required
                                 >
@@ -153,7 +156,8 @@
                                 <input 
                                 type="password" 
                                 class="form-control" 
-                                id="registroContraseña" 
+                                id="registroContraseña"
+                                name="password"
                                 placeholder="{% trans 'Contraseña' %}"
                                 required
                                 >
@@ -162,7 +166,8 @@
                                 <input 
                                 type="password" 
                                 class="form-control" 
-                                id="registroConfirmarContraseña" 
+                                id="registroConfirmarContraseña"
+                                name="confirmarContraseña"
                                 placeholder="{% trans 'Confirmar contraseña' %}"
                                 required
                                 >
@@ -200,9 +205,9 @@
                                 class="btn btn-primary"
                                 id="botonRegistro"
                                 >
-                                {% trans "Crear usuario" %} 
+                                {% trans "Crear usuario" %}
                             </button>
-                        </form>
+                        </form>                        
                     </div>
                 </div>
             </div>
@@ -295,6 +300,20 @@
         </p>
     </footer>
     <!-- ### FIN FOOTER ### -->
+
+    <!-- Agregar a un js aparte! -->
+    <script>
+        document.getElementById('registroForm').addEventListener('submit', function(event) {
+            var password = document.getElementById('registroContraseña').value;
+            var confirmarContraseña = document.getElementById('registroConfirmarContraseña').value;
+    
+            if (password !== confirmarContraseña) {
+                event.preventDefault();  // Previene el envío del formulario
+                alert('Las contraseñas no coinciden.');  // Muestra una alerta
+            }
+        });
+    </script>
+    <!-- Agregar a un js aparte! -->
 
     <!-- importaciones de código -->
     <script 

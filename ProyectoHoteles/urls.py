@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from hoteles.views import *
 from hoteles import views
+from usuarios import views
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -27,7 +28,8 @@ urlpatterns = [
     path('api/hoteles/', views.get_hoteles, name='get_hoteles'),
     path('index/', index),
     path('informacion-hotel/', infoHoteles),
-    path('perfil',perfilUsuario),
+    path('perfil/',perfilUsuario),
+    path('registrarUsuario/', registrarUsuario),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:

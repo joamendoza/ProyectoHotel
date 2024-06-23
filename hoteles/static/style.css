@@ -315,6 +315,22 @@ main {
     border-bottom-right-radius: 30px;
 }
 
+#errorMensaje {
+    color: red;
+    font-style: italic;
+    text-align: center;
+    display: none;
+    margin-top: 5px;
+}
+
+#errorMensajeLogin {
+    color: red;
+    font-style: italic;
+    text-align: center;
+    display: none;
+    margin-top: -5px;
+}
+
 /*--- CONFIGURAR FOOTER ---*/
 .footer {
     color: var(--colorTexto-footer);

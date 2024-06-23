@@ -28,8 +28,10 @@ urlpatterns = [
     path('api/hoteles/', views.get_hoteles, name='get_hoteles'),
     path('index/', index),
     path('informacion-hotel/', infoHoteles),
-    path('perfil/',perfilUsuario),
-    path('registrarUsuario/', registrarUsuario),
+    path('perfil/',perfilUsuario, name='perfil'),
+    path('registrarUsuario/', registrar_usuario, name='registrar_usuario'),
+    path('logout/', logout_view, name='logout'),
+    path('login/', login_view, name='login'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:

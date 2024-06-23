@@ -72,8 +72,13 @@
                         <img src="{% static '/images/icons/menuUsuarioUnfocus.png' %}" alt="Menú Usuario" width="100"/>
                     </a>
                     <ul class="dropdown-menu custom-dropdown" aria-labelledby="menuUsuario">
+                        {% if user.is_authenticated %}
+                        <li><a class="dropdown-item" href="{% url 'index' %}">{% trans "Inicio" %}</a></li>
+                        <li><a class="dropdown-item" href="{% url 'logout' %}">{% trans "Cerrar sesión" %}</a></li>
+                        {% else %}
                         <li><a class="dropdown-item" href="#" id="registrate">{% trans "Regístrate" %}</a></li>
                         <li><a class="dropdown-item" href="#" id="iniciarSesion">{% trans "Iniciar sesión" %}</a></li>
+                        {% endif %}
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="#">{% trans "Centro de ayuda" %}</a></li>
                     </ul>

@@ -14,43 +14,9 @@
       crossorigin="anonymous"
     />
     <!-- importación style.css -->
-    <link rel="stylesheet" href="{% static '/style.css' %}" /> 
+    <link rel="stylesheet" href="{% static 'style.css' %}" />
 </head>
-<!--
-    ## --- TO-DO LIST --- ##
 
-    ∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼
-    # Este es un bloque donde se mencionarán cosas a hacer.
-    # Si revisas el código y avanzas en algo de esta lista, elimina dicha tarea de la lista
-    # una vez termines de hacerla al 100%, si solo avanzas en dicha tarea, indica hasta que porcentaje
-    # crees haber avanzado y que cosas faltan por agregar o que hiciste.
-
-    # Si tienes alguna idea de algo para implementar a futuro, agregalo a la lista :)
-
-    # P.D: Traten de documentar lo más que puedan y dejar el código ordenadito tmb xfa
-    # P.D2: Para los puntos 2), 3) y 5), utilicen 'scriptGeneral.js'
-    # P.D3: Avisen por el grupo de wsp si van a trabajar el código o que archivos trabajarán, para asi
-        evitar problemas a la hora de hacer los commit+push
-    ∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼
-
-    1) Hay que hacer la barra de busqueda sea como la que aparece en los mockups.
-
-    2) En los botones de al medio (Ofertas/Todos/etc) hay que hacer que se queden seleccionados
-        cuando les haces click.
-
-    3) El menú de usuario tiene que cambiar su imagen a 'menuUsuarioFocus' cuando se le hace click
-        y que vuelva a la foto normal ('menuUsuarioUnfocus') cuando se cierre el dropdown-menu.
-        Además, el botón como tal tiene que tener una sombrita como la que tiene el botón de usuario de Airbnb.
-    
-    4) Hay que buscar un logo ('logoPagina') más llamativo y colorido que encaje con los colores de la pág.
-
-    5) En los modales, tanto en "Regístrate" como en "Inicia sesión" hay que implementar el form
-        y hacer verificaciones como que ambos checkbox en "Regístrate" estén si o si activos.
-
-    6) Hay que hacer la conexión de los modales de registro/inicio sesion con la base de datos.
-
-    8) Mejorar ciertas cositas con los colores en general para que no se note tan plano y sea más legible
--->
 <body>
     <!-- ### INICIO NAVBAR PRINCIPAL ### -->
     <nav class="navbar navbar-expand-md flex-column" id="navbarPrincipal">
@@ -61,31 +27,31 @@
         <div class="container-fluid">
             <!-- logo de la página -->
             <a class="navbar-brand" href="/index/" id="logoPagina">
-                <img src="{% static '/images/icons/veranium.png' %}" alt="Logo página" />
+                <img src="{% static 'images/icons/veranium.png' %}" alt="Logo página" />
             </a>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto mb-2 mb-md-0" id="tamañoTextoNav">
                     <li class="nav-item">
                         <a class="nav-link d-flex align-items-center" href="#" id="textoOfertas">
-                            <img src="{% static '/images/icons/ofertasUnfocus.png' %}" class="img-fluid" alt="Ofertas" id="iconoOfertas">
+                            <img src="{% static 'images/icons/ofertasUnfocus.png' %}" class="img-fluid" alt="Ofertas" id="iconoOfertas">
                             {% trans "Ofertas" %}
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link d-flex align-items-center" href="#" id="textoTodos">
-                            <img src="{% static '/images/icons/todosUnfocus.png' %}" class="img-fluid" alt="Todos" id="iconoTodos">
+                            <img src="{% static 'images/icons/todosUnfocus.png' %}" class="img-fluid" alt="Todos" id="iconoTodos">
                             {% trans "Todos" %}
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link d-flex align-items-center" href="#" id="textoFrenteAlMar">
-                            <img src="{% static '/images/icons/frente-al-marUnfocus.png' %}" class="img-fluid" alt="Frente al Mar" id="iconoFrenteAlMar">
+                            <img src="{% static 'images/icons/frente-al-marUnfocus.png' %}" class="img-fluid" alt="Frente al Mar" id="iconoFrenteAlMar">
                             {% trans "Frente al Mar" %}
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link d-flex align-items-center" href="#" id="textoCabañas">
-                            <img src="{% static '/images/icons/cabañasUnfocus.png' %}" class="img-fluid" alt="Cabañas" id="iconoCabañas">
+                            <img src="{% static 'images/icons/cabañasUnfocus.png' %}" class="img-fluid" alt="Cabañas" id="iconoCabañas">
                             {% trans "Cabañas" %}
                         </a>
                     </li>
@@ -103,11 +69,16 @@
             <div class="nav-item" id="menuUsuario">
                 <div class="dropdown" id="dropdownMenuUsuario">
                     <a class="navbar-brand dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="botonMenuUsuario">
-                        <img src="{% static '/images/icons/menuUsuarioUnfocus.png' %}" alt="Menú Usuario" width="100"/>
+                        <img src="{% static 'images/icons/menuUsuarioUnfocus.png' %}" alt="Menú Usuario" width="100"/>
                     </a>
                     <ul class="dropdown-menu custom-dropdown" aria-labelledby="menuUsuario">
-                        <li><a class="dropdown-item" href="#" id="registrate">{% trans "Regístrate" %}</a></li>
-                        <li><a class="dropdown-item" href="#" id="iniciarSesion">{% trans "Iniciar sesión" %}</a></li>
+                        {% if user.is_authenticated %}
+                            <li><a class="dropdown-item" href="{% url 'perfil' %}">{% trans "Perfil" %}</a></li>
+                            <li><a class="dropdown-item" href="{% url 'logout' %}">{% trans "Cerrar sesión" %}</a></li>
+                        {% else %}
+                            <li><a class="dropdown-item" href="#" id="registrate">{% trans "Regístrate" %}</a></li>
+                            <li><a class="dropdown-item" href="#" id="iniciarSesion">{% trans "Iniciar sesión" %}</a></li>
+                        {% endif %}
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="#">{% trans "Centro de ayuda" %}</a></li>
                     </ul>
@@ -125,13 +96,12 @@
                     <!-- Titulo del formulario de registro -->
                     <div class="modal-header flex-column align-items-center">
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        <img class="img-fluid" src="{% static '/images/icons/iconoUsuario.png' %}" alt="Icono usuario" id="iconoUsuario">
+                        <img class="img-fluid" src="{% static 'images/icons/iconoUsuario.png' %}" alt="Icono usuario" id="iconoUsuario">
                         <h5 class="modal-title" id="modalRegistroLabel">{% trans "Regístrate" %}</h5>
                     </div>
                     <!-- Contenido del formulario de registro -->
                     <div class="modal-body">
                         <form id="registroForm" action="/registrarUsuario/" method="post">
-                            {% csrf_token %}
                             <div class="mb-3">
                                 <input 
                                 type="text" 
@@ -172,6 +142,7 @@
                                 required
                                 >
                             </div>
+                            <div id="errorMensaje" style="display: none;">Las contraseñas no coinciden.</div>
                             <div class="form-check mb-3" id="chkMayorEdad">
                                 <input class="form-check-input" type="checkbox" id="mayorEdad" required>
                                 <label class="form-check-label" for="mayorEdad">
@@ -221,48 +192,51 @@
                     <!-- Titulo del formulario de iniciar sesión -->
                     <div class="modal-header flex-column align-items-center">
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        <img class="img-fluid" src="{% static '/images/icons/iconoUsuario.png' %}" alt="Icono usuario" id="iconoUsuario">
+                        <img class="img-fluid" src="{% static 'images/icons/iconoUsuario.png' %}" alt="Icono usuario" id="iconoUsuario">
                         <h5 class="modal-title" id="modalIniciarSesionLabel">{% trans "Iniciar sesión" %} </h5>
                     </div>
                     <!-- Contenido del formulario de iniciar sesión -->
                     <div class="modal-body">
-                        <form>
+                        <form id="loginForm" action="/login/" method="post">
+                            <div id="errorMensajeLogin"></div>
                             <div class="mb-3">
                                 <input 
-                                type="email" 
-                                class="form-control" 
-                                id="registroEmail" 
-                                placeholder="{% trans 'Correo electrónico' %} "
-                                required
+                                    type="text" 
+                                    class="form-control" 
+                                    id="loginEmail"
+                                    name="loginUsuario"
+                                    placeholder="{% trans 'Usuario' %} "
+                                    required
                                 >
                             </div>
                             <div class="mb-3">
                                 <input 
-                                type="password" 
-                                class="form-control" 
-                                id="registroContraseña" 
-                                placeholder="{% trans 'Contraseña' %} "
-                                required
+                                    type="password" 
+                                    class="form-control" 
+                                    id="loginContraseña"
+                                    name="loginPassword"
+                                    placeholder="{% trans 'Contraseña' %} "
+                                    required
                                 >
                             </div>
                             <div class="mb-3 text-center">
                                 <label class="form-label" id="lblPreguntaRegistroUsuario">
-                                {% trans "¿Aún no tienes cuenta?" %}  
-                                <a 
-                                    href="#" 
-                                    class="link-primary" 
-                                    data-bs-target="#modalRegistro" 
-                                    data-bs-toggle="modal" 
+                                    {% trans "¿Aún no tienes cuenta?" %}  
+                                    <a 
+                                        href="#" 
+                                        class="link-primary" 
+                                        data-bs-target="#modalRegistro" 
+                                        data-bs-toggle="modal" 
                                     >
-                                    {% trans "Registrate aqui" %} 
-                                </a>
+                                        {% trans "Registrate aqui" %} 
+                                    </a>
                                 </label>
                             </div>
                             <button 
                                 type="submit" 
                                 class="btn btn-primary"
                                 id="botonIniciarSesion"
-                                >
+                            >
                                 {% trans "Iniciar sesión" %} 
                             </button>
                         </form>
@@ -285,7 +259,6 @@
     <footer class="footer">
         <p>{% trans "Copyright 2024. Todos los derechos reservados. ProyectoHotel." %}<br>
             <form action="{% url 'set_language' %}" method="post">
-                {% csrf_token %}
                 <label for="language">{% trans "Idioma:" %}</label>
                 <select name="language" onchange="this.form.submit()">
                     {% get_current_language as LANGUAGE_CODE %}
@@ -302,17 +275,110 @@
     <!-- ### FIN FOOTER ### -->
 
     <!-- Agregar a un js aparte! -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script>
-        document.getElementById('registroForm').addEventListener('submit', function(event) {
-            var password = document.getElementById('registroContraseña').value;
-            var confirmarContraseña = document.getElementById('registroConfirmarContraseña').value;
-    
-            if (password !== confirmarContraseña) {
-                event.preventDefault();  // Previene el envío del formulario
-                alert('Las contraseñas no coinciden.');  // Muestra una alerta
+        document.addEventListener('DOMContentLoaded', function() {
+            var isAuthenticated = "{{ user.is_authenticated }}";
+        
+            if (isAuthenticated === 'True') {
+                document.getElementById('registrate').style.display = 'none';
+                document.getElementById('iniciarSesion').style.display = 'none';
             }
         });
     </script>
+    <script>
+        $(document).ready(function() {
+            $('#registroForm').submit(function(event) {
+                event.preventDefault();
+                var password = $('#registroContraseña').val();
+                var confirmarContraseña = $('#registroConfirmarContraseña').val();
+                var nombreUsuario = $('#registroNombreUsuario').val();
+                var email = $('#registroEmail').val();
+                var errorMensaje = $('#errorMensaje');
+                if (password !== confirmarContraseña) {
+                    errorMensaje.text('Las contraseñas no coinciden.');
+                    errorMensaje.css('display', 'block');
+                    return;
+                }
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/registrarUsuario/',
+                    data: {
+                        'nombreUsuario': nombreUsuario,
+                        'email': email,
+                        'password': password,
+                        'confirmarContraseña': confirmarContraseña,
+                    },
+                    success: function(data) {
+                        if (data.error) {
+                            errorMensaje.text(data.error);
+                            errorMensaje.css('display', 'block');
+                        } else {
+                            window.location.href = '/perfil/';
+                        }
+                    },
+                    error: function(xhr, textStatus, errorThrown) {
+                        console.error('Error:', errorThrown);
+                        errorMensaje.text('Ocurrió un error al procesar tu solicitud.');
+                        errorMensaje.css('display', 'block');
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            var loginForm = $('#loginForm');
+            var usuarioInput = $('#loginEmail');
+            var passwordInput = $('#loginContraseña');
+            var errorMessage = $('#errorMensajeLogin');
+            var modalIniciarSesion = $('#modalIniciarSesion');
+    
+            function hideErrorMessage() {
+                errorMessage.text('');
+                errorMessage.css('display', 'none');
+            }
+    
+            usuarioInput.on('input', hideErrorMessage);
+            passwordInput.on('input', hideErrorMessage);
+    
+            loginForm.submit(function(event) {
+                event.preventDefault();
+                var usuario = usuarioInput.val();
+                var password = passwordInput.val();
+    
+                $.ajax({
+                    type: 'POST',
+                    url: '/login/',
+                    data: {
+                        'loginUsuario': usuario,
+                        'loginPassword': password
+                    },
+                    success: function(data) {
+                        if (data.error) {
+                            errorMessage.text(data.error);
+                            errorMessage.css('display', 'block');
+                        } else {
+                            window.location.href = '/';
+                        }
+                    },
+                    error: function(xhr, textStatus, errorThrown) {
+                        console.error('Error:', errorThrown);
+                        errorMessage.text('Usuario o contraseña incorrectos.');
+                        errorMessage.css('display', 'block');
+                    }
+                });
+            });
+    
+            modalIniciarSesion.on('hidden.bs.modal', function () {
+                usuarioInput.val('');
+                passwordInput.val('');
+                hideErrorMessage();
+            });
+        });
+    </script>
+    
     <!-- Agregar a un js aparte! -->
 
     <!-- importaciones de código -->
@@ -326,7 +392,7 @@
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"
     ></script>
-    <script src="{% static '/js/scriptGeneral.js' %}"></script>
-    <script src="{% static '/js/hoteles.js' %}"></script>
+    <script src="{% static 'js/scriptGeneral.js' %}"></script>
+    <script src="{% static 'js/hoteles.js' %}"></script>
 </body>
 </html>

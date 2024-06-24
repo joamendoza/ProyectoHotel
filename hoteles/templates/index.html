@@ -18,6 +18,23 @@
 </head>
 
 <body>
+    {% if messages %}
+        <div aria-live="polite" aria-atomic="true" class="position-relative">
+            <div class="toast-container position-fixed p-3" style="bottom: 20px; right: 20px; z-index: 1050;">
+                {% for message in messages %}
+                    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="2000">
+                        <div class="toast-header">
+                            <strong class="me-auto">{% trans "Mensaje" %}</strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                        <div class="toast-body">
+                            {{ message }}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
     <!-- ### INICIO NAVBAR PRINCIPAL ### -->
     <nav class="navbar navbar-expand-md flex-column" id="navbarPrincipal">
         <!-- barra de busqueda -->
@@ -74,7 +91,7 @@
                     <ul class="dropdown-menu custom-dropdown" aria-labelledby="menuUsuario">
                         {% if user.is_authenticated %}
                             <li><a class="dropdown-item" href="{% url 'perfil' %}">{% trans "Perfil" %}</a></li>
-                            <li><a class="dropdown-item" href="{% url 'logout' %}">{% trans "Cerrar sesión" %}</a></li>
+                            <li><a class="dropdown-item" href="{% url 'logout' %}" id="cerrarSesion">{% trans "Cerrar sesión" %}</a></li>
                         {% else %}
                             <li><a class="dropdown-item" href="#" id="registrate">{% trans "Regístrate" %}</a></li>
                             <li><a class="dropdown-item" href="#" id="iniciarSesion">{% trans "Iniciar sesión" %}</a></li>
@@ -376,6 +393,15 @@
                 passwordInput.val('');
                 hideErrorMessage();
             });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+            var toastList = toastElList.map(function (toastEl) {
+                return new bootstrap.Toast(toastEl)
+            })
+            toastList.forEach(toast => toast.show())
         });
     </script>
     

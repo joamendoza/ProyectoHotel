@@ -395,5 +395,11 @@ main {
 }
 
 #botonEliminarCuenta{
-    color: red;
+    color: white;
+}
+
+#cerrarSesion:hover{
+    background-color: red;
+    color: white;
+    transition: background-color 0.5s ease;
 }

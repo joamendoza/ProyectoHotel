@@ -74,7 +74,7 @@
                     <ul class="dropdown-menu custom-dropdown" aria-labelledby="menuUsuario">
                         {% if user.is_authenticated %}
                         <li><a class="dropdown-item" href="{% url 'index' %}">{% trans "Inicio" %}</a></li>
-                        <li><a class="dropdown-item" href="{% url 'logout' %}">{% trans "Cerrar sesión" %}</a></li>
+                        <li><a class="dropdown-item" href="{% url 'logout' %}" id="cerrarSesion">{% trans "Cerrar sesión" %}</a></li>
                         {% else %}
                         <li><a class="dropdown-item" href="#" id="registrate">{% trans "Regístrate" %}</a></li>
                         <li><a class="dropdown-item" href="#" id="iniciarSesion">{% trans "Iniciar sesión" %}</a></li>
@@ -238,13 +238,33 @@
         </div>
         <!-- ### FIN MODAL INICIAR SESIÓN ###-->
 
+        <!-- ### INICIO MODAL DE CONFIRMACIÓN DE ELIMINACIÓN ### -->
+        <div class="modal fade" id="modalConfirmarEliminacion" tabindex="-1" aria-labelledby="modalConfirmarEliminacionLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalConfirmarEliminacionLabel">{% trans "Confirmar Eliminación" %}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>{% trans "¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede deshacer." %}</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Cancelar" %}</button>
+                        <button type="button" class="btn btn-danger" id="confirmarEliminacion">{% trans "Eliminar cuenta" %}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ### FIN MODAL DE CONFIRMACIÓN DE ELIMINACIÓN ### -->
+
         <!-- ### INICIO CONTAINER PERFIL DINAMICO ### -->
         <div class="container-fluid" id="container-perfil">
             <div class="parent">
                 <div class="div1">
                     <img class="img-fluid" src="{% static '/images/icons/iconoUsuario.png' %}" alt="Icono usuario" id="iconoUsuarioPerfil">
-                    <h2>nombre de usuario</h2>
-                    <p>X puntos</p>
+                    <h2>{{ usuario.usuario }}</h2>
+                    <p>{{ usuario.puntos }} puntos</p>
                 </div>
                 <div class="div2">
                     <p id="tituloUsuarioPerfil">Tu cuenta</p>
@@ -254,7 +274,9 @@
                     <p><a href="#">vistos recientemente</a></p>
                     <p><a href="#">historial de alojamiento</a></p>
                     <p><a href="#">Centro de ayuda</a></p>
-                    <p><a id="botonEliminarCuenta" href="#">Eliminar cuenta</a></p>
+                    <form method="post" action="{% url 'eliminar_cuenta' %}" id="formEliminarCuenta">
+                        <button type="button" id="botonEliminarCuenta" class="btn btn-danger">{% trans "Eliminar cuenta" %}</button>
+                    </form>
                 </div>
                 <div class="div3">
                     <h1>HOLA</h1>
@@ -285,6 +307,16 @@
     <!-- ### FIN FOOTER ### -->
 
     <!-- importaciones de código -->
+    <script>
+        document.getElementById('botonEliminarCuenta').addEventListener('click', function () {
+            var myModal = new bootstrap.Modal(document.getElementById('modalConfirmarEliminacion'));
+            myModal.show();
+        });
+    
+        document.getElementById('confirmarEliminacion').addEventListener('click', function () {
+            document.getElementById('formEliminarCuenta').submit();
+        });
+    </script>
     <script 
         src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js" 
         integrity="sha384-oBqDVmMz4fnFO9gybiiCiQRBzE74KAmO8E2yKFcEFP6wLCKkuxnDew+z4tlgd7cC" 

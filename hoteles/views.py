@@ -8,6 +8,8 @@ from usuarios.models import Usuario
 from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.utils.translation import gettext as _
 
 # Create your views here.
 def set_language(request):
@@ -35,7 +37,8 @@ def infoHoteles(request):
 
 @login_required
 def perfilUsuario(request):
-    return render(request, 'perfilUsuario.html')
+    usuario = request.user
+    return render(request, 'perfilUsuario.html', {'usuario': usuario})
 
 @csrf_exempt
 def registrar_usuario(request):
@@ -44,29 +47,21 @@ def registrar_usuario(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
         confirmar_contraseña = request.POST.get('confirmarContraseña')
-
         if password != confirmar_contraseña:
             return JsonResponse({'error': 'Las contraseñas no coinciden'})
-
         if Usuario.objects.filter(email=email).exists():
             return JsonResponse({'error': 'El correo electrónico ya está registrado'})
-        
         if Usuario.objects.filter(usuario=nombre_usuario).exists():
             return JsonResponse({'error': 'El nombre de usuario ya está registrado'})
-
         usuario = Usuario.objects.create(usuario=nombre_usuario, email=email)
         usuario.set_password(password)
         usuario.save()
-
-        # Autenticar al usuario
         user = authenticate(request, username=nombre_usuario, password=password)
         if user is not None:
-            # Iniciar sesión del usuario
             login(request, user)
             return JsonResponse({'success': 'Usuario creado y logueado exitosamente'})
         else:
             return JsonResponse({'error': 'Error al autenticar al usuario'}, status=500)
-    
     return JsonResponse({'error': 'Método no permitido'}, status=405)
 
 def logout_view(request):
@@ -80,16 +75,19 @@ def login_view(request):
         password = request.POST.get('loginPassword')
         if not nombre_usuario or not password:
             return JsonResponse({'error': 'Por favor, ingresa un correo electrónico y una contraseña'}, status=400)
-        
         user = authenticate(request, username=nombre_usuario, password=password)
-
         if user is not None:
             login(request, user)
             return redirect('/')
         else:
             return JsonResponse({'error': 'Correo electrónico o contraseña incorrectos'}, status=400)
-
     return JsonResponse({'error': 'Método no permitido'}, status=405)
 
-
-
+@csrf_exempt
+@login_required
+def eliminar_cuenta(request):
+    usuario = request.user
+    logout(request)  # Cierra la sesión del usuario
+    usuario.delete()  # Elimina el usuario de la base de datos
+    messages.success(request, _("Tu cuenta ha sido eliminada con éxito."))
+    return redirect('index')

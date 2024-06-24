@@ -32,6 +32,7 @@ urlpatterns = [
     path('registrarUsuario/', registrar_usuario, name='registrar_usuario'),
     path('logout/', logout_view, name='logout'),
     path('login/', login_view, name='login'),
+    path('eliminar_cuenta/', eliminar_cuenta, name='eliminar_cuenta'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:

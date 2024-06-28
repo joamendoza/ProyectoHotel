@@ -1,16 +1,7 @@
-/* 
-    ## En este script se maneja la información recolectada de una base de datos de los hoteles,
-    ## esto con el fin de generar cartas en el index y también rellenar la página de
-    ## 'infoHoteles.html' con la información en cuestión de cada hotel de manera dinamica.
-
-*/
-
-/* --- RECOLECTAR DATOS DE LA BD E IMPRIMIR CARDS DE MANERA DINAMICA --- */
 document.addEventListener('DOMContentLoaded', () => {
     const hotelesContainer = document.getElementById('hoteles-container');
     const navLinks = document.querySelectorAll('.nav-link');
 
-    // Función para formatear el precio en pesos chilenos (CLP)
     function formatearPrecio(precio) {
         const formatter = new Intl.NumberFormat('es-CL', {
             style: 'currency',
@@ -19,7 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return formatter.format(precio);
     }
 
-    // Función encargada de crear y modificar las cartas de los hoteles
     function crearCardProducto(hotel) {
         const card = document.createElement('div');
         card.classList.add('col-md-3', 'mb-4');
@@ -55,102 +45,151 @@ document.addEventListener('DOMContentLoaded', () => {
         const botonVerMas = card.querySelector('.ver-mas-info');
         botonVerMas.addEventListener('click', () => {
             localStorage.setItem('hotelSeleccionado', JSON.stringify(hotel));
-            window.location.href = '/informacion-hotel/';
+            window.location.href = `/informacion-hotel/${hotel.id}/`;
         });
 
-        // Configuración para las tarjetas de los hoteles en "index.html"
         const nuevaCard = card.querySelector('.card');
-
-        // Aplica los estilos a la imagen principal (card-img-top) dentro de la tarjeta
         const imagen = nuevaCard.querySelector('.card-img-top');
         imagen.style.width = '400px';
         imagen.style.height = '600px';
         imagen.style.display = 'block';
         imagen.style.margin = '0 auto';
-    
-        // Aplica los estilos al cuerpo de la tarjeta (card-body) dentro de la tarjeta
+
         const cuerpoTarjeta = nuevaCard.querySelector('.card-body');
         cuerpoTarjeta.style.display = 'flex';
         cuerpoTarjeta.style.flexDirection = 'column';
         cuerpoTarjeta.style.justifyContent = 'center';
-        cuerpoTarjeta.style.height = '100%'; // Ajusta la altura del contenedor del cuerpo de la carta
+        cuerpoTarjeta.style.height = '100%';
 
         return card;
     }
 
-        // Función para obtener y mostrar los hoteles filtrados
-        function obtenerHoteles(filtro = '') {
-            let url = '/api/hoteles/';
-            if (filtro) {
-                url += `?${filtro}`;
-            }
-    
-            fetch(url)
-                .then(response => response.json())
-                .then(hoteles => {
-                    hotelesContainer.innerHTML = '';
-                    hoteles.forEach(hotel => {
-                        const card = crearCardProducto(hotel);
-                        hotelesContainer.appendChild(card);
-                    });
-                })
-                .catch(error => console.error('Error al obtener los datos de los hoteles:', error));
+    function obtenerHoteles(filtro = '') {
+        let url = '/api/hoteles/';
+        if (filtro) {
+            url += `?${filtro}`;
         }
-    
-        // Event listener para los filtros del navbar usando un switch
-        navLinks.forEach(link => {
-            link.addEventListener('click', (event) => {
-                event.preventDefault();
-                const filtro = link.getAttribute('data-filtro');
-                switch (filtro) {
-                    case 'ofertas':
-                        obtenerHoteles('en_oferta=true');
-                        break;
-                    case 'todos':
-                        obtenerHoteles();
-                        break;
-                    case 'frente_al_mar':
-                        obtenerHoteles('categoria=frente_al_mar');
-                        break;
-                    case 'cabanas':
-                        obtenerHoteles('categoria=cabanas');
-                        break;
-                    default:
-                        obtenerHoteles();
-                        break;
-                }
-            });
+
+        fetch(url)
+            .then(response => response.json())
+            .then(hoteles => {
+                hotelesContainer.innerHTML = '';
+                hoteles.forEach(hotel => {
+                    const card = crearCardProducto(hotel);
+                    hotelesContainer.appendChild(card);
+                });
+            })
+            .catch(error => console.error('Error al obtener los datos de los hoteles:', error));
+    }
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', (event) => {
+            event.preventDefault();
+            const filtro = link.getAttribute('data-filtro');
+            switch (filtro) {
+                case 'ofertas':
+                    obtenerHoteles('en_oferta=true');
+                    break;
+                case 'todos':
+                    obtenerHoteles();
+                    break;
+                case 'frente_al_mar':
+                    obtenerHoteles('categoria=frente_al_mar');
+                    break;
+                case 'cabanas':
+                    obtenerHoteles('categoria=cabanas');
+                    break;
+                default:
+                    obtenerHoteles();
+                    break;
+            }
         });
-        
-    // Cargar todos los hoteles por defecto
+    });
+
     obtenerHoteles();
 });
-        
 
-/* --- GESTIÓN DE MANEJO DE INFORMACIÓN POR HOTEL --- */
 document.addEventListener('DOMContentLoaded', () => {
     const hotelInfoContainer = document.getElementById('hotel-info');
-    const hotelSeleccionado = JSON.parse(localStorage.getItem('hotelSeleccionado'));
+    const hotelId = window.location.pathname.split('/')[2];
+    localStorage.removeItem('hotelSeleccionado');
 
-    if (hotelSeleccionado) {
-        hotelInfoContainer.innerHTML = `
-            <div class="card mb-3" style="width: 940px;">
-                <div class="row g-0">
-                    <div class="col-md-4">
-                        <img src="/media/${hotelSeleccionado.foto}" class="img-fluid rounded-start" alt="Imagen hotel">
+    fetch(`/api/hoteles/${hotelId}/`)
+        .then(response => response.json())
+        .then(hotelSeleccionado => {
+            if (hotelSeleccionado) {
+                hotelInfoContainer.innerHTML = `
+                    <div class="card mb-3" style="width: 940px;">
+                        <div class="row g-0">
+                            <div class="col-md-4">
+                                <img src="${hotelSeleccionado.foto}" class="img-fluid rounded-start" alt="Imagen hotel">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">${hotelSeleccionado.nombre}</h5>
+                                    <p class="card-text">Precio por noche: ${new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(hotelSeleccionado.precio)}</p>
+                                    <br>
+                                    <p class="card-text">${hotelSeleccionado.descripcion_detallada}</p>
+                                    <label for="habitacionesSelect">Selecciona una habitación:</label>
+                                    <select id="habitacionesSelect">
+                                        <!-- Aquí se llenarán las opciones con JavaScript -->
+                                    </select>
+                                    <br><br>
+                                    <button id="reservarBtn" class="btn btn-primary">Reservar ahora</button>
+                                </div>   
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <h5 class="card-title">${hotelSeleccionado.nombre}</h5>
-                            <p class="card-text">Precio por noche: ${new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(hotelSeleccionado.precio)}</p>
-                            <br>
-                            <p class="card-text">${hotelSeleccionado.descripcion_detallada}</p>
-                        </div>   
-                    </div>
-                </div>
-            </div>
-        `;
-    } else {
-        hotelInfoContainer.innerHTML = '<p>No se encontró información del hotel seleccionado.</p>';
-    }
+                `;
+
+                // Llenar opciones del select con las habitaciones disponibles
+                const habitacionesOptions = hotelSeleccionado.habitaciones
+                    .filter(habitacion => !habitacion.ocupada)
+                    .map(habitacion => `<option value="${habitacion.numero}">Habitación ${habitacion.numero}</option>`);
+                
+                const habitacionesSelect = document.getElementById('habitacionesSelect');
+                habitacionesSelect.innerHTML = habitacionesOptions.join('');
+
+                const reservarBtn = document.getElementById('reservarBtn');
+                reservarBtn.addEventListener('click', () => {
+                    const isAuthenticated = true; // Reemplazar con la autenticación real
+                    const habitacionSeleccionada = habitacionesSelect.value;
+
+                    if (isAuthenticated) {
+                        fetch('/api/reservar/', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                hotel_id: hotelSeleccionado.id,
+                                habitacion_id: habitacionSeleccionada
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                alert('Reserva realizada con éxito');
+                                // Redireccionar a una página de confirmación o a la misma página del hotel
+                                window.location.href = `/index/`;
+                            } else {
+                                alert(data.error || 'Hubo un error al procesar la reserva.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error al procesar la reserva:', error);
+                            alert('Hubo un error al procesar la reserva.');
+                        });
+                    } else {
+                        alert('Debes iniciar sesión para realizar una reserva.');
+                        window.location.href = '/accounts/login/';
+                    }
+                });
+
+                console.log(hotelSeleccionado);
+            } else {
+                hotelInfoContainer.innerHTML = '<p>No se encontró información del hotel seleccionado.</p>';
+            }
+        })
+        .catch(error => console.error('Error al obtener la información del hotel:', error));
 });

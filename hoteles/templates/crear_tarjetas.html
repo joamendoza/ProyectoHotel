@@ -1,0 +1,21 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Crear Tarjetas de Puntos</title>
+</head>
+<body>
+    <h1>Crear Tarjetas de Puntos</h1>
+    <form action="{% url 'crear_tarjetas' %}" method="post">
+        {% csrf_token %}
+        <label for="cantidad">Cantidad:</label>
+        <input type="number" id="cantidad" name="cantidad" value="10">
+        <br><br>
+        <label for="valor">Valor:</label>
+        <input type="number" id="valor" name="valor" value="50">
+        <br><br>
+        <button type="submit">Crear Tarjetas</button>
+    </form>
+</body>
+</html>

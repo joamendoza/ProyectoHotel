@@ -403,3 +403,115 @@ main {
     color: white;
     transition: background-color 0.5s ease;
 }
+
+/*--- CSS de informacion del perfil ---*/
+
+#div3Content {
+    height: 100%;
+    display: none;
+    padding: 5%;
+    background-color: var(--morado);
+    border-radius: 20px;
+    margin-right: 25%;
+    color: var(--grisOscuro);
+}
+
+#div3Content p:first-child {
+    font-weight: bold;
+    border-bottom: 2px solid gray;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+#div3ContentData {
+    margin-top: -7%;
+    font-size: 14px;
+    word-break: break-word;
+}
+
+#div3ContentLabel {
+    font-size: 18px;
+}
+
+
+/*--- CSS de los puntos ---*/
+#opcionesLista {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    list-style-type: none;
+    padding: 0;
+}
+
+#opcionesLista li {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+}
+
+#opcionesLista li a {
+    text-decoration: none;
+    color: #333;
+    display: block;
+}
+
+li img {
+    width: 100%;
+}
+
+.canjearCuponBtn {
+    border-radius: 25px;
+}
+
+.custom-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    color: red !important;
+    font: inherit;
+    cursor: pointer;
+    display: inline;
+  }
+
+/*--- CSS del cambio de contraseña ---*/
+
+#currentPassword{
+    margin-bottom: 10%;
+}
+
+#newPassword, #confirmPassword {
+    margin-bottom: 5%;
+}
+
+#submitPasswordChange{
+    margin-top: 10%;
+    width: 100%;
+}
+
+#currentPassword, #newPassword, #confirmPassword {
+    text-align: center;
+    width: 100%;
+}
+
+#div3Content {
+    max-height: 400px; /* Ajusta esto según sea necesario */
+    overflow-y: auto;
+}
+
+#vistosRecientesList .card {
+    margin-bottom: 10px;
+}
+
+#cambiarFotoPerfilLink img {
+    width: 100%; /* Ajustar el ancho al 100% del contenedor */
+    height: auto; /* Mantener la proporción de la imagen */
+    max-width: none; /* Asegurarse de que no tenga un ancho máximo */
+    border-radius: 50%; /* Borde redondeado */
+    border-style: solid;
+    border-width: 2px;
+    border-color: #42214B;
+    overflow: hidden;
+    object-fit: cover; /* Escala la imagen para cubrir el contenedor sin deformarla */
+    object-position: center; /* Centra la imagen dentro del contenedor */
+    aspect-ratio: 1 / 1;
+}

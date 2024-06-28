@@ -262,24 +262,36 @@
         <div class="container-fluid" id="container-perfil">
             <div class="parent">
                 <div class="div1">
-                    <img class="img-fluid" src="{% static '/images/icons/iconoUsuario.png' %}" alt="Icono usuario" id="iconoUsuarioPerfil">
+                    {% if usuario.foto_perfil %}
+                        <a href="#" id="cambiarFotoPerfilLink">
+                            <img class="img-fluid" src="{{ usuario.foto_perfil.url }}" alt="Foto de perfil">
+                        </a>
+                    {% else %}
+                        <a href="#" id="cambiarFotoPerfilLink">
+                            <img class="img-fluid" src="{% static '/images/icons/iconoUsuario.png' %}" alt="Icono usuario">
+                        </a>
+                    {% endif %}
+                    <form id="formFotoPerfil" method="POST" enctype="multipart/form-data" action="{% url 'actualizar_foto_perfil' %}">
+                        <input type="file" name="foto_perfil" id="inputFotoPerfil" style="display: none;">
+                        <button type="submit" style="display: none;">Actualizar Foto de Perfil</button>
+                    </form>
                     <h2>{{ usuario.usuario }}</h2>
                     <p>{{ usuario.puntos }} puntos</p>
                 </div>
                 <div class="div2">
                     <p id="tituloUsuarioPerfil">Tu cuenta</p>
-                    <p><a href="#">informacion de perfil</a></p>
-                    <p><a href="#">canjear puntos</a></p>
-                    <p><a href="#">cambiar la contraseña</a></p>
-                    <p><a href="#">vistos recientemente</a></p>
-                    <p><a href="#">historial de alojamiento</a></p>
-                    <p><a href="#">Centro de ayuda</a></p>
+                    <p><a href="#" id="infoPerfilLink"><img src="{% static '/images/icons/perfil/usuario.png' %}" style="width: 15px; margin-bottom: 5px;"> informacion de perfil</a></p>
+                    <p><a href="#" id="puntosPerfilLink"><img src="{% static '/images/icons/perfil/estrella.png' %}" style="width: 15px; margin-bottom: 5px;"> canjear puntos</a></p>
+                    <p><a href="#" id="clavePerfilLink"><img src="{% static '/images/icons/perfil/llave.png' %}" style="width: 15px; margin-bottom: 5px;"> cambiar la contraseña</a></p>
+                    <p><a href="#" id="vistosPerfilLink"><img src="{% static '/images/icons/perfil/vistos.png' %}" style="width: 15px; margin-bottom: 5px;"> vistos recientemente</a></p>
+                    <p><a href="#" id="historialPerfilLink" ><img src="{% static '/images/icons/perfil/historial.png' %}" style="width: 15px; margin-bottom: 5px;"> historial de alojamiento</a></p>
+                    <p><a href="#" id="ayudaPerfilLink"><img src="{% static '/images/icons/perfil/informacion.png' %}" style="width: 15px; margin-bottom: 5px;"> Centro de ayuda</a></p>
                     <form method="post" action="{% url 'eliminar_cuenta' %}" id="formEliminarCuenta">
-                        <button type="button" id="botonEliminarCuenta" class="btn btn-danger">{% trans "Eliminar cuenta" %}</button>
+                        <button type="button" id="botonEliminarCuenta" class="btn custom-btn"><img src="{% static '/images/icons/perfil/eliminar.png' %}" style="width: 15px; margin-bottom: 5px;"> {% trans "Eliminar cuenta" %}</button>
                     </form>
                 </div>
                 <div class="div3">
-                    <h1>HOLA</h1>
+                    <p id="div3Content"></p>
                 </div>
             </div>
         </div>
@@ -307,6 +319,17 @@
     <!-- ### FIN FOOTER ### -->
 
     <!-- importaciones de código -->
+    <script src="{% static '/js/hoteles.js' %}"></script>
+    <script>
+        document.getElementById('cambiarFotoPerfilLink').addEventListener('click', function(event) {
+            event.preventDefault();
+            document.getElementById('inputFotoPerfil').click();
+        });
+    
+        document.getElementById('inputFotoPerfil').addEventListener('change', function() {
+            document.getElementById('formFotoPerfil').submit();
+        });
+    </script>    
     <script>
         document.getElementById('botonEliminarCuenta').addEventListener('click', function () {
             var myModal = new bootstrap.Modal(document.getElementById('modalConfirmarEliminacion'));
@@ -315,6 +338,353 @@
     
         document.getElementById('confirmarEliminacion').addEventListener('click', function () {
             document.getElementById('formEliminarCuenta').submit();
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Carga los datos de perfil dinamicamente
+            document.getElementById("infoPerfilLink").addEventListener("click", function(event) {
+                event.preventDefault();
+
+                fetch("{% url 'obtener_informacion_perfil' %}", {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const date = new Date(data.date_joined);
+                    const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
+                    const formattedDate = date.toLocaleDateString('es-ES', options);
+                    document.getElementById("div3Content").innerHTML = `
+                        <p>Información de perfil</p>
+                        <p id="div3ContentLabel"><img src="{% static '/images/icons/perfil/usuario.png' %}" style="width: 15px; margin-bottom: 5px;"> Nombre de Usuario:</p>
+                        <p id="div3ContentData">${data.username}</p>
+                        <p id="div3ContentLabel"><img src="{% static '/images/icons/perfil/fecha.png' %}" style="width: 15px; margin-bottom: 5px;"> Fecha de Creación:</p>
+                        <p id="div3ContentData">${formattedDate}</p>
+                        <p id="div3ContentLabel"><img src="{% static '/images/icons/perfil/email.png' %}" style="width: 15px; margin-bottom: 5px;"> Email:</p>
+                        <p id="div3ContentData">${data.email}</p>
+                    `;
+                    document.getElementById("div3Content").style.display = "block";
+                })
+                .catch(error => console.error('Error:', error));
+            });
+            //Puntos de perfil-Manejo de puntos.
+            document.getElementById("puntosPerfilLink").addEventListener("click", function(event) {
+                event.preventDefault();
+            
+                fetch("{% url 'obtener_informacion_perfil' %}", {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("div3Content").innerHTML = `
+                        <p>Canjear Puntos</p>
+                        <p>Tienes ${data.puntos} puntos disponibles.</p>
+                        <ul id="opcionesLista">
+                            <li>
+                                <span class="opcionPuntos" data-puntos="100">
+                                    <img src="{% static '/images/icons/puntos/10descuento (1).png' %}">
+                                    100 pts
+                                </span>
+                                <button type="button" class="canjearCuponBtn">Canjear</button>
+                            </li>
+                            <li>
+                                <span class="opcionPuntos" data-puntos="150">
+                                    <img src="{% static '/images/icons/puntos/20descuento (1).png' %}">
+                                    150 pts
+                                </span>
+                                <button type="button" class="canjearCuponBtn">Canjear</button>
+                            </li>
+                            <li>
+                                <span class="opcionPuntos" data-puntos="700">
+                                    <img src="{% static '/images/icons/puntos/60descuento (1).png' %}">
+                                    700 pts
+                                </span>
+                                <button type="button" class="canjearCuponBtn">Canjear</button>
+                            </li>
+                            <li>
+                                <span class="opcionPuntos" data-puntos="1000">
+                                    <img src="{% static '/images/icons/puntos/70descuento (1).png' %}">
+                                    1000 pts
+                                </span>
+                                <button type="button" class="canjearCuponBtn">Canjear</button>
+                            </li>
+                        </ul>
+                        <label for="codigoPuntos">Canjear Puntos:</label>
+                        <input type="text" id="codigoPuntos" name="codigoPuntos">
+                        <button id="canjearPuntosBtn">Canjear</button>
+                    `;
+                    document.getElementById("div3Content").style.display = "block";
+                    const botonesCanje = document.querySelectorAll('.canjearCuponBtn');
+                    botonesCanje.forEach(boton => {
+                        boton.addEventListener('click', function() {
+                            const puntosRequeridos = parseInt(this.parentNode.querySelector('.opcionPuntos').getAttribute('data-puntos'));
+                            fetch("{% url 'canjear_puntos' %}", {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/x-www-form-urlencoded',
+                                },
+                                body: `puntos_requeridos=${puntosRequeridos}`
+                            })
+                            .then(response => {
+                                if (response.ok) {
+                                    alert(`Puntos canjeados correctamente!`);
+                                    window.location.reload();
+                                } else {
+                                    alert('No tienes suficientes puntos para realizar este canje.');
+                                }
+                            })
+                            .catch(error => console.error('Error:', error));
+                        });
+                    });
+                    document.getElementById("canjearPuntosBtn").addEventListener('click', function(event) {
+                        event.preventDefault();
+                        const codigoIngresado = document.getElementById("codigoPuntos").value.trim();
+                        fetch("{% url 'validar_codigo' %}", {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                            },
+                            body: `codigo=${codigoIngresado}`
+                        })
+                        .then(response => {
+                            if (response.ok) {
+                                fetch("{% url 'agregar_puntos' %}", {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/x-www-form-urlencoded',
+                                    },
+                                    body: `codigo=${codigoIngresado}`
+                                })
+                                .then(response => {
+                                    if (response.ok) {
+                                        alert(`Puntos canjeados correctamente para el código ${codigoIngresado}!`);
+                                        window.location.reload();
+                                    } else {
+                                        alert('Error al agregar puntos.');
+                                    }
+                                })
+                                .catch(error => console.error('Error:', error));
+                            } else {
+                                alert('El código ingresado no es válido o ya ha sido canjeado.');
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+            });
+            //Cambio de contraseña
+            document.getElementById("clavePerfilLink").addEventListener("click", function(event) {
+                event.preventDefault();
+                fetch("{% url 'obtener_informacion_perfil' %}", {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("div3Content").innerHTML = `
+                        <p>Cambio de contraseña</p>
+                        <input type="password" id="currentPassword" name="currentPassword" placeholder="Contraseña Actual">
+                        <input type="password" id="newPassword" name="newPassword" placeholder="Nueva Contraseña">
+                        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirmar Nueva Contraseña">
+                        <button id="submitPasswordChange" class="btn btn-primary">Cambiar Contraseña</button>
+                    `;
+                    document.getElementById("div3Content").style.display = "block";
+                    document.getElementById("submitPasswordChange").addEventListener("click", function() {
+                        var currentPassword = document.getElementById("currentPassword").value;
+                        var newPassword = document.getElementById("newPassword").value;
+                        var confirmPassword = document.getElementById("confirmPassword").value;
+    
+                        if (newPassword !== confirmPassword) {
+                            alert('Las nuevas contraseñas no coinciden.');
+                            return;
+                        }
+    
+                        fetch("{% url 'change_password' %}", {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                            },
+                            body: new URLSearchParams({
+                                currentPassword: currentPassword,
+                                newPassword: newPassword,
+                                confirmPassword: confirmPassword
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.error) {
+                                alert(data.error);
+                            } else {
+                                alert(data.success);
+                                window.location.reload(true);
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+            });
+            //Hoteles vistos recientemente
+            document.getElementById("vistosPerfilLink").addEventListener("click", function(event) {
+                event.preventDefault();
+                fetch("{% url 'obtener_informacion_perfil' %}", {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.hoteles_vistos) {
+                        const hotelesVistosIds = data.hoteles_vistos.split(',').map(id => parseInt(id.trim())).slice(0, 4);
+                        fetch("/api/hoteles/?ids=" + hotelesVistosIds.join(','))
+                        .then(response => response.json())
+                        .then(hoteles => {
+                            const hotelesOrdenados = hotelesVistosIds.map(id => hoteles.find(hotel => hotel.id === id));
+                            if (hotelesOrdenados.length > 0) {
+                                document.getElementById("div3Content").innerHTML = `
+                                    <p>Vistos recientemente</p>
+                                    <div id="vistosRecientesList">
+                                        ${hotelesOrdenados.map(hotel => hotel && hotel.foto ? `
+                                            <div class="card mb-4">
+                                                <div class="row g-0">
+                                                    <div class="col-md-4">
+                                                        <img src="/media/${hotel.foto}" class="img-fluid rounded-start" alt="Imagen hotel">
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <div class="card-body">
+                                                            <h5 class="card-title">${hotel.nombre}</h5>
+                                                            <p class="card-text">${hotel.descripcion_breve}</p>
+                                                            <a href="/informacion-hotel/${hotel.id}" class="btn btn-primary">Ver más</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ` : '').join('')}
+                                    </div>
+                                `;
+                            } else {
+                                document.getElementById("div3Content").innerHTML = `
+                                <p>Vistos recientemente</p>
+                                <p>Al parecer no has visto hoteles...</p>
+                                `;
+                            }
+                            document.getElementById("div3Content").style.display = "block";
+                            console.log(hotelesOrdenados);
+                        })
+                        .catch(error => console.error('Error al obtener los datos de los hoteles:', error));
+                    } else {
+                        document.getElementById("div3Content").innerHTML = `
+                            <p>Vistos recientemente</p>
+                            <p>Al parecer no has visto hoteles...</p>
+                        `;
+                        document.getElementById("div3Content").style.display = "block";
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            });
+            
+            //Historial de reservas
+            document.getElementById("historialPerfilLink").addEventListener("click", function(event) {
+                event.preventDefault();
+                fetch("{% url 'obtener_informacion_perfil_reservas' %}", {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
+                    document.getElementById("div3Content").innerHTML = 
+                        `<p>Reservas realizadas</p>
+                        <div id="reservasList">
+                            ${data.reservas.map(reserva => 
+                                `<div class="card mb-4">
+                                    <div class="row g-0">
+                                        <div class="col-md-4">
+                                            <img src="${reserva.hotel_foto}" class="img-fluid rounded-start" alt="Imagen hotel">
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="card-body">
+                                                <h5 class="card-title">${reserva.hotel_nombre}</h5>
+                                                <p class="card-text">${reserva.hotel_descripcion_breve}</p>
+                                                <p class="card-text">Fuiste el día: ${new Date(reserva.fecha_reserva).toLocaleDateString('es-ES', options)}</p>
+                                                <a href="#" class="btn btn-primary valorar-reserva-btn" data-valorar-url="${reserva.valorar_url}" data-hotel-nombre="${reserva.hotel_nombre}">Valorar reserva</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>`
+                            ).join('')}
+                        </div>`;
+                    document.getElementById("div3Content").style.display = "block";
+            
+                    // Agregar evento click a los botones "Valorar reserva"
+                    document.querySelectorAll('.valorar-reserva-btn').forEach(button => {
+                        button.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            const valorarUrl = e.target.getAttribute('data-valorar-url');
+                            const hotelNombre = e.target.getAttribute('data-hotel-nombre');
+                            openPopup(valorarUrl, hotelNombre);
+                        });
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+            });
+            
+            // Función para abrir la ventana emergente
+            function openPopup(url, hotelNombre) {
+                const popupWidth = 600;
+                const popupHeight = 400;
+                const left = (window.innerWidth - popupWidth) / 2;
+                const top = (window.innerHeight - popupHeight) / 2;
+                const popupFeatures = `width=${popupWidth},height=${popupHeight},left=${left},top=${top},resizable=yes,scrollbars=yes`;
+            
+                const popupWindow = window.open(url, hotelNombre, popupFeatures);
+                if (popupWindow) {
+                    popupWindow.focus();
+                } else {
+                    alert('Error: No se pudo abrir la ventana emergente. Verifica que tu navegador permita abrir ventanas emergentes.');
+                }
+            }
+            //Central de ayuda
+            document.getElementById("ayudaPerfilLink").addEventListener("click", function(event) {
+                event.preventDefault();
+                document.getElementById("div3Content").innerHTML = `
+                    <p>Centro de ayuda</p>
+                    <p>Haz clic en el botón para que pueda ser asistido por nuestro equipo.</p>
+                    <button id="enviarCorreoBtn" class="btn btn-primary">Enviar Correo de Ayuda</button>
+                `;
+                document.getElementById("div3Content").style.display = "block";
+                document.getElementById("enviarCorreoBtn").addEventListener('click', function() {
+                    fetch("{% url 'enviar_correo_ayuda' %}", {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        }
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            return response.json();
+                        } else {
+                            throw new Error('Error al enviar correo de ayuda');
+                        }
+                    })
+                    .then(data => {
+                        alert(`Se ha enviado un correo a ${data.email} para que pueda ser asistido por nuestro equipo.`);
+                    })
+                    .catch(error => console.error('Error:', error));
+                });
+            });             
         });
     </script>
     <script 
@@ -328,6 +698,5 @@
         crossorigin="anonymous"
     ></script>
     <script src="{% static '/js/scriptGeneral.js' %}"></script>
-    <script src="{% static '/js/hoteles.js' %}"></script>
 </body>
 </html>

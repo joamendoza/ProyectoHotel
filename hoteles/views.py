@@ -13,8 +13,9 @@ from django.views.decorators.http import require_POST
 from django.contrib import messages
 from django.utils.crypto import get_random_string
 from django.views import View
-from .forms import MultipleHabitacionForm, ValoracionForm
+from .forms import FiltroHabitacionesForm, FiltroReservasForm, HabitacionForm, MultipleHabitacionForm, ValoracionForm
 from django.core.mail import send_mail
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 def superuser_required(user):
     return user.is_superuser
@@ -76,9 +77,32 @@ def hotel_detalle_api(request, hotel_id):
         'precio': hotel.precio,
         'descripcion_detallada': hotel.descripcion_detallada,
         'foto': hotel.foto.url,
-        'habitaciones': habitaciones_data
+        'habitaciones': habitaciones_data,
+        'porcentaje_descuento': hotel.porcentaje_descuento
     }
     return JsonResponse(hotel_data)
+
+def obtener_hoteles(request):
+    hoteles = Hotel.objects.all()
+    hoteles_data = []
+    for hotel in hoteles:
+        precio_con_descuento = hotel.precio_con_descuento() if hotel.en_oferta else hotel.precio
+        hotel_data = {
+            'id': hotel.id,
+            'nombre': hotel.nombre,
+            'descripcion_breve': hotel.descripcion_breve,
+            'descripcion_detallada': hotel.descripcion_detallada,
+            'precio': hotel.precio,
+            'foto': hotel.foto.url,
+            'categoria': hotel.categoria,
+            'en_oferta': hotel.en_oferta,
+            'porcentaje_descuento': hotel.porcentaje_descuento,
+            'stock_habitaciones': hotel.stock_habitaciones,
+            'precio_con_descuento': precio_con_descuento
+        }
+        hoteles_data.append(hotel_data)
+    
+    return JsonResponse(hoteles_data, safe=False)
 
 @login_required
 def infoHotelesID(request, hotel_id):
@@ -124,7 +148,7 @@ def reservar_habitacion(request):
 
 
 @user_passes_test(superuser_required)
-def crear_multiples_habitaciones(request):
+def crear_multiple_habitaciones(request):
     if request.method == 'POST':
         form = MultipleHabitacionForm(request.POST)
         if form.is_valid():
@@ -132,34 +156,89 @@ def crear_multiples_habitaciones(request):
             numero_pisos = form.cleaned_data['numero_pisos']
             habitaciones_por_piso = form.cleaned_data['habitaciones_por_piso']
             cantidad_camas = form.cleaned_data['cantidad_camas']
-            total_habitaciones_creadas = 0
+            
             for piso in range(1, numero_pisos + 1):
-                for numero in range(1, habitaciones_por_piso + 1):
-                    numero_habitacion = f'{piso}{str(numero).zfill(2)}'
-                    if Habitacion.objects.filter(hotel=hotel, numero=numero_habitacion).exists():
-                        nueva_id_encontrada = False
-                        nuevo_numero = numero
-                        while not nueva_id_encontrada:
-                            nuevo_numero += 1
-                            nueva_id = f'{piso}{str(nuevo_numero).zfill(2)}'
-                            if not Habitacion.objects.filter(hotel=hotel, numero=nueva_id).exists():
-                                nueva_id_encontrada = True
-                    else:
-                        nueva_id = numero_habitacion
+                for num in range(1, habitaciones_por_piso + 1):
+                    numero = f'{piso}{num:02d}'
                     Habitacion.objects.create(
                         hotel=hotel,
-                        numero=nueva_id,
+                        numero=numero,
                         cantidad_camas=cantidad_camas,
-                        descripcion=f'Habitación {nueva_id} en el piso {piso}'
+                        descripcion='',
+                        ocupada=False
                     )
-                    total_habitaciones_creadas += 1
-            hotel.stock_habitaciones += total_habitaciones_creadas
-            hotel.save()
-            return redirect('/')
+            return redirect('lista_habitaciones')
     else:
         form = MultipleHabitacionForm()
-    
-    return render(request, 'crear_habitaciones.html', {'form': form})
+    return render(request, './habitaciones/crear_multiple_habitaciones.html', {'form': form})
+
+@user_passes_test(superuser_required)
+def actualizar_habitacion(request, pk):
+    habitacion = get_object_or_404(Habitacion, pk=pk)
+    if request.method == 'POST':
+        form = HabitacionForm(request.POST, instance=habitacion)
+        if form.is_valid():
+            form.save()
+            return redirect('lista_habitaciones')
+    else:
+        form = HabitacionForm(instance=habitacion)
+    return render(request, './habitaciones/actualizar_habitacion.html', {'form': form})
+
+@user_passes_test(superuser_required)
+def eliminar_habitacion(request, pk):
+    habitacion = get_object_or_404(Habitacion, pk=pk)
+    if request.method == 'POST':
+        habitacion.delete()
+        return redirect('lista_habitaciones')
+    return render(request, './habitaciones/eliminar_habitacion.html', {'habitacion': habitacion})
+
+@user_passes_test(superuser_required)
+def lista_habitaciones(request):
+    form = FiltroHabitacionesForm(request.GET)
+    habitaciones = Habitacion.objects.all()
+
+    if form.is_valid():
+        hotel = form.cleaned_data['hotel']
+        ocupada = form.cleaned_data['ocupada']
+        cantidad_camas = form.cleaned_data['cantidad_camas']
+
+        if hotel:
+            habitaciones = habitaciones.filter(hotel=hotel)
+        if ocupada is not None:
+            habitaciones = habitaciones.filter(ocupada=ocupada)
+        if cantidad_camas:
+            habitaciones = habitaciones.filter(cantidad_camas=cantidad_camas)
+
+    paginator = Paginator(habitaciones, 10)  # Mostrar 10 habitaciones por página
+    page_number = request.GET.get('page')
+    habitaciones = paginator.get_page(page_number)
+
+    return render(request, './habitaciones/lista_habitaciones.html', {
+        'habitaciones': habitaciones,
+        'form': form,
+        'hoteles': Hotel.objects.all(),
+    })
+
+def reporte_reservas(request):
+    form = FiltroReservasForm(request.GET)
+    reservas = Reserva.objects.all()
+
+    if form.is_valid():
+        hotel = form.cleaned_data['hotel']
+        habitacion = form.cleaned_data['habitacion']
+        usuario = form.cleaned_data['usuario']
+        fecha_salida = form.cleaned_data['fecha_salida']
+
+        if hotel:
+            reservas = reservas.filter(hotel=hotel)
+        if habitacion:
+            reservas = reservas.filter(habitacion=habitacion)
+        if usuario:
+            reservas = reservas.filter(usuario=usuario)
+        if fecha_salida:
+            reservas = reservas.filter(fecha_salida__date=fecha_salida)
+
+    return render(request, './reportes/reporte_reservas.html', {'reservas': reservas, 'form': form, 'hoteles': Hotel.objects.all(), 'habitaciones': Habitacion.objects.all()})
 
 @login_required
 def perfilUsuario(request):
@@ -288,8 +367,6 @@ def obtener_informacion_perfil_reservas(request):
 def enviar_valoracion_y_tarjeta(request):
     if request.method == 'POST':
         usuario = request.user
-        # Aquí deberías tener la lógica para procesar y guardar la valoración
-        # Ejemplo hipotético:
         form = ValoracionForm(request.POST)
         if form.is_valid():
             valoracion = form.save(commit=False)

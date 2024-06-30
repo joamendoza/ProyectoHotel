@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Reporte de Reservas</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Reporte de Reservas</h1>
+        
+        <!-- Formulario de filtro -->
+        <form method="get" class="mb-4">
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    <label for="hotel">Hotel:</label>
+                    <select id="hotel" name="hotel" class="form-control">
+                        <option value="">Todos los hoteles</option>
+                        {% for hotel in hoteles %}
+                            <option value="{{ hotel.id }}" {% if request.GET.hotel == hotel.id|stringformat:"s" %} selected {% endif %}>{{ hotel.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="habitacion">Habitación:</label>
+                    <select id="habitacion" name="habitacion" class="form-control">
+                        <option value="">Todas las habitaciones</option>
+                        {% for habitacion in habitaciones %}
+                            <option value="{{ habitacion.id }}" {% if request.GET.habitacion == habitacion.id|stringformat:"s" %} selected {% endif %}>{{ habitacion.numero }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="usuario">Usuario:</label>
+                    <select id="usuario" name="usuario" class="form-control">
+                        <option value="">Todos los usuarios</option>
+                        {% for usuario in form.fields.usuario.queryset %}
+                            <option value="{{ usuario.id }}" {% if request.GET.usuario == usuario.id|stringformat:"s" %} selected {% endif %}>{{ usuario.usuario }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="fecha_salida">Fecha de Salida:</label>
+                    <input type="date" id="fecha_salida" name="fecha_salida" class="form-control" value="{{ request.GET.fecha_salida }}">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <button type="submit" class="btn btn-primary">Filtrar</button>
+                </div>
+                <div class="form-group col-md-6 text-right">
+                    <a href="{% url 'reporte_reservas' %}" class="btn btn-secondary">Reiniciar Filtros</a>
+                </div>
+            </div>
+        </form>
+        
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Usuario</th>
+                    <th>Hotel</th>
+                    <th>Habitación</th>
+                    <th>Fecha de Reserva</th>
+                    <th>Fecha de Salida</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reserva in reservas %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ reserva.usuario.usuario }}</td>
+                    <td>{{ reserva.hotel.nombre }}</td>
+                    <td>{{ reserva.habitacion.numero }}</td>
+                    <td>{{ reserva.fecha_reserva }}</td>
+                    {% if reserva.fecha_salida %}
+                        <td>{{ reserva.fecha_salida }}</td>
+                    {% else %}
+                        <td>Sin fecha de salida</td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <a href="{% url 'index' %}" class="btn btn-secondary btn-block mt-3 mb-3">Volver al Inicio</a>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

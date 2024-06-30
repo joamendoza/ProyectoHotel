@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Habitaciones</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Lista de Habitaciones</h1>
+        
+        <!-- Formulario de filtro -->
+        <form method="get" class="mb-4">
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="hotel">Hotel:</label>
+                    <select id="hotel" name="hotel" class="form-control">
+                        <option value="">Todos los hoteles</option>
+                        {% for hotel in hoteles %}
+                            <option value="{{ hotel.id }}" {% if request.GET.hotel == hotel.id|stringformat:"s" %} selected {% endif %}>{{ hotel.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="ocupada">Ocupada:</label>
+                    <select id="ocupada" name="ocupada" class="form-control">
+                        <option value="">Todas</option>
+                        <option value="True" {% if request.GET.ocupada == "True" %} selected {% endif %}>Sí</option>
+                        <option value="False" {% if request.GET.ocupada == "False" %} selected {% endif %}>No</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="cantidad_camas">Cantidad de Camas:</label>
+                    <select id="cantidad_camas" name="cantidad_camas" class="form-control">
+                        <option value="">Todas</option>
+                        {% for cantidad in form.fields.cantidad_camas.choices %}
+                            {% if cantidad.0 %}
+                                <option value="{{ cantidad.0 }}" {% if request.GET.cantidad_camas == cantidad.0|stringformat:"s" %} selected {% endif %}>{{ cantidad.1 }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <button type="submit" class="btn btn-primary">Filtrar</button>
+                </div>
+                <div class="form-group col-md-6 text-right">
+                    <a href="{% url 'lista_habitaciones' %}" class="btn btn-secondary">Reiniciar Filtros</a>
+                </div>
+            </div>
+        </form>
+        
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Hotel</th>
+                    <th>Número</th>
+                    <th>Cantidad de Camas</th>
+                    <th>Descripción</th>
+                    <th>Ocupada</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for habitacion in habitaciones %}
+                <tr>
+                    <td>{{ habitaciones.start_index|add:forloop.counter0 }}</td>
+                    <td>{{ habitacion.hotel.nombre }}</td>
+                    <td>{{ habitacion.numero }}</td>
+                    <td>{{ habitacion.cantidad_camas }}</td>
+                    <td>{{ habitacion.descripcion }}</td>
+                    <td>{{ habitacion.ocupada|yesno:"Sí,No" }}</td>
+                    <td>
+                        <a href="{% url 'actualizar_habitacion' habitacion.pk %}" class="btn btn-warning btn-sm">Editar</a>
+                        <a href="{% url 'eliminar_habitacion' habitacion.pk %}" class="btn btn-danger btn-sm">Eliminar</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Controles de paginación -->
+        <div class="d-flex justify-content-center">
+            <ul class="pagination mt-4">
+                {% if habitaciones.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page=1{% if request.GET.hotel %}&hotel={{ request.GET.hotel|stringformat:"s" }}{% endif %}{% if request.GET.ocupada %}&ocupada={{ request.GET.ocupada }}{% endif %}{% if request.GET.cantidad_camas %}&cantidad_camas={{ request.GET.cantidad_camas }}{% endif %}">&laquo; Primera</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ habitaciones.previous_page_number }}{% if request.GET.hotel %}&hotel={{ request.GET.hotel|stringformat:"s" }}{% endif %}{% if request.GET.ocupada %}&ocupada={{ request.GET.ocupada }}{% endif %}{% if request.GET.cantidad_camas %}&cantidad_camas={{ request.GET.cantidad_camas }}{% endif %}">Anterior</a></li>
+                {% endif %}
+                
+                {% for num in habitaciones.paginator.page_range %}
+                {% if habitaciones.number == num %}
+                <li class="page-item active"><span class="page-link">{{ num }} <span class="sr-only">(current)</span></span></li>
+                {% else %}
+                <li class="page-item"><a class="page-link" href="?page={{ num }}{% if request.GET.hotel %}&hotel={{ request.GET.hotel|stringformat:"s" }}{% endif %}{% if request.GET.ocupada %}&ocupada={{ request.GET.ocupada }}{% endif %}{% if request.GET.cantidad_camas %}&cantidad_camas={{ request.GET.cantidad_camas }}{% endif %}">{{ num }}</a></li>
+                {% endif %}
+                {% endfor %}
+                
+                {% if habitaciones.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ habitaciones.next_page_number }}{% if request.GET.hotel %}&hotel={{ request.GET.hotel|stringformat:"s" }}{% endif %}{% if request.GET.ocupada %}&ocupada={{ request.GET.ocupada }}{% endif %}{% if request.GET.cantidad_camas %}&cantidad_camas={{ request.GET.cantidad_camas }}{% endif %}">Siguiente</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ habitaciones.paginator.num_pages }}{% if request.GET.hotel %}&hotel={{ request.GET.hotel|stringformat:"s" }}{% endif %}{% if request.GET.ocupada %}&ocupada={{ request.GET.ocupada }}{% endif %}{% if request.GET.cantidad_camas %}&cantidad_camas={{ request.GET.cantidad_camas }}{% endif %}">Última &raquo;</a></li>
+                {% endif %}
+            </ul>
+        </div>
+
+        <a href="{% url 'crear_multiple_habitaciones' %}" class="btn btn-success btn-block mt-3 mb-3">Crear Múltiples Habitaciones</a>
+        <a href="{% url 'index' %}" class="btn btn-secondary btn-block mt-3 mb-3">Volver al Inicio</a>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

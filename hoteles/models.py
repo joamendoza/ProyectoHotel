@@ -29,10 +29,12 @@ class Hotel(models.Model):
     def __str__(self):
         return f"Hotel {self.id}: {self.nombre}"
     
-    def precio_con_descuento(self):
+    def precio_con_descuento(self):#por algun motivo siempre devuelve undefined, no se por que, pero queda fuera!
         if self.en_oferta and self.porcentaje_descuento > 0:
-            return self.precio * (1 - self.porcentaje_descuento / 100)
+            descuento = self.precio * self.porcentaje_descuento / 100
+            return int(self.precio - descuento)
         return self.precio
+
     
     def reservar_habitacion(self):
         if self.stock_habitaciones > 0:
@@ -62,6 +64,7 @@ class Reserva(models.Model):
     hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE)
     habitacion = models.ForeignKey(Habitacion, on_delete=models.CASCADE)
     fecha_reserva = models.DateTimeField(auto_now_add=True)
+    fecha_salida = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return f"Reserva de {self.usuario.usuario} en {self.hotel.nombre}"

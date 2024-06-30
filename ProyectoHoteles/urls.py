@@ -30,8 +30,16 @@ urlpatterns = [
     path('informacion-hotels/', infoHoteles),
     path('informacion-hotel/<int:hotel_id>/', infoHotelesID, name='info_hoteles'),
     path('api/hoteles/<int:hotel_id>/', hotel_detalle_api, name='hotel_detalle_api'),
+    path('obtener-hoteles/', obtener_hoteles, name='obtener_hoteles'),
     path('api/reservar/', reservar_habitacion, name='reservar_hotel'),
-    path('crear_habitaciones/', crear_multiples_habitaciones, name='crear_multiples_habitaciones'), #crear habitaciones!
+
+    path('habitaciones/', lista_habitaciones, name='lista_habitaciones'),
+    path('habitaciones/crear/', crear_multiple_habitaciones, name='crear_multiple_habitaciones'),
+    path('habitaciones/actualizar/<int:pk>/', actualizar_habitacion, name='actualizar_habitacion'),
+    path('habitaciones/eliminar/<int:pk>/', eliminar_habitacion, name='eliminar_habitacion'),
+
+    path('reporte-reservas/', reporte_reservas, name='reporte_reservas'),
+
     path('perfil/',perfilUsuario, name='perfil'),
     path('registrarUsuario/', registrar_usuario, name='registrar_usuario'),
     path('actualizar-foto-perfil/', actualizar_foto_perfil, name='actualizar_foto_perfil'),

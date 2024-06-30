@@ -7,26 +7,31 @@ document.addEventListener('DOMContentLoaded', () => {
             style: 'currency',
             currency: 'CLP'
         });
+        console.log(precio);
+        console.log(formatter.format(precio));
         return formatter.format(precio);
     }
 
     function crearCardProducto(hotel) {
         const card = document.createElement('div');
         card.classList.add('col-md-3', 'mb-4');
-
         let precioDescuento = `<h4 class="card-title">${formatearPrecio(hotel.precio)}</h4>`;
-        if (hotel.en_oferta && hotel.porcentaje_descuento > 0) {
+        console.log(hotel.porcentaje_descuento);
+        console.log(hotel.precio);
+        if (hotel.porcentaje_descuento > 0) {
+            console.log('entro');
+            precio_con_descuento = hotel.precio * ((100 - hotel.porcentaje_descuento) / 100);
             precioDescuento = `
-                <h4 class="card-title text-danger">${formatearPrecio(hotel.precio_con_descuento)}</h4>
+                <h4 class="card-title text-danger">${formatearPrecio(precio_con_descuento)}</h4>
                 <p class="text-muted"><s>${formatearPrecio(hotel.precio)}</s></p>
                 <span class="badge bg-danger">${hotel.porcentaje_descuento}% OFF</span>
             `;
         }
-
+    
         card.innerHTML = `
-            <div class="card" id="cartasInicio">
-                <img src="/media/${hotel.foto}" class="card-img-top" alt="Imagen Hotel">
-                <div class="card-body">
+            <div class="card" style="height: 100%;">
+                <img src="/media/${hotel.foto}" class="card-img-top" alt="Imagen Hotel" style="object-fit: cover; height: 300px;">
+                <div class="card-body d-flex flex-column justify-content-between">
                     ${precioDescuento}
                     <p class="card-title">${hotel.nombre}</p>
                     <p class="card-text">${hotel.descripcion_breve}</p>
@@ -41,28 +46,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             </div>
         `;
-
+    
         const botonVerMas = card.querySelector('.ver-mas-info');
         botonVerMas.addEventListener('click', () => {
             localStorage.setItem('hotelSeleccionado', JSON.stringify(hotel));
             window.location.href = `/informacion-hotel/${hotel.id}/`;
         });
-
-        const nuevaCard = card.querySelector('.card');
-        const imagen = nuevaCard.querySelector('.card-img-top');
-        imagen.style.width = '400px';
-        imagen.style.height = '600px';
-        imagen.style.display = 'block';
-        imagen.style.margin = '0 auto';
-
-        const cuerpoTarjeta = nuevaCard.querySelector('.card-body');
-        cuerpoTarjeta.style.display = 'flex';
-        cuerpoTarjeta.style.flexDirection = 'column';
-        cuerpoTarjeta.style.justifyContent = 'center';
-        cuerpoTarjeta.style.height = '100%';
-
+    
         return card;
     }
+    
+    
 
     function obtenerHoteles(filtro = '') {
         let url = '/api/hoteles/';
@@ -113,11 +107,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const hotelInfoContainer = document.getElementById('hotel-info');
     const hotelId = window.location.pathname.split('/')[2];
     localStorage.removeItem('hotelSeleccionado');
-
+    
     fetch(`/api/hoteles/${hotelId}`)
         .then(response => response.json())
         .then(hotelSeleccionado => {
             if (hotelSeleccionado) {
+                console.log('Datos del hotel seleccionado:', hotelSeleccionado);
+
+                const { precioConDescuento, precioDescuentoHTML } = calcularPrecioConDescuento(hotelSeleccionado.precio, hotelSeleccionado.porcentaje_descuento);
+                console.log('Precio con descuento:', precioConDescuento, 'Porcentaje descuento: ', hotelSeleccionado.porcentaje_descuento, 'HTML del precio:', precioDescuentoHTML);
+
                 hotelInfoContainer.innerHTML = `
                     <div class="card mb-3" style="width: 940px;">
                         <div class="row g-0">
@@ -127,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <div class="col-md-8">
                                 <div class="card-body">
                                     <h5 class="card-title">${hotelSeleccionado.nombre}</h5>
-                                    <p class="card-text">Precio por noche: ${new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(hotelSeleccionado.precio)}</p>
+                                    <p class="card-text">Precio por noche: ${precioDescuentoHTML}</p>
                                     <br>
                                     <p class="card-text">${hotelSeleccionado.descripcion_detallada}</p>
                                     <label for="habitacionesSelect">Selecciona una habitación:</label>
@@ -152,7 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const reservarBtn = document.getElementById('reservarBtn');
                 reservarBtn.addEventListener('click', () => {
-                    const isAuthenticated = true; // Reemplazar con la autenticación real
+                    const isAuthenticated = true;
                     const habitacionSeleccionada = habitacionesSelect.value;
 
                     if (isAuthenticated) {
@@ -170,7 +169,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         .then(data => {
                             if (data.success) {
                                 alert('Reserva realizada con éxito');
-                                // Redireccionar a una página de confirmación o a la misma página del hotel
                                 window.location.href = `/index/`;
                             } else {
                                 alert(data.error || 'Hubo un error al procesar la reserva.');
@@ -193,3 +191,30 @@ document.addEventListener('DOMContentLoaded', () => {
         })
     .catch(error => console.error('Error al obtener la información del hotel:', error));
 });
+
+function formatearPrecio(precio) {
+    const formatter = new Intl.NumberFormat('es-CL', {
+        style: 'currency',
+        currency: 'CLP'
+    });
+    return formatter.format(precio);
+}
+
+function calcularPrecioConDescuento(precioBase, porcentajeDescuento) {
+    let precioDescuentoHTML = `<h4 class="card-title">${formatearPrecio(precioBase)}</h4>`;
+    let precioConDescuento = precioBase;
+
+    if (porcentajeDescuento > 0) {
+        precioConDescuento = precioBase * ((100 - porcentajeDescuento) / 100);
+        precioDescuentoHTML = `
+            <h4 class="card-title text-danger">${formatearPrecio(precioConDescuento)}</h4>
+            <p class="text-muted"><s>${formatearPrecio(precioBase)}</s></p>
+            <span class="badge bg-danger">${porcentajeDescuento}% OFF</span>
+        `;
+    }
+
+    return {
+        precioConDescuento: precioConDescuento,
+        precioDescuentoHTML: precioDescuentoHTML
+    };
+}

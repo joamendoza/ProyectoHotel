@@ -92,6 +92,11 @@
                     <ul class="dropdown-menu custom-dropdown" aria-labelledby="menuUsuario">
                         {% if user.is_authenticated %}
                             <li><a class="dropdown-item" href="{% url 'perfil' %}">{% trans "Perfil" %}</a></li>
+                            {% if user.is_superuser %}
+                                <li><a class="dropdown-item" href="{% url 'reporte_reservas' %}">{% trans "Generar reporte" %}</a></li>
+                                <li><a class="dropdown-item" href="{% url 'crear_tarjetas' %}">{% trans "Crear cupones" %}</a></li>
+                                <li><a class="dropdown-item" href="{% url 'lista_habitaciones' %}">{% trans "Generar habitaciones" %}</a></li>
+                            {% endif %}
                             <li><a class="dropdown-item" href="{% url 'logout' %}" id="cerrarSesion">{% trans "Cerrar sesión" %}</a></li>
                         {% else %}
                             <li><a class="dropdown-item" href="#" id="registrate">{% trans "Regístrate" %}</a></li>

@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const hotelId = window.location.pathname.split('/')[2];
     localStorage.removeItem('hotelSeleccionado');
 
-    fetch(`/api/hoteles/${hotelId}/`)
+    fetch(`/api/hoteles/${hotelId}`)
         .then(response => response.json())
         .then(hotelSeleccionado => {
             if (hotelSeleccionado) {
@@ -191,5 +191,5 @@ document.addEventListener('DOMContentLoaded', () => {
                 hotelInfoContainer.innerHTML = '<p>No se encontró información del hotel seleccionado.</p>';
             }
         })
-        .catch(error => console.error('Error al obtener la información del hotel:', error));
+    .catch(error => console.error('Error al obtener la información del hotel:', error));
 });

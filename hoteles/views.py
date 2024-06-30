@@ -238,9 +238,10 @@ def valorar_reserva(request, reserva_id):
             valoracion.reserva = reserva
             valoracion.usuario = request.user
             valoracion.save()
-            return render(request, 'valoracion_guardada.html')
+            return JsonResponse({'message': 'Valoración guardada correctamente'})
     else:
         form = ValoracionForm()
+    
     return render(request, 'valorar_reserva.html', {'form': form, 'reserva': reserva})
 
 @login_required
@@ -267,29 +268,72 @@ def obtener_informacion_perfil(request):
 @login_required
 def obtener_informacion_perfil_reservas(request):
     usuario = request.user
-    reservas = Reserva.objects.filter(usuario=usuario).order_by('-fecha_reserva')
-    reservas_list = [
-        {
+    reservas = Reserva.objects.filter(usuario=usuario)
+    valoraciones = Valoracion.objects.filter(usuario=usuario)
+    reservas_data = []
+    for reserva in reservas:
+        reservas_data.append({
             'id': reserva.id,
-            'hotel_id': reserva.hotel.id,
             'hotel_nombre': reserva.hotel.nombre,
-            'hotel_foto': reserva.hotel.foto.url,  # Asegúrate de que el campo foto tiene la URL correcta
             'hotel_descripcion_breve': reserva.hotel.descripcion_breve,
-            'habitacion_numero': reserva.habitacion.numero,
-            'fecha_reserva': reserva.fecha_reserva.strftime('%Y-%m-%d %H:%M:%S'),
-            'valorar_url': reverse('valorar_reserva', args=[reserva.id])
-        }
-        for reserva in reservas
-    ]
+            'hotel_foto': reserva.hotel.foto.url,
+            'fecha_reserva': reserva.fecha_reserva,
+            'valorar_url': reverse('valorar_reserva', args=[reserva.id]),
+        })
+    valoraciones_data = list(valoraciones.values('reserva_id'))
     
-    data = {
-        'username': usuario.usuario,
-        'email': usuario.email,
-        'date_joined': usuario.date_joined.strftime('%Y-%m-%d %H:%M:%S'),
-        'reservas': reservas_list,
-    }
-    
-    return JsonResponse(data)
+    return JsonResponse({'reservas': reservas_data, 'valoraciones': valoraciones_data})
+
+@login_required
+def enviar_valoracion_y_tarjeta(request):
+    if request.method == 'POST':
+        usuario = request.user
+        # Aquí deberías tener la lógica para procesar y guardar la valoración
+        # Ejemplo hipotético:
+        form = ValoracionForm(request.POST)
+        if form.is_valid():
+            valoracion = form.save(commit=False)
+            valoracion.usuario = usuario
+            valoracion.save()
+
+        # Buscar una tarjeta de puntos válida
+        tarjeta = TarjetaPuntos.objects.filter(activa=True, canjeada_por__isnull=True).order_by('puntos').first()
+        
+        if tarjeta:
+            tarjeta.canjear(usuario)
+            tarjeta_codigo = tarjeta.codigo
+            tarjeta_puntos = tarjeta.puntos
+        else:
+            tarjeta_codigo = None
+            tarjeta_puntos = 0
+        
+        # Enviar correo de confirmación
+        subject = 'Confirmación de Valoración y Tarjeta de Puntos'
+        message = f'''
+Estimado/a {usuario.usuario},
+
+Hemos recibido su valoración. Gracias por su feedback.
+
+Como agradecimiento, le hemos asignado una tarjeta de puntos con el código: {tarjeta_codigo} y valor de {tarjeta_puntos} puntos.
+
+---
+
+Saludos,
+Equipo de Soporte
+'''
+        recipient_list = [usuario.email]
+        send_mail(
+            subject,
+            message,
+            'a.veranium@gmail.com',
+            recipient_list,
+            fail_silently=False,
+        )
+        
+        return JsonResponse({'success': 'Valoración enviada y tarjeta de puntos asignada', 'tarjeta_codigo': tarjeta_codigo, 'tarjeta_puntos': tarjeta_puntos})
+    else:
+        return JsonResponse({'error': 'Método no permitido'}, status=405)
+
 
 #ayuda correo
 @login_required

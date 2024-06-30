@@ -67,11 +67,15 @@ class Reserva(models.Model):
         return f"Reserva de {self.usuario.usuario} en {self.hotel.nombre}"
     
 class Valoracion(models.Model):
+    valoracion_id = models.AutoField(primary_key=True)
     reserva = models.ForeignKey(Reserva, on_delete=models.CASCADE)
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     puntuacion = models.IntegerField()
     comentario = models.TextField()
     fecha_valoracion = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f"Valoracion id {self.valoracion_id} de {self.usuario.usuario} en {self.reserva.hotel}"
     
 @receiver(post_save, sender=Habitacion)
 def add_habitacion_to_hotel(sender, instance, created, **kwargs):

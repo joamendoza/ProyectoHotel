@@ -14,7 +14,25 @@
       crossorigin="anonymous"
     />
     <!-- importación style.css -->
-    <link rel="stylesheet" href="{% static '/style2.css' %}" /> 
+    <link rel="stylesheet" href="{% static '/style2.css' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .checked {
+            color: orange;
+        }
+        .star {
+            cursor: pointer;
+            font-size: 2em;
+        }
+        .alert-overlay {
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1050;
+            display: none;
+        }
+    </style>
 </head>
 
 <body>
@@ -293,6 +311,41 @@
                 <div class="div3">
                     <p id="div3Content"></p>
                 </div>
+                <div id="successMessage" class="alert alert-success alert-overlay" role="alert">
+                    ¡Valoración enviada con éxito!
+                </div>
+                <div class="modal fade" id="valoracionModal" tabindex="-1" aria-labelledby="valoracionModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="valoracionModalLabel">Valoración de tu reserva</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p id="valoracionPuntuacion">
+                                    <form id="valoracionForm">
+                                        <div class="mb-3">
+                                            <label for="puntuacion" class="form-label">Puntuación</label>
+                                            <div id="stars" class="mb-3">
+                                                <span class="fa fa-star star" data-value="1"></span>
+                                                <span class="fa fa-star star" data-value="2"></span>
+                                                <span class="fa fa-star star" data-value="3"></span>
+                                                <span class="fa fa-star star" data-value="4"></span>
+                                                <span class="fa fa-star star" data-value="5"></span>
+                                            </div>
+                                            <input type="hidden" id="puntuacion" name="puntuacion" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="comentario" class="form-label">Comentario</label>
+                                            <textarea class="form-control" id="comentario" name="comentario" rows="3" required></textarea>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Enviar Valoración</button>
+                                    </form>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>                
             </div>
         </div>
         <!-- ### FIN CONTAINER PERFIL DINAMICO ### -->
@@ -317,8 +370,20 @@
         </p>
     </footer>
     <!-- ### FIN FOOTER ### -->
-
+     
     <!-- importaciones de código -->
+    <script 
+        src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js" 
+        integrity="sha384-oBqDVmMz4fnFO9gybiiCiQRBzE74KAmO8E2yKFcEFP6wLCKkuxnDew+z4tlgd7cC" 
+        crossorigin="anonymous"
+    ></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"
+    ></script>
+    <script src="{% static '/js/scriptGeneral.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{% static '/js/hoteles.js' %}"></script>
     <script>
         document.getElementById('cambiarFotoPerfilLink').addEventListener('click', function(event) {
@@ -338,6 +403,20 @@
     
         document.getElementById('confirmarEliminacion').addEventListener('click', function () {
             document.getElementById('formEliminarCuenta').submit();
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (localStorage.getItem('valoracionEnviada') === 'true') {
+                const successMessage = document.getElementById('successMessage');
+                if (successMessage) {
+                    successMessage.style.display = 'block';
+                    setTimeout(() => {
+                        successMessage.style.display = 'none';
+                    }, 4000);
+                }
+                localStorage.removeItem('valoracionEnviada');
+            }
         });
     </script>
     <script>
@@ -592,10 +671,12 @@
                 })
                 .catch(error => console.error('Error:', error));
             });
-            
             //Historial de reservas
             document.getElementById("historialPerfilLink").addEventListener("click", function(event) {
                 event.preventDefault();
+                fetchReservasYValoraciones();
+            });
+            function fetchReservasYValoraciones() {
                 fetch("{% url 'obtener_informacion_perfil_reservas' %}", {
                     method: 'GET',
                     headers: {
@@ -619,7 +700,7 @@
                                                 <h5 class="card-title">${reserva.hotel_nombre}</h5>
                                                 <p class="card-text">${reserva.hotel_descripcion_breve}</p>
                                                 <p class="card-text">Fuiste el día: ${new Date(reserva.fecha_reserva).toLocaleDateString('es-ES', options)}</p>
-                                                <a href="#" class="btn btn-primary valorar-reserva-btn" data-valorar-url="${reserva.valorar_url}" data-hotel-nombre="${reserva.hotel_nombre}">Valorar reserva</a>
+                                                ${renderizarBotonValorar(reserva, data.valoraciones)}
                                             </div>
                                         </div>
                                     </div>
@@ -627,33 +708,85 @@
                             ).join('')}
                         </div>`;
                     document.getElementById("div3Content").style.display = "block";
-            
-                    // Agregar evento click a los botones "Valorar reserva"
                     document.querySelectorAll('.valorar-reserva-btn').forEach(button => {
                         button.addEventListener('click', (e) => {
-                            e.preventDefault();
                             const valorarUrl = e.target.getAttribute('data-valorar-url');
-                            const hotelNombre = e.target.getAttribute('data-hotel-nombre');
-                            openPopup(valorarUrl, hotelNombre);
+                            const reservaId = e.target.getAttribute('data-reserva-id');
+                            openModal(valorarUrl, reservaId);
                         });
                     });
                 })
                 .catch(error => console.error('Error:', error));
-            });
-            
-            // Función para abrir la ventana emergente
-            function openPopup(url, hotelNombre) {
-                const popupWidth = 600;
-                const popupHeight = 400;
-                const left = (window.innerWidth - popupWidth) / 2;
-                const top = (window.innerHeight - popupHeight) / 2;
-                const popupFeatures = `width=${popupWidth},height=${popupHeight},left=${left},top=${top},resizable=yes,scrollbars=yes`;
-            
-                const popupWindow = window.open(url, hotelNombre, popupFeatures);
-                if (popupWindow) {
-                    popupWindow.focus();
+            }
+            function renderizarBotonValorar(reserva, valoraciones) {
+                const valorada = valoraciones.some(valoracion => valoracion.reserva_id === reserva.id);
+                if (valorada) {
+                    return '<button class="btn btn-secondary" disabled>Reserva Valorada</button>';
                 } else {
-                    alert('Error: No se pudo abrir la ventana emergente. Verifica que tu navegador permita abrir ventanas emergentes.');
+                    return `<button class="btn btn-primary valorar-reserva-btn" data-valorar-url="${reserva.valorar_url}" data-reserva-id="${reserva.id}" data-bs-toggle="modal" data-bs-target="#valoracionModal">Valorar Reserva</button>`;
+                }
+            }
+            function openModal(valorarUrl, reservaId) {
+                const form = document.getElementById("valoracionForm");
+                if (form) {
+                    form.removeEventListener('submit', handleSubmit);
+                    $('#valoracionModal').off('hidden.bs.modal');
+                    form.addEventListener('submit', handleSubmit);
+                    $('#valoracionModal').modal('show');
+            
+                    function handleSubmit(event) {
+                        event.preventDefault();
+                        const formData = new FormData(form);
+                        fetch(valorarUrl, {
+                            method: 'POST',
+                            headers: {},
+                            body: formData
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(data);
+                            disableButton(reservaId);
+                            $('#valoracionModal').modal('hide');
+                            localStorage.setItem('valoracionEnviada', 'true');
+                            enviarCorreo();
+                            window.location.reload();
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+                    }
+                    $('#valoracionModal').on('hidden.bs.modal', function (e) {
+                        form.reset();
+                    });
+                } else {
+                    console.error('El elemento "valoracionForm" no se encontró en el DOM.');
+                }
+            }
+            function enviarCorreo() {
+                fetch('{% url "enviar_valoracion_y_tarjeta" %}', {
+                    method: 'POST',
+                    headers: {
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log('Correo enviado correctamente');
+                    } else {
+                        console.error('Error al enviar el correo:', data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error al enviar el correo:', error);
+                });
+            }
+            function disableButton(reservaId) {
+                const button = document.querySelector(`.valorar-reserva-btn[data-reserva-id="${reservaId}"]`);
+                if (button) {
+                    button.disabled = true;
+                    button.classList.remove('btn-primary');
+                    button.classList.add('btn-secondary');
+                    button.textContent = 'Reserva Valorada';
                 }
             }
             //Central de ayuda
@@ -684,19 +817,32 @@
                     })
                     .catch(error => console.error('Error:', error));
                 });
-            });             
+            });
         });
     </script>
-    <script 
-        src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js" 
-        integrity="sha384-oBqDVmMz4fnFO9gybiiCiQRBzE74KAmO8E2yKFcEFP6wLCKkuxnDew+z4tlgd7cC" 
-        crossorigin="anonymous"
-    ></script>
-    <script
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous"
-    ></script>
-    <script src="{% static '/js/scriptGeneral.js' %}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const stars = document.querySelectorAll('.star');
+            const puntuacionInput = document.getElementById('puntuacion');
+        
+            // Función para manejar el clic en las estrellas
+            function handleStarClick() {
+                const rating = this.getAttribute('data-value');
+                puntuacionInput.value = rating;
+        
+                stars.forEach(s => {
+                    if (s.getAttribute('data-value') <= rating) {
+                        s.classList.add('checked');
+                    } else {
+                        s.classList.remove('checked');
+                    }
+                });
+            }
+        
+            stars.forEach(star => {
+                star.addEventListener('click', handleStarClick);
+            });
+        });
+    </script>       
 </body>
 </html>

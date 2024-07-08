@@ -21,6 +21,18 @@ class Hotel(models.Model):
     en_oferta = models.BooleanField(default=False)
     porcentaje_descuento = models.IntegerField(default=0)
     stock_habitaciones = models.PositiveIntegerField(default=0)
+    ubicacion = models.CharField(max_length=255, null=True, blank=True)
+
+    #Servicios adicionales:
+    wifi_gratuito = models.BooleanField(default=False)
+    desayuno_incluido = models.BooleanField(default=False)
+    gimnasio = models.BooleanField(default=False)
+    piscina = models.BooleanField(default=False)
+    spa = models.BooleanField(default=False)
+    restaurante = models.BooleanField(default=False)
+    servicio_transporte = models.BooleanField(default=False)
+    servicios_eventos = models.BooleanField(default=False)
+    servicio_conserjeria = models.BooleanField(default=False)
 
     @property
     def todas_las_habitaciones(self):
@@ -29,7 +41,7 @@ class Hotel(models.Model):
     def __str__(self):
         return f"Hotel {self.id}: {self.nombre}"
     
-    def precio_con_descuento(self):#por algun motivo siempre devuelve undefined, no se por que, pero queda fuera!
+    def precio_con_descuento(self):#por algun motivo siempre devuelve undefined, no se por que, pero meh
         if self.en_oferta and self.porcentaje_descuento > 0:
             descuento = self.precio * self.porcentaje_descuento / 100
             return int(self.precio - descuento)
@@ -64,10 +76,12 @@ class Reserva(models.Model):
     hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE)
     habitacion = models.ForeignKey(Habitacion, on_delete=models.CASCADE)
     fecha_reserva = models.DateTimeField(auto_now_add=True)
+    fecha_ingreso = models.DateTimeField(null=True, blank=True)
     fecha_salida = models.DateTimeField(null=True, blank=True)
+    checkout = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"Reserva de {self.usuario.usuario} en {self.hotel.nombre}"
+        return f"Reserva {self.id} de {self.usuario.usuario} en {self.hotel.nombre}"
     
 class Valoracion(models.Model):
     valoracion_id = models.AutoField(primary_key=True)

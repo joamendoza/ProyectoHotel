@@ -1,21 +1,25 @@
+from datetime import datetime
 import json
+import locale
+import requests
 from django.shortcuts import get_object_or_404, render, redirect, HttpResponse
 from django.utils.translation import activate, gettext as _
 from django.conf import settings
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect, HttpResponseServerError, JsonResponse
 from django.urls import reverse, translate_url
 from .models import Hotel, Habitacion, Reserva, Valoracion
 from usuarios.models import Usuario, TarjetaPuntos
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.views.decorators.http import require_POST
 from django.contrib import messages
 from django.utils.crypto import get_random_string
 from django.views import View
 from .forms import FiltroHabitacionesForm, FiltroReservasForm, HabitacionForm, MultipleHabitacionForm, ValoracionForm
 from django.core.mail import send_mail
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.paginator import Paginator
+from django.db.models import Q
+
 
 def superuser_required(user):
     return user.is_superuser
@@ -35,8 +39,59 @@ def set_language(request):
     return HttpResponseRedirect('/')
 
 def get_hoteles(request):
-    hoteles = list(Hotel.objects.values())
-    return JsonResponse(hoteles, safe=False)
+    categoria = request.GET.get('categoria')
+    en_oferta = request.GET.get('en_oferta')
+    search_term = request.GET.get('search')
+
+    # Construir el filtro dinámicamente
+    filtros = {}
+    if categoria:
+        filtros['categoria'] = categoria
+    if en_oferta:
+        filtros['en_oferta'] = True
+
+    # Filtrar por término de búsqueda
+    if search_term:
+        hoteles = Hotel.objects.filter(
+            Q(nombre__icontains=search_term) |  # Buscar por nombre (ignorando mayúsculas y minúsculas)
+            Q(descripcion_breve__icontains=search_term) |  # Buscar por descripción breve
+            Q(descripcion_detallada__icontains=search_term) |  # Buscar por descripción detallada
+            Q(categoria__icontains=search_term) |  # Buscar por categoría (ignorando mayúsculas y minúsculas)
+            Q(ubicacion__icontains=search_term)  # Buscar por ubicación (ignorando mayúsculas y minúsculas)
+        ).filter(**filtros) if filtros else Hotel.objects.filter(
+            Q(nombre__icontains=search_term) |
+            Q(descripcion_breve__icontains=search_term) |
+            Q(descripcion_detallada__icontains=search_term) |
+            Q(categoria__icontains=search_term) |
+            Q(ubicacion__icontains=search_term)
+        )
+    else:
+        hoteles = Hotel.objects.filter(**filtros) if filtros else Hotel.objects.all()
+
+    data = [{
+        'id': hotel.id,
+        'nombre': hotel.nombre,
+        'descripcion_breve': hotel.descripcion_breve,
+        'descripcion_detallada': hotel.descripcion_detallada,
+        'precio': hotel.precio,
+        'precio_con_descuento': hotel.precio_con_descuento(),  # Llamar al método para obtener el precio con descuento
+        'foto': hotel.foto.url if hotel.foto else '',  # Asegúrate de que la URL de la imagen es correcta
+        'en_oferta': hotel.en_oferta,
+        'porcentaje_descuento': hotel.porcentaje_descuento,
+        'categoria': hotel.categoria,
+        'wifi_gratuito': hotel.wifi_gratuito,
+        'desayuno_incluido': hotel.desayuno_incluido,
+        'gimnasio': hotel.gimnasio,
+        'piscina': hotel.piscina,
+        'spa': hotel.spa,
+        'restaurante': hotel.restaurante,
+        'servicio_transporte': hotel.servicio_transporte,
+        'servicios_eventos': hotel.servicios_eventos,
+        'servicio_conserjeria': hotel.servicio_conserjeria,
+        'ubicacion': hotel.ubicacion
+    } for hotel in hoteles]
+
+    return JsonResponse(data, safe=False)
 
 def index(request):
     return render(request, 'index.html')
@@ -78,7 +133,17 @@ def hotel_detalle_api(request, hotel_id):
         'descripcion_detallada': hotel.descripcion_detallada,
         'foto': hotel.foto.url,
         'habitaciones': habitaciones_data,
-        'porcentaje_descuento': hotel.porcentaje_descuento
+        'porcentaje_descuento': hotel.porcentaje_descuento,
+        'ubicacion': hotel.ubicacion,
+        'wifi': hotel.wifi_gratuito,
+        'desayuno': hotel.desayuno_incluido,
+        'gimnasio': hotel.gimnasio,
+        'piscina': hotel.piscina,
+        'spa': hotel.spa,
+        'restaurante': hotel.restaurante,
+        'transporte': hotel.servicio_transporte,
+        'eventos': hotel.servicios_eventos,
+        'conserjeria': hotel.servicio_conserjeria,
     }
     return JsonResponse(hotel_data)
 
@@ -138,7 +203,9 @@ def reservar_habitacion(request):
             Reserva.objects.create(
                 usuario=request.user,
                 hotel=hotel,
-                habitacion=habitacion
+                habitacion=habitacion,
+                fecha_ingreso=data.get('fecha_inicio'),
+                fecha_salida=data.get('fecha_salida'),
             )
             return JsonResponse({'success': 'Reserva realizada con éxito'})
         else:
@@ -340,6 +407,7 @@ def obtener_informacion_perfil(request):
         'date_joined': user.date_joined.strftime('%Y-%m-%d %H:%M:%S'),
         'email': user.email,
         'puntos': user.puntos,
+        'lista_cupones': json.loads(user.lista_cupones) if user.lista_cupones else {},
         'hoteles_vistos': user.hoteles_vistos_ids,
     }
     return JsonResponse(data)
@@ -357,11 +425,95 @@ def obtener_informacion_perfil_reservas(request):
             'hotel_descripcion_breve': reserva.hotel.descripcion_breve,
             'hotel_foto': reserva.hotel.foto.url,
             'fecha_reserva': reserva.fecha_reserva,
+            'fecha_inicio': reserva.fecha_ingreso,
+            'fecha_salida': reserva.fecha_salida,
             'valorar_url': reverse('valorar_reserva', args=[reserva.id]),
+            'ver_reserva_url': reverse('ver_reserva', args=[reserva.id]),
+            'checkout': reserva.checkout
         })
     valoraciones_data = list(valoraciones.values('reserva_id'))
     
     return JsonResponse({'reservas': reservas_data, 'valoraciones': valoraciones_data})
+
+from django.utils import timezone
+
+@login_required
+def ver_reserva(request, reserva_id):
+    reserva = get_object_or_404(Reserva, id=reserva_id, usuario=request.user)
+    ahora = timezone.now()
+    fecha_ingreso = timezone.make_aware(reserva.fecha_ingreso) if timezone.is_naive(reserva.fecha_ingreso) else reserva.fecha_ingreso
+    fecha_salida = timezone.make_aware(reserva.fecha_salida) if reserva.fecha_salida and timezone.is_naive(reserva.fecha_salida) else ahora
+    dias_reserva = (fecha_salida - fecha_ingreso).days + 1
+
+    precio_total = reserva.hotel.precio * dias_reserva
+    if reserva.hotel.porcentaje_descuento:
+        descuento = precio_total * (reserva.hotel.porcentaje_descuento / 100)
+    else:
+        descuento = 0
+    precio_total_con_descuento = precio_total - descuento
+
+    # Manejar el cupón seleccionado
+    cupon_codigo = request.POST.get('cupon_codigo')
+    cupon_descuento = 0
+    if cupon_codigo:
+        lista_cupones = json.loads(request.user.lista_cupones) if request.user.lista_cupones else {}
+        cupon_info = lista_cupones.get(cupon_codigo)
+        if cupon_info and cupon_info["count"] > 0:
+            cupon_descuento = precio_total_con_descuento * (cupon_info["descuento"] / 100)
+            # Actualizar la cantidad de cupones
+            lista_cupones[cupon_codigo]["count"] -= 1
+            request.user.lista_cupones = json.dumps(lista_cupones)
+            request.user.save()
+
+    precio_final = precio_total_con_descuento - cupon_descuento
+
+    return render(request, 'ver_reserva.html', {
+        'reserva': reserva,
+        'precio_total': round(precio_total_con_descuento, 2),
+        'precio_final': round(precio_final, 2),
+        'cupon_descuento': round(cupon_descuento, 2),
+        'cupones': [
+            {
+                "codigo": codigo,
+                "descuento": detalles["descuento"],
+                "count": detalles["count"],
+            }
+            for codigo, detalles in json.loads(request.user.lista_cupones).items()
+        ] if request.user.lista_cupones else []
+    })
+
+def actualizar_descuento(request):
+    if request.method == 'POST':
+        usuario = request.user
+        descuento = request.POST.get('descuento')
+        if descuento is not None:
+            usuario.descuento = descuento
+            usuario.save()
+            return JsonResponse({'status': 'success', 'descuento': descuento})
+        return JsonResponse({'status': 'error', 'message': 'Descuento no proporcionado'})
+    return JsonResponse({'status': 'error', 'message': 'Método no permitido'})
+
+@login_required
+def desglose_precio(request, reserva_id):
+    reserva = get_object_or_404(Reserva, id=reserva_id, usuario=request.user)
+    ahora = timezone.now()
+    fecha_ingreso = timezone.make_aware(reserva.fecha_ingreso) if timezone.is_naive(reserva.fecha_ingreso) else reserva.fecha_ingreso
+    fecha_salida = timezone.make_aware(reserva.fecha_salida) if reserva.fecha_salida and timezone.is_naive(reserva.fecha_salida) else ahora
+    dias_reserva = (fecha_salida - fecha_ingreso).days + 1
+
+    precio_por_noche = reserva.hotel.precio
+    subtotal = precio_por_noche * dias_reserva
+    descuento = reserva.usuario.descuento or 0
+    total = subtotal * (1 - (descuento / 100))
+
+    data = {
+        'precio_por_noche': round(precio_por_noche, 2),
+        'total_noches': dias_reserva,
+        'subtotal': round(subtotal, 2),
+        'descuento': descuento,
+        'total': round(total, 2),
+    }
+    return JsonResponse(data)
 
 @login_required
 def enviar_valoracion_y_tarjeta(request):
@@ -456,17 +608,33 @@ def crear_tarjetas(request):
 @login_required
 def canjear_puntos(request):
     if request.method == 'POST':
-        puntos_requeridos = int(request.POST.get('puntos_requeridos', 0))
-        usuario = request.user  # Obtener el perfil del usuario actual
+        puntos_requeridos = int(request.POST.get('puntos_requeridos'))
+        descuento = int(request.POST.get('descuento'))
+        usuario = request.user
+
         if usuario.puntos >= puntos_requeridos:
-            # Realizar el canje de puntos
             usuario.puntos -= puntos_requeridos
+
+            if usuario.lista_cupones:
+                lista_cupones = json.loads(usuario.lista_cupones)
+            else:
+                lista_cupones = {}
+
+            cupon_key = f"{puntos_requeridos}_{descuento}"
+            if cupon_key in lista_cupones:
+                lista_cupones[cupon_key]['count'] += 1
+            else:
+                lista_cupones[cupon_key] = {'count': 1, 'descuento': descuento}
+
+            usuario.lista_cupones = json.dumps(lista_cupones)
             usuario.save()
-            return JsonResponse({'mensaje': 'Puntos canjeados con éxito'})
+            return JsonResponse({'status': 'success'})
         else:
-            return JsonResponse({'error': 'No tienes suficientes puntos para realizar este canje'}, status=400)
-    else:
-        return JsonResponse({'error': 'Método no permitido'}, status=405)
+            return JsonResponse({'status': 'error', 'message': 'No tienes suficientes puntos para realizar este canje.'}, status=400)
+
+    return JsonResponse({'status': 'error', 'message': 'Método no permitido.'}, status=405)
+
+
 
 class ValidarCodigoView(View):
     def post(self, request, *args, **kwargs):
@@ -519,12 +687,14 @@ def hoteles_api(request):
     categoria = request.GET.get('categoria')
     en_oferta = request.GET.get('en_oferta')
 
+    print('holaaazaaaaaaaaaa')
+    filtros = {}
     if categoria:
-        hoteles = Hotel.objects.filter(categoria=categoria)
-    elif en_oferta:
-        hoteles = Hotel.objects.filter(en_oferta=True)
-    else:
-        hoteles = Hotel.objects.all()
+        filtros['categoria'] = categoria
+    if en_oferta:
+        filtros['en_oferta'] = en_oferta.lower() == 'true'
+
+    hoteles = Hotel.objects.filter(**filtros)
 
     data = [{
         'id': hotel.id,
@@ -532,7 +702,6 @@ def hoteles_api(request):
         'descripcion_breve': hotel.descripcion_breve,
         'descripcion_detallada': hotel.descripcion_detallada,
         'precio': hotel.precio,
-        'precio_con_descuento': hotel.precio_con_descuento(),
         'foto': hotel.foto.url,
         'en_oferta': hotel.en_oferta,
         'porcentaje_descuento': hotel.porcentaje_descuento,
@@ -540,3 +709,104 @@ def hoteles_api(request):
     } for hotel in hoteles]
 
     return JsonResponse(data, safe=False)
+
+#API para obtener clima
+def obtener_clima(request, hotel_id):
+    hotel = get_object_or_404(Hotel, id=hotel_id)
+    api_key = 'a821304f76c0eb391f25f7727ee562b7'  # Reemplaza con tu API key de OpenWeatherMap
+    url = f"http://api.openweathermap.org/data/2.5/weather?q={hotel.ubicacion}&appid={api_key}&units=metric&lang=es"
+
+    response = requests.get(url)
+    data = response.json()
+    
+    if response.status_code == 200:
+        clima = {
+            'temperatura': data['main']['temp'],
+            'descripcion': data['weather'][0]['description'],
+            'icono': data['weather'][0]['icon'],
+        }
+        return JsonResponse(clima)
+    else:
+        return JsonResponse({'error': 'No se pudo obtener el clima'}, status=500)
+    
+
+#Pago
+def convertir_fecha(fecha_str):
+    try:
+        locale.setlocale(locale.LC_TIME, 'es_ES.UTF-8')
+        # Remover "de" para facilitar el parseo y capitalizar el mes
+        fecha_str = fecha_str.replace(' de ', ' ').capitalize()
+
+        # Parsear la fecha utilizando el nuevo formato
+        fecha_datetime = datetime.strptime(fecha_str, "%d %B %Y %H:%M")
+        
+        # Formatear la fecha en el formato deseado YYYY-MM-DD HH:MM:SS
+        fecha_formato = fecha_datetime.strftime("%Y-%m-%d %H:%M:%S")
+        
+        return fecha_formato
+    
+    except Exception as e:
+        print(f"Error al convertir fecha: {e}")
+        return None
+
+def checkout_view(request):
+    total_amount = request.GET.get('amount')
+    hotel_name = request.GET.get('hotel')
+    fecha_reserva = request.GET.get('fecha_reserva')
+    fecha_ingreso = request.GET.get('fecha_ingreso')
+    fecha_salida_raw = request.GET.get('fecha_salida')
+    room_number = request.GET.get('room')
+    cupon = request.GET.get('cupon')
+
+    fecha_reserva = fecha_reserva.replace("Fecha de Reserva: ", "").strip()
+    fecha_ingreso = fecha_ingreso.replace("Fecha de Ingreso: ", "").strip()
+    room_number = room_number.replace("Habitación: ", "").strip()
+
+    try:
+        # Convertir fecha_salida_raw al formato deseado
+        fecha_salida = convertir_fecha(fecha_salida_raw)
+
+        if not fecha_salida:
+            raise ValueError("No se pudo convertir la fecha de salida")
+        user = request.user
+
+        hotel = get_object_or_404(Hotel, nombre=hotel_name)
+        habitacion = get_object_or_404(Habitacion, numero=room_number, hotel=hotel)
+
+        reserva = get_object_or_404(Reserva, usuario=user, hotel=hotel, habitacion=habitacion)
+        reserva.fecha_salida = fecha_salida
+        reserva.save()
+        reserva.checkout = True
+        reserva.save()
+        if cupon and user.lista_cupones:
+            cupones = json.loads(user.lista_cupones)
+            if cupon in cupones:
+                cupones[cupon]['count'] -= 1
+                if cupones[cupon]['count'] == 0:
+                    del cupones[cupon]
+                user.lista_cupones = json.dumps(cupones)
+                user.save()
+        return redirect(reverse('qr_code_url') + f'?amount={total_amount}&hotel={hotel_name}&fecha_reserva={fecha_reserva}&fecha_ingreso={fecha_ingreso}&fecha_salida={fecha_salida_raw}&room={room_number}')
+
+    except Exception as e:
+        print(f"Error en la vista checkout_view: {e}")
+        return HttpResponseServerError("Ha ocurrido un error al procesar la solicitud. Por favor, inténtalo de nuevo más tarde.")
+    
+def qr_code_view(request):
+    total_amount = request.GET.get('amount')
+    hotel_name = request.GET.get('hotel')
+    fecha_reserva = request.GET.get('fecha_reserva')
+    fecha_ingreso = request.GET.get('fecha_ingreso')
+    fecha_salida = request.GET.get('fecha_salida')
+    room_number = request.GET.get('room')
+    
+    context = {
+        'total_amount': total_amount,
+        'hotel_name': hotel_name,
+        'fecha_reserva': fecha_reserva,
+        'fecha_ingreso': fecha_ingreso,
+        'fecha_salida': fecha_salida,
+        'room_number': room_number,
+    }
+    return render(request, 'qr_code_template.html', context)
+

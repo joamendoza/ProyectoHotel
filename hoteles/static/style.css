@@ -346,3 +346,10 @@ main {
     text-align: center;
     margin-top: auto;
 }
+
+#hoteles-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 15px; /* Espacio alrededor del contenedor */
+}

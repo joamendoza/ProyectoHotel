@@ -13,6 +13,7 @@
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
+    <link rel="icon" type="image/x-icon" href="{% static 'images/icons/favicon.ico' %}">
     <!-- importación style.css -->
     <link rel="stylesheet" href="{% static 'style.css' %}" />
 </head>
@@ -40,7 +41,7 @@
     <nav class="navbar navbar-expand-md flex-column" id="navbarPrincipal">
         <!-- barra de busqueda -->
         <div class="search-bar" id="barraBusquedaNavbar">
-            <input class="form-control mr-sm-2 search-input" type="search" placeholder="Buscar" aria-label="Buscar">
+            <input class="form-control mr-sm-2 search-input" type="search" placeholder="Buscar" id="busquedaHoteles" aria-label="Buscar">
         </div>
         <div class="container-fluid">
             <!-- logo de la página -->
@@ -270,9 +271,9 @@
         <!-- ### FIN MODAL INICIAR SESIÓN ###-->
 
         <!-- ### INICIO CONTAINER CARTAS DE HOTELES DINAMICAS ### -->
-        <div class="container mt-5 d-flex justify-content-center align-items-center">
-            <div class="row" id="hoteles-container"> <!-- Para agregar hoteles, hacerlo en "hoteles.js"-->
-                <div class="col-md-12">
+        <div class="container mt-5">
+            <div class="row row-cols-1 row-cols-md-3 g-4" id="hoteles-container">
+              <!-- Las tarjetas se agregarán aquí -->
             </div>
         </div>
         <!-- ### FIN CONTAINER CARTAS DE HOTELES DINAMICAS ### -->

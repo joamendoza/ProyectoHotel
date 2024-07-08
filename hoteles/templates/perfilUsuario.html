@@ -13,6 +13,7 @@
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
+    <link rel="icon" type="image/x-icon" href="{% static 'images/icons/favicon.ico' %}">
     <!-- importación style.css -->
     <link rel="stylesheet" href="{% static '/style2.css' %}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -444,11 +445,11 @@
                     document.getElementById("div3Content").innerHTML = `
                         <p>Información de perfil</p>
                         <p id="div3ContentLabel"><img src="{% static '/images/icons/perfil/usuario.png' %}" style="width: 15px; margin-bottom: 5px;"> Nombre de Usuario:</p>
-                        <p id="div3ContentData">${data.username}</p>
+                        <p id="div3ContentData" style="padding-top: 1%">${data.username}</p>
                         <p id="div3ContentLabel"><img src="{% static '/images/icons/perfil/fecha.png' %}" style="width: 15px; margin-bottom: 5px;"> Fecha de Creación:</p>
-                        <p id="div3ContentData">${formattedDate}</p>
+                        <p id="div3ContentData" style="padding-top: 1%">${formattedDate}</p>
                         <p id="div3ContentLabel"><img src="{% static '/images/icons/perfil/email.png' %}" style="width: 15px; margin-bottom: 5px;"> Email:</p>
-                        <p id="div3ContentData">${data.email}</p>
+                        <p id="div3ContentData" style="padding-top: 1%">${data.email}</p>
                     `;
                     document.getElementById("div3Content").style.display = "block";
                 })
@@ -471,28 +472,28 @@
                         <p>Tienes ${data.puntos} puntos disponibles.</p>
                         <ul id="opcionesLista">
                             <li>
-                                <span class="opcionPuntos" data-puntos="100">
+                                <span class="opcionPuntos" data-puntos="100" data-descuento="10">
                                     <img src="{% static '/images/icons/puntos/10descuento (1).png' %}">
                                     100 pts
                                 </span>
                                 <button type="button" class="canjearCuponBtn">Canjear</button>
                             </li>
                             <li>
-                                <span class="opcionPuntos" data-puntos="150">
+                                <span class="opcionPuntos" data-puntos="150" data-descuento="20">
                                     <img src="{% static '/images/icons/puntos/20descuento (1).png' %}">
                                     150 pts
                                 </span>
                                 <button type="button" class="canjearCuponBtn">Canjear</button>
                             </li>
                             <li>
-                                <span class="opcionPuntos" data-puntos="700">
+                                <span class="opcionPuntos" data-puntos="700" data-descuento="60">
                                     <img src="{% static '/images/icons/puntos/60descuento (1).png' %}">
                                     700 pts
                                 </span>
                                 <button type="button" class="canjearCuponBtn">Canjear</button>
                             </li>
                             <li>
-                                <span class="opcionPuntos" data-puntos="1000">
+                                <span class="opcionPuntos" data-puntos="1000" data-descuento="70">
                                     <img src="{% static '/images/icons/puntos/70descuento (1).png' %}">
                                     1000 pts
                                 </span>
@@ -504,20 +505,23 @@
                         <button id="canjearPuntosBtn">Canjear</button>
                     `;
                     document.getElementById("div3Content").style.display = "block";
+                    
+                    // Add event listener for the buttons to redeem coupons
                     const botonesCanje = document.querySelectorAll('.canjearCuponBtn');
                     botonesCanje.forEach(boton => {
                         boton.addEventListener('click', function() {
                             const puntosRequeridos = parseInt(this.parentNode.querySelector('.opcionPuntos').getAttribute('data-puntos'));
+                            const descuento = parseInt(this.parentNode.querySelector('.opcionPuntos').getAttribute('data-descuento'));
                             fetch("{% url 'canjear_puntos' %}", {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/x-www-form-urlencoded',
                                 },
-                                body: `puntos_requeridos=${puntosRequeridos}`
+                                body: `puntos_requeridos=${puntosRequeridos}&descuento=${descuento}`
                             })
                             .then(response => {
                                 if (response.ok) {
-                                    alert(`Puntos canjeados correctamente!`);
+                                    alert('¡Puntos canjeados correctamente!');
                                     window.location.reload();
                                 } else {
                                     alert('No tienes suficientes puntos para realizar este canje.');
@@ -526,6 +530,8 @@
                             .catch(error => console.error('Error:', error));
                         });
                     });
+            
+                    // Add event listener for the redeem points button
                     document.getElementById("canjearPuntosBtn").addEventListener('click', function(event) {
                         event.preventDefault();
                         const codigoIngresado = document.getElementById("codigoPuntos").value.trim();
@@ -533,6 +539,7 @@
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/x-www-form-urlencoded',
+                                
                             },
                             body: `codigo=${codigoIngresado}`
                         })
@@ -542,12 +549,13 @@
                                     method: 'POST',
                                     headers: {
                                         'Content-Type': 'application/x-www-form-urlencoded',
+                                        
                                     },
                                     body: `codigo=${codigoIngresado}`
                                 })
                                 .then(response => {
                                     if (response.ok) {
-                                        alert(`Puntos canjeados correctamente para el código ${codigoIngresado}!`);
+                                        alert(`¡Puntos canjeados correctamente para el código ${codigoIngresado}!`);
                                         window.location.reload();
                                     } else {
                                         alert('Error al agregar puntos.');
@@ -681,6 +689,7 @@
                 event.preventDefault();
                 fetchReservasYValoraciones();
             });
+            
             function fetchReservasYValoraciones() {
                 fetch("{% url 'obtener_informacion_perfil_reservas' %}", {
                     method: 'GET',
@@ -691,6 +700,9 @@
                 .then(response => response.json())
                 .then(data => {
                     const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
+                    // Sort the reservations data by fecha_reserva in descending order
+                    data.reservas.sort((a, b) => new Date(b.fecha_reserva) - new Date(a.fecha_reserva));
+            
                     document.getElementById("div3Content").innerHTML = 
                         `<p>Reservas realizadas</p>
                         <div id="reservasList">
@@ -704,8 +716,9 @@
                                             <div class="card-body">
                                                 <h5 class="card-title">${reserva.hotel_nombre}</h5>
                                                 <p class="card-text">${reserva.hotel_descripcion_breve}</p>
-                                                <p class="card-text">Fuiste el día: ${new Date(reserva.fecha_reserva).toLocaleDateString('es-ES', options)}</p>
+                                                <p class="card-text">Reserva creada: ${new Date(reserva.fecha_reserva).toLocaleDateString('es-ES', options)}</p>
                                                 ${renderizarBotonValorar(reserva, data.valoraciones)}
+                                                ${renderizarBotonVerReserva(reserva)}
                                             </div>
                                         </div>
                                     </div>
@@ -720,17 +733,63 @@
                             openModal(valorarUrl, reservaId);
                         });
                     });
+            
+                    document.querySelectorAll('.ver-reserva-btn').forEach(button => {
+                        button.addEventListener('click', (e) => {
+                            const verReservaUrl = e.target.getAttribute('data-ver-reserva-url');
+                            window.location.href = verReservaUrl;
+                        });
+                    });
                 })
                 .catch(error => console.error('Error:', error));
             }
+            
             function renderizarBotonValorar(reserva, valoraciones) {
+                console.log('Reserva:', reserva);
+                console.log('Checkout value:', reserva.checkout);
+            
                 const valorada = valoraciones.some(valoracion => valoracion.reserva_id === reserva.id);
-                if (valorada) {
-                    return '<button class="btn btn-secondary" disabled>Reserva Valorada</button>';
-                } else {
+                console.log('Valorada:', valorada);
+            
+                if (reserva.checkout) {
+                    console.log('Checkout is true for reserva:', reserva.id);
+            
+                    if (valorada) {
+                        console.log('Reservation already valued:', reserva.id);
+                        return '<button class="btn btn-secondary" disabled>Reserva Valorada</button>';
+                    }
+            
+                    console.log('Rendering Valorar Reserva button for reserva:', reserva.id);
                     return `<button class="btn btn-primary valorar-reserva-btn" data-valorar-url="${reserva.valorar_url}" data-reserva-id="${reserva.id}" data-bs-toggle="modal" data-bs-target="#valoracionModal">Valorar Reserva</button>`;
+                } else {
+                    console.log('Checkout is false for reserva:', reserva.id);
+                    return '';
                 }
             }
+            
+            function renderizarBotonVerReserva(reserva) {
+                const ahora = new Date();
+                const fechaInicio = new Date(reserva.fecha_inicio);
+                const fechaSalida = reserva.fecha_salida ? new Date(reserva.fecha_salida) : null;
+
+                const ahoraUTC = new Date(ahora.toISOString().slice(0, 19) + 'Z');
+                const fechaInicioUTC = new Date(fechaInicio.toISOString().slice(0, 19) + 'Z');
+                const fechaSalidaUTC = fechaSalida ? new Date(fechaSalida.toISOString().slice(0, 19) + 'Z') : null;
+            
+                if (reserva.checkout) {
+                    console.log('Checkout is true, button will not be rendered.');
+                    return '';
+                }
+            
+                if (ahoraUTC >= fechaInicioUTC && (!fechaSalidaUTC || ahoraUTC <= fechaSalidaUTC)) {
+                    console.log('Button will be rendered.');
+                    return `<button class="btn btn-info ver-reserva-btn mt-2" data-ver-reserva-url="${reserva.ver_reserva_url}">Ver Reserva</button>`;
+                }
+            
+                console.log('Button will not be rendered.');
+                return '';
+            }
+            
             function openModal(valorarUrl, reservaId) {
                 const form = document.getElementById("valoracionForm");
                 if (form) {
@@ -767,11 +826,11 @@
                     console.error('El elemento "valoracionForm" no se encontró en el DOM.');
                 }
             }
+            
             function enviarCorreo() {
                 fetch('{% url "enviar_valoracion_y_tarjeta" %}', {
                     method: 'POST',
-                    headers: {
-                    }
+                    headers: {}
                 })
                 .then(response => response.json())
                 .then(data => {
@@ -785,6 +844,7 @@
                     console.error('Error al enviar el correo:', error);
                 });
             }
+            
             function disableButton(reservaId) {
                 const button = document.querySelector(`.valorar-reserva-btn[data-reserva-id="${reservaId}"]`);
                 if (button) {

@@ -25,7 +25,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('set_language/', set_language, name='set_language'),
     path('', index, name='index'),
-    path('api/hoteles/', views.get_hoteles, name='get_hoteles'),
+    path('api/hoteles/', get_hoteles, name='get_hoteles'),
     path('index/', index),
     path('informacion-hotels/', infoHoteles),
     path('informacion-hotel/<int:hotel_id>/', infoHotelesID, name='info_hoteles'),
@@ -39,6 +39,12 @@ urlpatterns = [
     path('habitaciones/eliminar/<int:pk>/', eliminar_habitacion, name='eliminar_habitacion'),
 
     path('reporte-reservas/', reporte_reservas, name='reporte_reservas'),
+    path('ver_reserva/<int:reserva_id>/', ver_reserva, name='ver_reserva'),
+    path('desglose_precio/<int:reserva_id>/', desglose_precio, name='desglose_precio'),
+    path('actualizarDescuento/', actualizar_descuento, name='actualizar_descuento'),
+
+    path('checkout/', checkout_view, name='checkout_url'),
+    path('qr-code/', qr_code_view, name='qr_code_url'),
 
     path('perfil/',perfilUsuario, name='perfil'),
     path('registrarUsuario/', registrar_usuario, name='registrar_usuario'),
@@ -59,6 +65,8 @@ urlpatterns = [
     path('agregar_puntos/', AgregarPuntosView.as_view(), name='agregar_puntos'),
     path('cambiar-contraseña/', change_password, name='change_password'),
     path('enviar_correo_ayuda/', enviar_correo_ayuda, name='enviar_correo_ayuda'),
+
+    path('clima/<int:hotel_id>/', obtener_clima, name='obtener_clima'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:

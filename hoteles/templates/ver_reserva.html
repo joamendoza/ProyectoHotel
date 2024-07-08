@@ -1,0 +1,608 @@
+{% load static i18n %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- titulo pagina-->
+    <title>{% trans "Hoteles" %}</title>
+    <!-- importación bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link rel="icon" type="image/x-icon" href="{% static 'images/icons/favicon.ico' %}">
+    <!-- importación style.css -->
+    <link rel="stylesheet" href="{% static 'style.css' %}" />
+</head>
+
+<body>
+    {% if messages %}
+        <div aria-live="polite" aria-atomic="true" class="position-relative">
+            <div class="toast-container position-fixed p-3" style="bottom: 20px; right: 20px; z-index: 1050;">
+                {% for message in messages %}
+                    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="2000">
+                        <div class="toast-header">
+                            <strong class="me-auto">{% trans "Mensaje" %}</strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                        <div class="toast-body">
+                            {{ message }}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
+    <!-- ### INICIO NAVBAR PRINCIPAL ### -->
+    <nav class="navbar navbar-expand-md flex-column" id="navbarPrincipal">
+        <!-- barra de busqueda -->
+        <div class="search-bar" id="barraBusquedaNavbar">
+            <input class="form-control mr-sm-2 search-input" type="search" placeholder="Buscar" aria-label="Buscar">
+        </div>
+        <div class="container-fluid">
+            <!-- logo de la página -->
+            <a class="navbar-brand" href="/index/" id="logoPagina">
+                <img src="{% static 'images/icons/veranium.png' %}" alt="Logo página" />
+            </a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-md-0" id="tamañoTextoNav">
+                    <li class="nav-item">
+                        <a class="nav-link d-flex align-items-center" href="#" data-filtro="ofertas" id="textoOfertas">
+                            <img src="{% static 'images/icons/ofertasUnfocus.png' %}" class="img-fluid" alt="Ofertas" id="iconoOfertas">
+                            {% trans "Ofertas" %}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link d-flex align-items-center" href="#" data-filtro="todos" id="textoTodos">
+                            <img src="{% static 'images/icons/todosUnfocus.png' %}" class="img-fluid" alt="Todos" id="iconoTodos">
+                            {% trans "Todos" %}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link d-flex align-items-center" href="#" data-filtro="frente_al_mar" id="textoFrenteAlMar">
+                            <img src="{% static 'images/icons/frente-al-marUnfocus.png' %}" class="img-fluid" alt="Frente al Mar" id="iconoFrenteAlMar">
+                            {% trans "Frente al Mar" %}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link d-flex align-items-center" href="#" data-filtro="cabanas" id="textoCabañas">
+                            <img src="{% static 'images/icons/cabañasUnfocus.png' %}" class="img-fluid" alt="Cabañas" id="iconoCabañas">
+                            {% trans "Cabañas" %}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="dropdown d-md-none" id="navbarDropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="navbarDropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                    {% trans "Menú" %}
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuButton" id="navbarDropdownMenuButton">
+                <!-- Los elementos del navbar se moverán aquí en pantallas pequeñas -->
+                </ul>
+            </div>
+            <!-- menú usuario -->
+            <div class="nav-item" id="menuUsuario">
+                <div class="dropdown" id="dropdownMenuUsuario">
+                    <a class="navbar-brand dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="botonMenuUsuario">
+                        <img src="{% static 'images/icons/menuUsuarioUnfocus.png' %}" alt="Menú Usuario" width="100"/>
+                    </a>
+                    <ul class="dropdown-menu custom-dropdown" aria-labelledby="menuUsuario">
+                        {% if user.is_authenticated %}
+                            <li><a class="dropdown-item" href="{% url 'perfil' %}">{% trans "Perfil" %}</a></li>
+                            {% if user.is_superuser %}
+                                <li><a class="dropdown-item" href="{% url 'reporte_reservas' %}">{% trans "Generar reporte" %}</a></li>
+                                <li><a class="dropdown-item" href="{% url 'crear_tarjetas' %}">{% trans "Crear cupones" %}</a></li>
+                                <li><a class="dropdown-item" href="{% url 'lista_habitaciones' %}">{% trans "Generar habitaciones" %}</a></li>
+                            {% endif %}
+                            <li><a class="dropdown-item" href="{% url 'logout' %}" id="cerrarSesion">{% trans "Cerrar sesión" %}</a></li>
+                        {% else %}
+                            <li><a class="dropdown-item" href="#" id="registrate">{% trans "Regístrate" %}</a></li>
+                            <li><a class="dropdown-item" href="#" id="iniciarSesion">{% trans "Iniciar sesión" %}</a></li>
+                        {% endif %}
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#">{% trans "Centro de ayuda" %}</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- ### FIN NAVBAR PRINCIPAL ### -->
+    
+    <!-- ### INICIO MODAL DE REGISTRO ### -->
+    <main>
+        <div class="modal fade" id="modalRegistro" tabindex="-1" aria-labelledby="modalRegistroLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <!-- Titulo del formulario de registro -->
+                    <div class="modal-header flex-column align-items-center">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <img class="img-fluid" src="{% static 'images/icons/iconoUsuario.png' %}" alt="Icono usuario" id="iconoUsuario">
+                        <h5 class="modal-title" id="modalRegistroLabel">{% trans "Regístrate" %}</h5>
+                    </div>
+                    <!-- Contenido del formulario de registro -->
+                    <div class="modal-body">
+                        <form id="registroForm" action="/registrarUsuario/" method="post">
+                            <div class="mb-3">
+                                <input 
+                                type="text" 
+                                class="form-control" 
+                                id="registroNombreUsuario"
+                                name="nombreUsuario"
+                                placeholder="{% trans 'Nombre de usuario' %}"
+                                required
+                                >
+                            </div>
+                            <div class="mb-3">
+                                <input 
+                                type="email" 
+                                class="form-control" 
+                                id="registroEmail"
+                                name="email"
+                                placeholder="{% trans 'Correo electrónico' %}"
+                                required
+                                >
+                            </div>
+                            <div class="mb-3">
+                                <input 
+                                type="password" 
+                                class="form-control" 
+                                id="registroContraseña"
+                                name="password"
+                                placeholder="{% trans 'Contraseña' %}"
+                                required
+                                >
+                            </div>
+                            <div class="mb-3">
+                                <input 
+                                type="password" 
+                                class="form-control" 
+                                id="registroConfirmarContraseña"
+                                name="confirmarContraseña"
+                                placeholder="{% trans 'Confirmar contraseña' %}"
+                                required
+                                >
+                            </div>
+                            <div id="errorMensaje" style="display: none;">Las contraseñas no coinciden.</div>
+                            <div class="form-check mb-3" id="chkMayorEdad">
+                                <input class="form-check-input" type="checkbox" id="mayorEdad" required>
+                                <label class="form-check-label" for="mayorEdad">
+                                {% trans "Confirmo que soy mayor de 18 años" %}
+                                </label>
+                            </div>
+                            <div class="form-check mb-3" id="chkTerminosYCondiciones">
+                                <input class="form-check-input" type="checkbox" id="terminosCondiciones" required>
+                                <label class="form-check-label" for="terminosCondiciones">
+                                {% trans '"He leído y estoy de acuerdo con los' %}
+                                    <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">
+                                    {% trans 'términos y condiciones"' %}
+                                </a>
+                                </label>
+                            </div>
+                            <div class="mb-3 text-center">
+                                <label class="form-label" id="lblPreguntaIniciarSesion">
+                                {% trans "¿Ya tienes cuenta?" %} 
+                                <a 
+                                    href="#" 
+                                    class="link-primary" 
+                                    data-bs-target="#modalIniciarSesion" 
+                                    data-bs-toggle="modal" 
+                                    >
+                                    {% trans "Inicia sesión aquí" %} 
+                                </a>
+                                </label>
+                            </div>
+                            <button 
+                                type="submit" 
+                                class="btn btn-primary"
+                                id="botonRegistro"
+                                >
+                                {% trans "Crear usuario" %}
+                            </button>
+                        </form>                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ### FIN MODAL DE REGISTRO ### -->
+
+        <!-- ### INICIO MODAL INICIAR SESIÓN ###-->
+        <div class="modal fade" id="modalIniciarSesion" tabindex="-1" aria-labelledby="modalIniciarSesionLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <!-- Titulo del formulario de iniciar sesión -->
+                    <div class="modal-header flex-column align-items-center">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <img class="img-fluid" src="{% static 'images/icons/iconoUsuario.png' %}" alt="Icono usuario" id="iconoUsuario">
+                        <h5 class="modal-title" id="modalIniciarSesionLabel">{% trans "Iniciar sesión" %} </h5>
+                    </div>
+                    <!-- Contenido del formulario de iniciar sesión -->
+                    <div class="modal-body">
+                        <form id="loginForm" action="/login/" method="post">
+                            <div id="errorMensajeLogin"></div>
+                            <div class="mb-3">
+                                <input 
+                                    type="text" 
+                                    class="form-control" 
+                                    id="loginEmail"
+                                    name="loginUsuario"
+                                    placeholder="{% trans 'Usuario' %} "
+                                    required
+                                >
+                            </div>
+                            <div class="mb-3">
+                                <input 
+                                    type="password" 
+                                    class="form-control" 
+                                    id="loginContraseña"
+                                    name="loginPassword"
+                                    placeholder="{% trans 'Contraseña' %} "
+                                    required
+                                >
+                            </div>
+                            <div class="mb-3 text-center">
+                                <label class="form-label" id="lblPreguntaRegistroUsuario">
+                                    {% trans "¿Aún no tienes cuenta?" %}  
+                                    <a 
+                                        href="#" 
+                                        class="link-primary" 
+                                        data-bs-target="#modalRegistro" 
+                                        data-bs-toggle="modal" 
+                                    >
+                                        {% trans "Registrate aqui" %} 
+                                    </a>
+                                </label>
+                            </div>
+                            <button 
+                                type="submit" 
+                                class="btn btn-primary"
+                                id="botonIniciarSesion"
+                            >
+                                {% trans "Iniciar sesión" %} 
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ### FIN MODAL INICIAR SESIÓN ###-->
+
+        <!-- ### INICIO CONTAINER CARTAS DE HOTELES DINAMICAS ### -->
+        <div class="container mt-5">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Detalles de la Reserva</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <img src="{{ reserva.hotel.foto.url }}" class="img-fluid rounded-start" alt="Imagen hotel">
+                        </div>
+                        <div class="col-md-8">
+                            <h5 id="hotelNombre" class="card-title">{{ reserva.hotel.nombre }}</h5>
+                            <p id="hotelFechaR" class="card-text"><strong>Fecha de Reserva:</strong> {{ reserva.fecha_reserva }}</p>
+                            <p id="hotelFechaI" class="card-text"><strong>Fecha de Ingreso:</strong> {{ reserva.fecha_ingreso }}</p>
+                            {% if reserva.fecha_salida %}
+                            <p id="hotelFechaS" class="card-text"><strong>Fecha de Salida:</strong> {{ reserva.fecha_salida }}</p>
+                            {% endif %}
+                            <p id="hotelHabitacion" class="card-text"><strong>Habitación:</strong> {{ reserva.habitacion.numero }}</p>
+                            <p class="card-text">{{ reserva.hotel.descripcion_detallada }}</p>
+                            <p class="card-text">
+                                <strong>Precio Total:</strong> 
+                                <a href="#" id="precioTotal">${{ precio_total }}</a>
+                            </p>
+                            <div class="form-group">
+                                <label for="cuponSelect">{% trans "Seleccionar cupón:" %}</label>
+                                <select class="form-select" id="cuponSelect">
+                                    <option value="">{% trans "Seleccione un cupón" %}</option>
+                                    {% for cupon in cupones %}
+                                        <option value="{{ cupon.id }}" data-descuento="{{ cupon.descuento }}" data-cupon="{{ cupon.codigo }}">
+                                            {{ cupon.codigo }} - {{ cupon.descuento }}%
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <button id="btnCheckout" type="submit" class="btn btn-primary mb-1 mt-3">{% trans "Check-out" %}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="checkoutModal" tabindex="-1" role="dialog" aria-labelledby="checkoutModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="checkoutModalLabel">{% trans "Confirmar Check-out" %}</h5>
+                        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        {% trans "¿Estás seguro de que deseas realizar el check-out? Esta acción no se puede deshacer." %}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Cancelar" %}</button>
+                        <button type="button" class="btn btn-primary" id="confirmCheckout">{% trans "Confirmar" %}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Modal para el desglose del precio -->
+        <div class="modal fade" id="desgloseModal" tabindex="-1" aria-labelledby="desgloseModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="desgloseModalLabel">Desglose del Precio</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="desgloseContent">
+                        <!-- Aquí se llenará con JavaScript -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ### INICIO FOOTER ### -->
+    <footer class="footer">
+        <p>{% trans "Copyright 2024. Todos los derechos reservados. ProyectoHotel." %}<br>
+            <form action="{% url 'set_language' %}" method="post">
+                <label for="language">{% trans "Idioma:" %}</label>
+                <select name="language" onchange="this.form.submit()">
+                    {% get_current_language as LANGUAGE_CODE %}
+                    {% get_available_languages as LANGUAGES %}
+                    {% for lang in LANGUAGES %}
+                    <option value="{{ lang.0 }}"{% if lang.0 == LANGUAGE_CODE %} selected{% endif %}>
+                        {{ lang.1 }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </form>
+        </p>
+    </footer>
+    <!-- ### FIN FOOTER ### -->
+
+    <!-- Agregar a un js aparte! -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var isAuthenticated = "{{ user.is_authenticated }}";
+        
+            if (isAuthenticated === 'True') {
+                document.getElementById('registrate').style.display = 'none';
+                document.getElementById('iniciarSesion').style.display = 'none';
+            }
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#registroForm').submit(function(event) {
+                event.preventDefault();
+                var password = $('#registroContraseña').val();
+                var confirmarContraseña = $('#registroConfirmarContraseña').val();
+                var nombreUsuario = $('#registroNombreUsuario').val();
+                var email = $('#registroEmail').val();
+                var errorMensaje = $('#errorMensaje');
+                if (password !== confirmarContraseña) {
+                    errorMensaje.text('Las contraseñas no coinciden.');
+                    errorMensaje.css('display', 'block');
+                    return;
+                }
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/registrarUsuario/',
+                    data: {
+                        'nombreUsuario': nombreUsuario,
+                        'email': email,
+                        'password': password,
+                        'confirmarContraseña': confirmarContraseña,
+                    },
+                    success: function(data) {
+                        if (data.error) {
+                            errorMensaje.text(data.error);
+                            errorMensaje.css('display', 'block');
+                        } else {
+                            window.location.href = '/perfil/';
+                        }
+                    },
+                    error: function(xhr, textStatus, errorThrown) {
+                        console.error('Error:', errorThrown);
+                        errorMensaje.text('Ocurrió un error al procesar tu solicitud.');
+                        errorMensaje.css('display', 'block');
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            var loginForm = $('#loginForm');
+            var usuarioInput = $('#loginEmail');
+            var passwordInput = $('#loginContraseña');
+            var errorMessage = $('#errorMensajeLogin');
+            var modalIniciarSesion = $('#modalIniciarSesion');
+    
+            function hideErrorMessage() {
+                errorMessage.text('');
+                errorMessage.css('display', 'none');
+            }
+    
+            usuarioInput.on('input', hideErrorMessage);
+            passwordInput.on('input', hideErrorMessage);
+    
+            loginForm.submit(function(event) {
+                event.preventDefault();
+                var usuario = usuarioInput.val();
+                var password = passwordInput.val();
+    
+                $.ajax({
+                    type: 'POST',
+                    url: '/login/',
+                    data: {
+                        'loginUsuario': usuario,
+                        'loginPassword': password
+                    },
+                    success: function(data) {
+                        if (data.error) {
+                            errorMessage.text(data.error);
+                            errorMessage.css('display', 'block');
+                        } else {
+                            window.location.href = '/';
+                        }
+                    },
+                    error: function(xhr, textStatus, errorThrown) {
+                        console.error('Error:', errorThrown);
+                        errorMessage.text('Usuario o contraseña incorrectos.');
+                        errorMessage.css('display', 'block');
+                    }
+                });
+            });
+    
+            modalIniciarSesion.on('hidden.bs.modal', function () {
+                usuarioInput.val('');
+                passwordInput.val('');
+                hideErrorMessage();
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+            var toastList = toastElList.map(function (toastEl) {
+                return new bootstrap.Toast(toastEl)
+            })
+            toastList.forEach(toast => toast.show())
+        });
+    </script>
+    
+    <!-- Agregar a un js aparte! -->
+
+    <!-- importaciones de código -->
+    <script 
+        src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js" 
+        integrity="sha384-oBqDVmMz4fnFO9gybiiCiQRBzE74KAmO8E2yKFcEFP6wLCKkuxnDew+z4tlgd7cC" 
+        crossorigin="anonymous"
+    ></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"
+    ></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            actualizarDescuentoUsuario(0);
+            const cuponSelect = document.getElementById('cuponSelect');
+            const precioTotalElement = document.getElementById('precioTotal');
+            let precioTotal = parseFloat(precioTotalElement.textContent.replace('$', ''));
+            let selectedCupon; // Declarar selectedCupon fuera del evento change
+        
+            cuponSelect.addEventListener('change', function () {
+                selectedCupon = cuponSelect.options[cuponSelect.selectedIndex]; // Asignar selectedCupon en el evento change
+                const descuento = selectedCupon.dataset.descuento ? parseFloat(selectedCupon.getAttribute('data-descuento')) : 0;
+                const nuevoPrecioTotal = precioTotal * (1 - descuento / 100);
+                precioTotalElement.textContent = `$${nuevoPrecioTotal.toFixed(2)}`;
+        
+                if (selectedCupon.getAttribute('data-descuento')) {
+                    console.log(descuento);
+                    actualizarDescuentoUsuario(descuento);
+                } else {
+                    console.log('Descuento: 0');
+                    actualizarDescuentoUsuario(0);
+                }
+            });
+        
+            function actualizarDescuentoUsuario(descuento) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/actualizarDescuento/',
+                    data: {
+                        'descuento': descuento,
+                    },
+                    success: function (response) {
+                        console.log('Descuento actualizado:', response);
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        console.error('Error al actualizar el descuento:', errorThrown);
+                    }
+                });
+            }
+        
+            document.getElementById('confirmCheckout').addEventListener('click', function () {
+                const hotelName = document.getElementById('hotelNombre').textContent;
+                const nuevoPrecioTotal = parseFloat(precioTotalElement.textContent.replace('$', ''));
+                const fechaReserva = document.getElementById('hotelFechaR').textContent;
+                const fechaIngreso = document.getElementById('hotelFechaI').textContent;
+                const fechaSalida = formatDate(new Date());
+                const habitacionNumero = document.getElementById('hotelHabitacion').textContent;
+                
+                // Verificar si hay un cupón seleccionado
+                let cupon = '';
+                if (selectedCupon && selectedCupon.dataset.cupon) {
+                    cupon = selectedCupon.dataset.cupon;
+                }
+        
+                const checkoutUrl = "{% url 'checkout_url' %}";
+                const finalUrl = `${checkoutUrl}?amount=${nuevoPrecioTotal.toFixed(2)}&hotel=${encodeURIComponent(hotelName)}&fecha_reserva=${encodeURIComponent(fechaReserva)}&fecha_ingreso=${encodeURIComponent(fechaIngreso)}&fecha_salida=${encodeURIComponent(fechaSalida)}&room=${encodeURIComponent(habitacionNumero)}&cupon=${encodeURIComponent(cupon)}`;
+        
+                console.log('Final URL:', finalUrl);
+        
+                window.location.href = finalUrl;
+            });
+        
+            function formatDate(date) {
+                const options = {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    hour12: false
+                };
+                return date.toLocaleDateString('es-ES', options).replace(',', ' de');
+            }
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const precioTotal = document.getElementById('precioTotal');
+            const desgloseModal = new bootstrap.Modal(document.getElementById('desgloseModal'));
+        
+            precioTotal.addEventListener('click', (event) => {
+                event.preventDefault();
+                fetchDesglosePrecio();
+            });
+        
+            function fetchDesglosePrecio() {
+                fetch('{% url "desglose_precio" reserva.id %}')
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('desgloseContent').innerHTML = `
+                            <p><strong>Precio por noche:</strong> $${data.precio_por_noche}</p>
+                            <p><strong>Total de noches:</strong> ${data.total_noches}</p>
+                            <p><strong>Subtotal:</strong> $${data.subtotal}</p>
+                            <p><strong>Descuento:</strong> ${data.descuento}%</p>
+                            <p><strong>Total:</strong> $${data.total}</p>
+                        `;
+                        desgloseModal.show();
+                    })
+                    .catch(error => console.error('Error al obtener el desglose del precio:', error));
+            }
+        });
+    </script>
+    <script>
+        document.getElementById('btnCheckout').addEventListener('click', function () {
+            const modal = new bootstrap.Modal(document.getElementById('checkoutModal'));
+            modal.show();
+        });
+    </script>
+    <script src="{% static 'js/scriptGeneral.js' %}"></script>
+    <script src="{% static 'js/hoteles.js' %}"></script>
+</body>
+</html>

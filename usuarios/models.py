@@ -31,10 +31,10 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
     password = models.CharField(max_length=255)
     puntos = models.IntegerField(default=0)
     hoteles_vistos_ids = models.TextField('IDs de hoteles visitados', blank=True)
-    historial_reservas = models.TextField(null=True, blank=True)
-    comentarios_valoraciones = models.TextField(null=True, blank=True)
     roles = models.ManyToManyField('Role', related_name='usuarios', blank=True)
     foto_perfil = models.ImageField(upload_to=user_directory_path, null=True, blank=True)
+    descuento = models.IntegerField(default=0)
+    lista_cupones = models.TextField(null=True, blank=True)
     
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)

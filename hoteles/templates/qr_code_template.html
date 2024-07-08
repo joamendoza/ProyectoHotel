@@ -1,0 +1,66 @@
+{% load static i18n %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <style>
+        /* Estilos para centrar y bordes */
+        .custom-container {
+            margin-top: 50px; /* Ajusta el margen superior según tu preferencia */
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        #qrCodeCanvas {
+            margin: auto; /* Centra el canvas horizontalmente */
+            display: block; /* Asegura que sea un bloque para que el margin: auto funcione */
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid d-flex justify-content-center">
+        <div class="custom-container col-md-6">
+            <h1 class="mb-4 text-center">{% trans "Código QR de pago:" %}</h1>
+            <p class="mb-2"><strong>{% trans "Monto Total:" %}</strong> {{ total_amount }}</p>
+            <p class="mb-2"><strong>{% trans "Hotel:" %}</strong> {{ hotel_name }}</p>
+            <p class="mb-2"><strong>{% trans "Habitación:" %}</strong> {{ room_number }}</p>
+            <p class="mb-2"><strong>{% trans "Fecha de Reserva:" %}</strong> {{ fecha_reserva }}</p>
+            <p class="mb-2"><strong>{% trans "Fecha de Ingreso:" %}</strong> {{ fecha_ingreso }}</p>
+            <p class="mb-4"><strong>{% trans "Fecha de Salida:" %}</strong> {{ fecha_salida }}</p>
+        
+            <!-- Canvas donde se mostrará el código QR -->
+            <canvas id="qrCodeCanvas"></canvas>
+            <p class="text-center">{% trans "Presenta este código QR en la recepción para realizar el pago" %}</p>
+        
+            <!-- Link to return to the index page -->
+            <div class="text-center mt-4">
+                <a href="{% url 'index' %}" class="btn btn-primary">{% trans "Volver al inicio" %}</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts necesarios (jQuery y QRCode.js) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <script>
+        // Datos para generar el código QR
+        const qrData = `Monto Total: {{ total_amount }}, Hotel: {{ hotel_name }}, Habitación: {{ room_number }}, Fecha de Reserva: {{ fecha_reserva }}, Fecha de Ingreso: {{ fecha_ingreso }}, Fecha de Salida: {{ fecha_salida }}`;
+
+        // Generar el código QR y mostrarlo en el canvas
+        QRCode.toCanvas(document.getElementById('qrCodeCanvas'), qrData, function (error) {
+            if (error) {
+                console.error('Error al generar el código QR:', error);
+            } else {
+                console.log('Código QR generado correctamente!');
+            }
+        });
+    </script>
+    <!-- Bootstrap JS y dependencias (opcional para ciertas funcionalidades de Bootstrap) -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+</body>
+</html>

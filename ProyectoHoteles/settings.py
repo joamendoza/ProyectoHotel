@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'hoteles',
     'usuarios',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -160,3 +161,5 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'a.veranium@gmail.com'
 EMAIL_HOST_PASSWORD = 'qyhd nwof voyh qskc'
+
+#Configuracion paypal

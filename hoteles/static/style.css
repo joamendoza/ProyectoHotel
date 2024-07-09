@@ -353,3 +353,96 @@ main {
     justify-content: center;
     padding: 15px; /* Espacio alrededor del contenedor */
 }
+
+/*--- CONFIGURAR TARJETA DE HOTEL ---*/
+#hotel-info .card {
+    width: 100%;
+    max-width: 940px;
+
+}
+
+#hotel-info .card img {
+    width: 50%;
+    height: auto;
+    margin-left: 25%;
+    margin-right: 25%;
+    margin-top: 2%;
+    object-fit: cover;
+    max-height: 300px;
+    aspect-ratio: 1/1;
+    overflow: hidden;
+}
+
+#hotel-info .card .card-body {
+    padding: 15px;
+    text-align: center;
+}
+
+/*--- HACER RESPONSIVA LA TARJETA ---*/
+@media (max-width: 769px) {
+    #hotel-info .card .row {
+        flex-direction: column;
+    }
+
+    #hotel-info .card img {
+        border-radius: 0;
+    }
+
+    #hotel-info{
+        max-width: fit-content;
+    }
+}
+
+/*--- ESTILOS ADICIONALES PARA LOS ELEMENTOS DENTRO DE LA TARJETA ---*/
+#hotel-info .card-title {
+    font-size: 1.5em;
+}
+
+#hotel-info .card-text {
+    margin-bottom: 15px;
+}
+
+#hotel-info .clima-info {
+    margin-bottom: 15px;
+}
+
+#hotel-info .clima-info img{
+    width: 7%;
+    margin: 0%;
+}
+
+#hotel-info label,
+#hotel-info select,
+#hotel-info input,
+#hotel-info button {
+    width: 100%;
+    max-width: 450px;
+    margin: 5px 0;
+}
+
+#hotel-info .servicios-adicionales {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+/*--- CONTENEDOR DEL HOTEL ---*/
+#hotel-info-container {
+    padding: 15px;
+}
+
+@media (max-width: 576px) {
+    #hotel-info .card-body {
+        padding: 10px;
+    }
+
+    #hotel-info label,
+    #hotel-info select,
+    #hotel-info input,
+    #hotel-info .servicios-adicionales,
+    #hotel-info button {
+        width: 100%;
+        margin: 5px 0;
+    }
+}

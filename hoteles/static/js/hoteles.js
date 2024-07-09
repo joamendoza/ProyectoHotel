@@ -269,12 +269,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     badgesServicios.push('<span class="badge bg-light-subtle border border-light-subtle text-light-emphasis rounded-pill">Conserjería</span>');
                 }
                 hotelInfoContainer.innerHTML = `
-                    <div class="card mb-3" style="width: 940px;">
-                        <div class="row g-0">
-                            <div class="col-md-4">
-                                <img src="${hotelSeleccionado.foto}" class="img-fluid rounded-start" alt="Imagen hotel">
+                    <div class="card mb-3">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <img src="${hotelSeleccionado.foto}" class="img-fluid rounded " alt="Imagen hotel">
                             </div>
-                            <div class="col-md-8">
+                            <div class="col-md-12">
                                 <div class="card-body">
                                     <h5 class="card-title">${hotelSeleccionado.nombre}</h5>
                                     <p class="card-text">Precio por noche: ${precioDescuentoHTML}</p>

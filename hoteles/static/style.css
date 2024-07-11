@@ -89,6 +89,7 @@ main {
     margin-left: 20px;
 }
 
+
 #textoOfertas, #textoTodos, #textoFrenteAlMar, #textoCabañas {
     color: var(--colorTexto-navbarPrincipal);
     transition: color 0.3s, background-color 0.3s;
@@ -109,7 +110,19 @@ main {
 /* IMPORTANTE! ajusta todos los items de la navbar a la vez */
 
 
-@media (max-width: 767.98px) {
+@media (max-width: 769px) {
+    #hotel-info .card .row {
+        flex-direction: column;
+    }
+
+    #hotel-info .card img {
+        border-radius: 0;
+    }
+
+    #hotel-info{
+        max-width: fit-content;
+    }
+
     #navbarPrincipal {
         padding-bottom: 0px;
         margin-bottom: 0px;
@@ -150,6 +163,11 @@ main {
       flex: 1 1 auto;
       text-align: center;
     }
+
+    .custom-dropdown{
+        transform: translateX(20%) !important;
+        overflow-x: scroll;
+    }
 }
 
 @media (max-width: 940px) {
@@ -158,6 +176,7 @@ main {
         margin-left: auto; /* Centra horizontalmente en pantallas pequeñas */
         margin-right: auto; /* Centra horizontalmente en pantallas pequeñas */
     }
+
     #menuUsuario {
         margin-top: 10px; /* Cambia el margen superior */
         margin-left: auto; /* Centra horizontalmente en pantallas pequeñas */
@@ -172,11 +191,16 @@ main {
         flex: 1 1 15%;
     }
 
-    .nav-item a{
+    .nav-item a {
         width: auto;
     }
 
+    .custom-dropdown {
+        transform: translateX(-20%);
+    }
 }
+
+
 
 .navbar-nav {
     display: flex;
@@ -378,20 +402,6 @@ main {
     text-align: center;
 }
 
-/*--- HACER RESPONSIVA LA TARJETA ---*/
-@media (max-width: 769px) {
-    #hotel-info .card .row {
-        flex-direction: column;
-    }
-
-    #hotel-info .card img {
-        border-radius: 0;
-    }
-
-    #hotel-info{
-        max-width: fit-content;
-    }
-}
 
 /*--- ESTILOS ADICIONALES PARA LOS ELEMENTOS DENTRO DE LA TARJETA ---*/
 #hotel-info .card-title {
@@ -444,5 +454,9 @@ main {
     #hotel-info button {
         width: 100%;
         margin: 5px 0;
+    }
+    .custom-dropdown {
+        transform: translateX(-5%) !important;
+        overflow-x: scroll;
     }
 }

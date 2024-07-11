@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-08 14:55-0400\n"
+"POT-Creation-Date: 2024-07-11 16:55-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,106 +18,366 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\hoteles\settings.py:111
+#: .\ProyectoHoteles\settings.py:115
 msgid "English"
 msgstr ""
 
-#: .\hoteles\settings.py:112
+#: .\ProyectoHoteles\settings.py:116
 msgid "Español"
 msgstr ""
 
-#: .\hoteles\templates\index.html:8
+#: .\hoteles\templates\index.html:8 .\hoteles\templates\perfilUsuario.html:8
+#: .\hoteles\templates\ver_reserva.html:8
 msgid "Hoteles"
 msgstr "Hotel"
 
-#: .\hoteles\templates\index.html:73
+#: .\hoteles\templates\index.html:28 .\hoteles\templates\ver_reserva.html:28
+msgid "Mensaje"
+msgstr ""
+
+#: .\hoteles\templates\index.html:56 .\hoteles\templates\index.html:88
+#: .\hoteles\templates\infoHoteles.html:37
+#: .\hoteles\templates\perfilUsuario.html:56
+#: .\hoteles\templates\perfilUsuario.html:88
+#: .\hoteles\templates\ver_reserva.html:56
 msgid "Ofertas"
 msgstr "Hotel offers"
 
-#: .\hoteles\templates\index.html:79
+#: .\hoteles\templates\index.html:62 .\hoteles\templates\index.html:94
+#: .\hoteles\templates\infoHoteles.html:43
+#: .\hoteles\templates\perfilUsuario.html:62
+#: .\hoteles\templates\perfilUsuario.html:94
+#: .\hoteles\templates\ver_reserva.html:62
 msgid "Todos"
 msgstr "All"
 
-#: .\hoteles\templates\index.html:85
+#: .\hoteles\templates\index.html:68 .\hoteles\templates\index.html:100
+#: .\hoteles\templates\infoHoteles.html:49
+#: .\hoteles\templates\perfilUsuario.html:68
+#: .\hoteles\templates\perfilUsuario.html:100
+#: .\hoteles\templates\ver_reserva.html:68
 msgid "Frente al Mar"
 msgstr "Oceanfront"
 
-#: .\hoteles\templates\index.html:91
+#: .\hoteles\templates\index.html:74 .\hoteles\templates\index.html:106
+#: .\hoteles\templates\infoHoteles.html:55
+#: .\hoteles\templates\perfilUsuario.html:74
+#: .\hoteles\templates\perfilUsuario.html:106
+#: .\hoteles\templates\ver_reserva.html:74
 msgid "Cabañas"
 msgstr "Cabins"
 
-#: .\hoteles\templates\index.html:98
+#: .\hoteles\templates\index.html:81 .\hoteles\templates\infoHoteles.html:62
+#: .\hoteles\templates\perfilUsuario.html:81
+#: .\hoteles\templates\ver_reserva.html:81
 msgid "Menú"
 msgstr "Menu"
 
-#: .\hoteles\templates\index.html:111 .\hoteles\templates\index.html:130
+#: .\hoteles\templates\index.html:119 .\hoteles\templates\infoHoteles.html:77
+#: .\hoteles\templates\ver_reserva.html:95
+msgid "Perfil"
+msgstr "Profile"
+
+#: .\hoteles\templates\index.html:121 .\hoteles\templates\infoHoteles.html:79
+#: .\hoteles\templates\perfilUsuario.html:121
+#: .\hoteles\templates\ver_reserva.html:97
+msgid "Generar reporte"
+msgstr "Generate reports"
+
+#: .\hoteles\templates\index.html:122 .\hoteles\templates\infoHoteles.html:80
+#: .\hoteles\templates\perfilUsuario.html:122
+#: .\hoteles\templates\ver_reserva.html:98
+#, fuzzy
+#| msgid "Crear usuario"
+msgid "Crear cupones"
+msgstr "Create an user"
+
+#: .\hoteles\templates\index.html:123 .\hoteles\templates\infoHoteles.html:81
+#: .\hoteles\templates\perfilUsuario.html:123
+#: .\hoteles\templates\ver_reserva.html:99
+msgid "Generar habitaciones"
+msgstr "Create rooms"
+
+#: .\hoteles\templates\index.html:125 .\hoteles\templates\infoHoteles.html:83
+#: .\hoteles\templates\perfilUsuario.html:125
+#: .\hoteles\templates\ver_reserva.html:101
+#, fuzzy
+#| msgid "Iniciar sesión"
+msgid "Cerrar sesión"
+msgstr "Log-in"
+
+#: .\hoteles\templates\index.html:127 .\hoteles\templates\index.html:148
+#: .\hoteles\templates\infoHoteles.html:85
+#: .\hoteles\templates\infoHoteles.html:106
+#: .\hoteles\templates\perfilUsuario.html:127
+#: .\hoteles\templates\perfilUsuario.html:148
+#: .\hoteles\templates\ver_reserva.html:103
+#: .\hoteles\templates\ver_reserva.html:124
 msgid "Regístrate"
 msgstr "Sign-up"
 
-#: .\hoteles\templates\index.html:112 .\hoteles\templates\index.html:221
-#: .\hoteles\templates\index.html:262
+#: .\hoteles\templates\index.html:128 .\hoteles\templates\index.html:244
+#: .\hoteles\templates\index.html:288 .\hoteles\templates\infoHoteles.html:86
+#: .\hoteles\templates\infoHoteles.html:197
+#: .\hoteles\templates\infoHoteles.html:238
+#: .\hoteles\templates\perfilUsuario.html:128
+#: .\hoteles\templates\perfilUsuario.html:239
+#: .\hoteles\templates\perfilUsuario.html:280
+#: .\hoteles\templates\ver_reserva.html:104
+#: .\hoteles\templates\ver_reserva.html:220
+#: .\hoteles\templates\ver_reserva.html:264
 msgid "Iniciar sesión"
 msgstr "Log-in"
 
-#: .\hoteles\templates\index.html:114
+#: .\hoteles\templates\index.html:131 .\hoteles\templates\infoHoteles.html:89
+#: .\hoteles\templates\perfilUsuario.html:131
+#: .\hoteles\templates\perfilUsuario.html:336
+#: .\hoteles\templates\ver_reserva.html:107
 msgid "Centro de ayuda"
 msgstr "Help"
 
-#: .\hoteles\templates\index.html:140
+#: .\hoteles\templates\index.html:159 .\hoteles\templates\infoHoteles.html:116
+#: .\hoteles\templates\perfilUsuario.html:158
+#: .\hoteles\templates\ver_reserva.html:135
 msgid "Nombre de usuario"
 msgstr "Username"
 
-#: .\hoteles\templates\index.html:149 .\hoteles\templates\index.html:231
+#: .\hoteles\templates\index.html:169 .\hoteles\templates\infoHoteles.html:125
+#: .\hoteles\templates\infoHoteles.html:207
+#: .\hoteles\templates\perfilUsuario.html:167
+#: .\hoteles\templates\perfilUsuario.html:249
+#: .\hoteles\templates\ver_reserva.html:145
 msgid "Correo electrónico"
 msgstr "E-mail"
 
-#: .\hoteles\templates\index.html:158 .\hoteles\templates\index.html:240
+#: .\hoteles\templates\index.html:179 .\hoteles\templates\index.html:266
+#: .\hoteles\templates\infoHoteles.html:134
+#: .\hoteles\templates\infoHoteles.html:216
+#: .\hoteles\templates\perfilUsuario.html:176
+#: .\hoteles\templates\perfilUsuario.html:258
+#: .\hoteles\templates\ver_reserva.html:155
+#: .\hoteles\templates\ver_reserva.html:242
 msgid "Contraseña"
 msgstr "Password"
 
-#: .\hoteles\templates\index.html:167
+#: .\hoteles\templates\index.html:189 .\hoteles\templates\infoHoteles.html:143
+#: .\hoteles\templates\perfilUsuario.html:185
+#: .\hoteles\templates\ver_reserva.html:165
 msgid "Confirmar contraseña"
 msgstr "Confirm password"
 
-#: .\hoteles\templates\index.html:174
+#: .\hoteles\templates\index.html:197 .\hoteles\templates\infoHoteles.html:150
+#: .\hoteles\templates\perfilUsuario.html:192
+#: .\hoteles\templates\ver_reserva.html:173
 msgid "Confirmo que soy mayor de 18 años"
 msgstr "I confirm that I am over 18 years old"
 
-#: .\hoteles\templates\index.html:180
+#: .\hoteles\templates\index.html:203 .\hoteles\templates\infoHoteles.html:156
+#: .\hoteles\templates\perfilUsuario.html:198
+#: .\hoteles\templates\ver_reserva.html:179
 msgid "\"He leído y estoy de acuerdo con los"
 msgstr "I have read and agree to the"
 
-#: .\hoteles\templates\index.html:182
+#: .\hoteles\templates\index.html:205 .\hoteles\templates\infoHoteles.html:158
+#: .\hoteles\templates\perfilUsuario.html:200
+#: .\hoteles\templates\ver_reserva.html:181
 msgid "términos y condiciones\""
 msgstr "terms and conditions"
 
-#: .\hoteles\templates\index.html:188
+#: .\hoteles\templates\index.html:211 .\hoteles\templates\infoHoteles.html:164
+#: .\hoteles\templates\perfilUsuario.html:206
+#: .\hoteles\templates\ver_reserva.html:187
 msgid "¿Ya tienes cuenta?"
 msgstr "Already have an account?"
 
-#: .\hoteles\templates\index.html:195
+#: .\hoteles\templates\index.html:218 .\hoteles\templates\infoHoteles.html:171
+#: .\hoteles\templates\perfilUsuario.html:213
+#: .\hoteles\templates\ver_reserva.html:194
 msgid "Inicia sesión aquí"
 msgstr "Log-in here"
 
-#: .\hoteles\templates\index.html:204
+#: .\hoteles\templates\index.html:227 .\hoteles\templates\infoHoteles.html:180
+#: .\hoteles\templates\perfilUsuario.html:222
+#: .\hoteles\templates\ver_reserva.html:203
 msgid "Crear usuario"
 msgstr "Create an user"
 
-#: .\hoteles\templates\index.html:246
+#: .\hoteles\templates\index.html:256 .\hoteles\templates\ver_reserva.html:232
+#, fuzzy
+#| msgid "Crear usuario"
+msgid "Usuario"
+msgstr "Create an user"
+
+#: .\hoteles\templates\index.html:272 .\hoteles\templates\infoHoteles.html:222
+#: .\hoteles\templates\perfilUsuario.html:264
+#: .\hoteles\templates\ver_reserva.html:248
 msgid "¿Aún no tienes cuenta?"
 msgstr "Don't have an account yet?"
 
-#: .\hoteles\templates\index.html:253
+#: .\hoteles\templates\index.html:279 .\hoteles\templates\infoHoteles.html:229
+#: .\hoteles\templates\perfilUsuario.html:271
+#: .\hoteles\templates\ver_reserva.html:255
 msgid "Registrate aqui"
 msgstr "Sign-up here"
 
-#: .\hoteles\templates\index.html:280
+#: .\hoteles\templates\index.html:308 .\hoteles\templates\infoHoteles.html:256
+#: .\hoteles\templates\perfilUsuario.html:386
+#: .\hoteles\templates\ver_reserva.html:354
 msgid "Copyright 2024. Todos los derechos reservados. ProyectoHotel."
-msgstr "Copyright 2024. All rights reserved. ProjectHotel."
+msgstr "Copyright 2024. All rights reserved. ProyectotHotel."
 
-#: .\hoteles\templates\index.html:283
+#: .\hoteles\templates\index.html:310 .\hoteles\templates\infoHoteles.html:259
+#: .\hoteles\templates\perfilUsuario.html:389
+#: .\hoteles\templates\ver_reserva.html:356
 msgid "Idioma:"
 msgstr "Language:"
+
+#: .\hoteles\templates\infoHoteles.html:76
+#: .\hoteles\templates\perfilUsuario.html:119
+msgid "Inicio"
+msgstr "Home"
+
+#: .\hoteles\templates\perfilUsuario.html:294
+#, fuzzy
+#| msgid "Confirmar contraseña"
+msgid "Confirmar Eliminación"
+msgstr "Confirm password"
+
+#: .\hoteles\templates\perfilUsuario.html:298
+msgid ""
+"¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede "
+"deshacer."
+msgstr "Delete your account? This action cannot be undone."
+
+#: .\hoteles\templates\perfilUsuario.html:301
+#: .\hoteles\templates\ver_reserva.html:326
+msgid "Cancelar"
+msgstr "Cancel"
+
+#: .\hoteles\templates\perfilUsuario.html:302
+#: .\hoteles\templates\perfilUsuario.html:338
+msgid "Eliminar cuenta"
+msgstr "Delete account"
+
+#: .\hoteles\templates\perfilUsuario.html:327
+#, fuzzy
+#| msgid "canjear puntos"
+msgid "puntos"
+msgstr "Points"
+
+#: .\hoteles\templates\perfilUsuario.html:331
+msgid "informacion de perfil"
+msgstr "User information"
+
+#: .\hoteles\templates\perfilUsuario.html:332
+msgid "canjear puntos"
+msgstr "Points"
+
+#: .\hoteles\templates\perfilUsuario.html:333
+#, fuzzy
+#| msgid "Confirmar contraseña"
+msgid "cambiar la contraseña"
+msgstr "Confirm password"
+
+#: .\hoteles\templates\perfilUsuario.html:334
+msgid "vistos recientemente"
+msgstr "Recently seen"
+
+#: .\hoteles\templates\perfilUsuario.html:335
+msgid "historial de alojamiento"
+msgstr "Reservation History"
+
+#: .\hoteles\templates\perfilUsuario.html:345
+msgid "¡Valoración enviada con éxito!"
+msgstr "Feedback sent successfully!"
+
+#: .\hoteles\templates\perfilUsuario.html:351
+msgid "Valoración de tu reserva"
+msgstr "Value your reservation"
+
+#: .\hoteles\templates\perfilUsuario.html:358
+#, fuzzy
+#| msgid "Habitación:"
+msgid "Puntuación"
+msgstr "Room:"
+
+#: .\hoteles\templates\perfilUsuario.html:369
+msgid "Comentario"
+msgstr "Comment"
+
+#: .\hoteles\templates\perfilUsuario.html:372
+#, fuzzy
+#| msgid "Confirmar contraseña"
+msgid "Enviar Valoración"
+msgstr "Confirm password"
+
+#: .\hoteles\templates\qr_code_template.html:28
+msgid "Código QR de pago:"
+msgstr "QR pay code"
+
+#: .\hoteles\templates\qr_code_template.html:29
+msgid "Monto Total:"
+msgstr "Total payment:"
+
+#: .\hoteles\templates\qr_code_template.html:30
+#, fuzzy
+#| msgid "Hoteles"
+msgid "Hotel:"
+msgstr "Hotel:"
+
+#: .\hoteles\templates\qr_code_template.html:31
+msgid "Habitación:"
+msgstr "Room:"
+
+#: .\hoteles\templates\qr_code_template.html:32
+msgid "Fecha de Reserva:"
+msgstr "Reservation Date:"
+
+#: .\hoteles\templates\qr_code_template.html:33
+msgid "Fecha de Ingreso:"
+msgstr "Check-in Date:"
+
+#: .\hoteles\templates\qr_code_template.html:34
+msgid "Fecha de Salida:"
+msgstr "Check-out Date:"
+
+#: .\hoteles\templates\qr_code_template.html:38
+msgid "Presenta este código QR en la recepción para realizar el pago"
+msgstr "Present this QR code at the reception to make the payment"
+
+#: .\hoteles\templates\qr_code_template.html:42
+msgid "Volver al inicio"
+msgstr "Back to Home"
+
+#: .\hoteles\templates\ver_reserva.html:298
+msgid "Seleccionar cupón:"
+msgstr "Select Coupon:"
+
+#: .\hoteles\templates\ver_reserva.html:300
+msgid "Seleccione un cupón"
+msgstr "Select a Coupon"
+
+#: .\hoteles\templates\ver_reserva.html:308
+msgid "Check-out"
+msgstr "Check-out"
+
+#: .\hoteles\templates\ver_reserva.html:319
+msgid "Confirmar Check-out"
+msgstr "Confirm Check-out"
+
+#: .\hoteles\templates\ver_reserva.html:323
+msgid ""
+"¿Estás seguro de que deseas realizar el check-out? Esta acción no se puede "
+"deshacer."
+msgstr "Are you sure you want to check out? This action cannot be undone."
+
+#: .\hoteles\templates\ver_reserva.html:327
+msgid "Confirmar"
+msgstr "Confirm"
+
+#: .\hoteles\views.py:388
+msgid "Tu cuenta ha sido eliminada con éxito."
+msgstr "Your account has been successfully deleted."
 
 #: .\venv\Lib\site-packages\django\contrib\messages\apps.py:16
 msgid "Messages"
@@ -1175,7 +1435,7 @@ msgstr ""
 #: .\venv\Lib\site-packages\django\views\csrf.py:34
 msgid ""
 "You are seeing this message because this HTTPS site requires a “Referer "
-"header” to be sent by your templates browser, but none was sent. This header is "
+"header” to be sent by your web browser, but none was sent. This header is "
 "required for security reasons, to ensure that your browser is not being "
 "hijacked by third parties."
 msgstr ""

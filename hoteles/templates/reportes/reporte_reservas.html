@@ -8,6 +8,15 @@
 <body>
     <div class="container mt-5">
         <h1 class="text-center">Reporte de Reservas</h1>
+        <div class="progress my-4">
+            <div class="progress-bar" role="progressbar" 
+                style="width: {{ porcentaje_ocupacion }}%;" 
+                aria-valuenow="{{ habitaciones_ocupadas }}" 
+                aria-valuemin="0" 
+                aria-valuemax="{{ total_habitaciones }}">
+                {{ habitaciones_ocupadas }} / {{ total_habitaciones }} ocupadas
+            </div>
+        </div>
         
         <!-- Formulario de filtro -->
         <form method="get" class="mb-4">

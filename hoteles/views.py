@@ -74,8 +74,8 @@ def get_hoteles(request):
         'descripcion_breve': hotel.descripcion_breve,
         'descripcion_detallada': hotel.descripcion_detallada,
         'precio': hotel.precio,
-        'precio_con_descuento': hotel.precio_con_descuento(),  # Llamar al método para obtener el precio con descuento
-        'foto': hotel.foto.url if hotel.foto else '',  # Asegúrate de que la URL de la imagen es correcta
+        'precio_con_descuento': hotel.precio_con_descuento(),
+        'foto': hotel.foto.url if hotel.foto else '',
         'en_oferta': hotel.en_oferta,
         'porcentaje_descuento': hotel.porcentaje_descuento,
         'categoria': hotel.categoria,
@@ -305,7 +305,21 @@ def reporte_reservas(request):
         if fecha_salida:
             reservas = reservas.filter(fecha_salida__date=fecha_salida)
 
-    return render(request, './reportes/reporte_reservas.html', {'reservas': reservas, 'form': form, 'hoteles': Hotel.objects.all(), 'habitaciones': Habitacion.objects.all()})
+    total_habitaciones = Habitacion.objects.count()
+    habitaciones_ocupadas = Reserva.objects.filter(fecha_salida__isnull=True).count()
+    porcentaje_ocupacion = (habitaciones_ocupadas / total_habitaciones) * 100 if total_habitaciones > 0 else 0
+
+    context = {
+        'reservas': reservas,
+        'form': form,
+        'hoteles': Hotel.objects.all(),
+        'habitaciones': Habitacion.objects.all(),
+        'total_habitaciones': total_habitaciones,
+        'habitaciones_ocupadas': habitaciones_ocupadas,
+        'porcentaje_ocupacion': porcentaje_ocupacion,
+    }
+
+    return render(request, './reportes/reporte_reservas.html', context)
 
 @login_required
 def perfilUsuario(request):

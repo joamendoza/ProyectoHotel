@@ -82,6 +82,30 @@
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuButton" id="navbarDropdownMenuButton">
                 <!-- Los elementos del navbar se moverán aquí en pantallas pequeñas -->
+                    <li class="nav-item">
+                        <a class="nav-link d-flex align-items-center" href="#" data-filtro="ofertas" id="textoOfertas">
+                            <img src="{% static 'images/icons/ofertasUnfocus.png' %}" class="img-fluid" alt="Ofertas" id="iconoOfertas">
+                            {% trans "Ofertas" %}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link d-flex align-items-center" href="#" data-filtro="todos" id="textoTodos">
+                            <img src="{% static 'images/icons/todosUnfocus.png' %}" class="img-fluid" alt="Todos" id="iconoTodos">
+                            {% trans "Todos" %}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link d-flex align-items-center" href="#" data-filtro="frente_al_mar" id="textoFrenteAlMar">
+                            <img src="{% static 'images/icons/frente-al-marUnfocus.png' %}" class="img-fluid" alt="Frente al Mar" id="iconoFrenteAlMar">
+                            {% trans "Frente al Mar" %}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link d-flex align-items-center" href="#" data-filtro="cabanas" id="textoCabañas">
+                            <img src="{% static 'images/icons/cabañasUnfocus.png' %}" class="img-fluid" alt="Cabañas" id="iconoCabañas">
+                            {% trans "Cabañas" %}
+                        </a>
+                    </li>
                 </ul>
             </div>
             <!-- menú usuario -->

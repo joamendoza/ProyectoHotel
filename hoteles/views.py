@@ -540,10 +540,16 @@ def enviar_valoracion_y_tarjeta(request):
             valoracion.save()
 
         # Buscar una tarjeta de puntos válida
-        tarjeta = TarjetaPuntos.objects.filter(activa=True, canjeada_por__isnull=True).order_by('puntos').first()
-        
+        tarjetas_activas = TarjetaPuntos.objects.filter(activa=True)
+        print('tarjetas activas', tarjetas_activas)
+
+        tarjetas_no_canjeadas = tarjetas_activas.filter(canjeada_por__isnull=True)
+        print('tarjetas no canjeadas', tarjetas_no_canjeadas)
+
+        tarjeta = tarjetas_no_canjeadas.order_by('puntos').first()
+        print('tarjeta seleccionada', tarjeta)
         if tarjeta:
-            tarjeta.canjear(usuario)
+            tarjeta.asignar(usuario)
             tarjeta_codigo = tarjeta.codigo
             tarjeta_puntos = tarjeta.puntos
         else:

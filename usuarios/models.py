@@ -90,6 +90,13 @@ class TarjetaPuntos(models.Model):
                 self.save()
                 return True
         return False
+    
+    def asignar(self, usuario):
+        if self.activa and not self.canjeada_por:
+            self.canjeada_por = usuario
+            self.save()
+            return True
+        return False
 
     def generar_codigo_unico(self):
         codigo_generado = get_random_string(length=12)

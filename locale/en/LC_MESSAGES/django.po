@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-11 16:55-0400\n"
+"POT-Creation-Date: 2024-07-12 13:26-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\ProyectoHoteles\settings.py:115
+#: .\ProyectoHoteles\settings.py:116
 msgid "English"
 msgstr ""
 
-#: .\ProyectoHoteles\settings.py:116
+#: .\ProyectoHoteles\settings.py:117
 msgid "Español"
 msgstr ""
 
@@ -35,7 +35,7 @@ msgstr "Hotel"
 msgid "Mensaje"
 msgstr ""
 
-#: .\hoteles\templates\index.html:56 .\hoteles\templates\index.html:88
+#: .\hoteles\templates\index.html:54 .\hoteles\templates\index.html:85
 #: .\hoteles\templates\infoHoteles.html:37
 #: .\hoteles\templates\perfilUsuario.html:56
 #: .\hoteles\templates\perfilUsuario.html:88
@@ -43,7 +43,7 @@ msgstr ""
 msgid "Ofertas"
 msgstr "Hotel offers"
 
-#: .\hoteles\templates\index.html:62 .\hoteles\templates\index.html:94
+#: .\hoteles\templates\index.html:60 .\hoteles\templates\index.html:91
 #: .\hoteles\templates\infoHoteles.html:43
 #: .\hoteles\templates\perfilUsuario.html:62
 #: .\hoteles\templates\perfilUsuario.html:94
@@ -51,7 +51,7 @@ msgstr "Hotel offers"
 msgid "Todos"
 msgstr "All"
 
-#: .\hoteles\templates\index.html:68 .\hoteles\templates\index.html:100
+#: .\hoteles\templates\index.html:66 .\hoteles\templates\index.html:97
 #: .\hoteles\templates\infoHoteles.html:49
 #: .\hoteles\templates\perfilUsuario.html:68
 #: .\hoteles\templates\perfilUsuario.html:100
@@ -59,7 +59,7 @@ msgstr "All"
 msgid "Frente al Mar"
 msgstr "Oceanfront"
 
-#: .\hoteles\templates\index.html:74 .\hoteles\templates\index.html:106
+#: .\hoteles\templates\index.html:72 .\hoteles\templates\index.html:103
 #: .\hoteles\templates\infoHoteles.html:55
 #: .\hoteles\templates\perfilUsuario.html:74
 #: .\hoteles\templates\perfilUsuario.html:106
@@ -67,24 +67,24 @@ msgstr "Oceanfront"
 msgid "Cabañas"
 msgstr "Cabins"
 
-#: .\hoteles\templates\index.html:81 .\hoteles\templates\infoHoteles.html:62
+#: .\hoteles\templates\index.html:79 .\hoteles\templates\infoHoteles.html:62
 #: .\hoteles\templates\perfilUsuario.html:81
 #: .\hoteles\templates\ver_reserva.html:81
 msgid "Menú"
 msgstr "Menu"
 
-#: .\hoteles\templates\index.html:119 .\hoteles\templates\infoHoteles.html:77
+#: .\hoteles\templates\index.html:115 .\hoteles\templates\infoHoteles.html:77
 #: .\hoteles\templates\ver_reserva.html:95
 msgid "Perfil"
 msgstr "Profile"
 
-#: .\hoteles\templates\index.html:121 .\hoteles\templates\infoHoteles.html:79
+#: .\hoteles\templates\index.html:117 .\hoteles\templates\infoHoteles.html:79
 #: .\hoteles\templates\perfilUsuario.html:121
 #: .\hoteles\templates\ver_reserva.html:97
 msgid "Generar reporte"
 msgstr "Generate reports"
 
-#: .\hoteles\templates\index.html:122 .\hoteles\templates\infoHoteles.html:80
+#: .\hoteles\templates\index.html:118 .\hoteles\templates\infoHoteles.html:80
 #: .\hoteles\templates\perfilUsuario.html:122
 #: .\hoteles\templates\ver_reserva.html:98
 #, fuzzy
@@ -92,13 +92,13 @@ msgstr "Generate reports"
 msgid "Crear cupones"
 msgstr "Create an user"
 
-#: .\hoteles\templates\index.html:123 .\hoteles\templates\infoHoteles.html:81
+#: .\hoteles\templates\index.html:119 .\hoteles\templates\infoHoteles.html:81
 #: .\hoteles\templates\perfilUsuario.html:123
 #: .\hoteles\templates\ver_reserva.html:99
 msgid "Generar habitaciones"
 msgstr "Create rooms"
 
-#: .\hoteles\templates\index.html:125 .\hoteles\templates\infoHoteles.html:83
+#: .\hoteles\templates\index.html:121 .\hoteles\templates\infoHoteles.html:83
 #: .\hoteles\templates\perfilUsuario.html:125
 #: .\hoteles\templates\ver_reserva.html:101
 #, fuzzy
@@ -106,7 +106,7 @@ msgstr "Create rooms"
 msgid "Cerrar sesión"
 msgstr "Log-in"
 
-#: .\hoteles\templates\index.html:127 .\hoteles\templates\index.html:148
+#: .\hoteles\templates\index.html:123 .\hoteles\templates\index.html:145
 #: .\hoteles\templates\infoHoteles.html:85
 #: .\hoteles\templates\infoHoteles.html:106
 #: .\hoteles\templates\perfilUsuario.html:127
@@ -116,8 +116,8 @@ msgstr "Log-in"
 msgid "Regístrate"
 msgstr "Sign-up"
 
-#: .\hoteles\templates\index.html:128 .\hoteles\templates\index.html:244
-#: .\hoteles\templates\index.html:288 .\hoteles\templates\infoHoteles.html:86
+#: .\hoteles\templates\index.html:124 .\hoteles\templates\index.html:241
+#: .\hoteles\templates\index.html:285 .\hoteles\templates\infoHoteles.html:86
 #: .\hoteles\templates\infoHoteles.html:197
 #: .\hoteles\templates\infoHoteles.html:238
 #: .\hoteles\templates\perfilUsuario.html:128
@@ -129,20 +129,20 @@ msgstr "Sign-up"
 msgid "Iniciar sesión"
 msgstr "Log-in"
 
-#: .\hoteles\templates\index.html:131 .\hoteles\templates\infoHoteles.html:89
+#: .\hoteles\templates\index.html:127 .\hoteles\templates\infoHoteles.html:89
 #: .\hoteles\templates\perfilUsuario.html:131
 #: .\hoteles\templates\perfilUsuario.html:336
 #: .\hoteles\templates\ver_reserva.html:107
 msgid "Centro de ayuda"
 msgstr "Help"
 
-#: .\hoteles\templates\index.html:159 .\hoteles\templates\infoHoteles.html:116
+#: .\hoteles\templates\index.html:156 .\hoteles\templates\infoHoteles.html:116
 #: .\hoteles\templates\perfilUsuario.html:158
 #: .\hoteles\templates\ver_reserva.html:135
 msgid "Nombre de usuario"
 msgstr "Username"
 
-#: .\hoteles\templates\index.html:169 .\hoteles\templates\infoHoteles.html:125
+#: .\hoteles\templates\index.html:166 .\hoteles\templates\infoHoteles.html:125
 #: .\hoteles\templates\infoHoteles.html:207
 #: .\hoteles\templates\perfilUsuario.html:167
 #: .\hoteles\templates\perfilUsuario.html:249
@@ -150,7 +150,7 @@ msgstr "Username"
 msgid "Correo electrónico"
 msgstr "E-mail"
 
-#: .\hoteles\templates\index.html:179 .\hoteles\templates\index.html:266
+#: .\hoteles\templates\index.html:176 .\hoteles\templates\index.html:263
 #: .\hoteles\templates\infoHoteles.html:134
 #: .\hoteles\templates\infoHoteles.html:216
 #: .\hoteles\templates\perfilUsuario.html:176
@@ -160,73 +160,73 @@ msgstr "E-mail"
 msgid "Contraseña"
 msgstr "Password"
 
-#: .\hoteles\templates\index.html:189 .\hoteles\templates\infoHoteles.html:143
+#: .\hoteles\templates\index.html:186 .\hoteles\templates\infoHoteles.html:143
 #: .\hoteles\templates\perfilUsuario.html:185
 #: .\hoteles\templates\ver_reserva.html:165
 msgid "Confirmar contraseña"
 msgstr "Confirm password"
 
-#: .\hoteles\templates\index.html:197 .\hoteles\templates\infoHoteles.html:150
+#: .\hoteles\templates\index.html:194 .\hoteles\templates\infoHoteles.html:150
 #: .\hoteles\templates\perfilUsuario.html:192
 #: .\hoteles\templates\ver_reserva.html:173
 msgid "Confirmo que soy mayor de 18 años"
 msgstr "I confirm that I am over 18 years old"
 
-#: .\hoteles\templates\index.html:203 .\hoteles\templates\infoHoteles.html:156
+#: .\hoteles\templates\index.html:200 .\hoteles\templates\infoHoteles.html:156
 #: .\hoteles\templates\perfilUsuario.html:198
 #: .\hoteles\templates\ver_reserva.html:179
 msgid "\"He leído y estoy de acuerdo con los"
 msgstr "I have read and agree to the"
 
-#: .\hoteles\templates\index.html:205 .\hoteles\templates\infoHoteles.html:158
+#: .\hoteles\templates\index.html:202 .\hoteles\templates\infoHoteles.html:158
 #: .\hoteles\templates\perfilUsuario.html:200
 #: .\hoteles\templates\ver_reserva.html:181
 msgid "términos y condiciones\""
 msgstr "terms and conditions"
 
-#: .\hoteles\templates\index.html:211 .\hoteles\templates\infoHoteles.html:164
+#: .\hoteles\templates\index.html:208 .\hoteles\templates\infoHoteles.html:164
 #: .\hoteles\templates\perfilUsuario.html:206
 #: .\hoteles\templates\ver_reserva.html:187
 msgid "¿Ya tienes cuenta?"
 msgstr "Already have an account?"
 
-#: .\hoteles\templates\index.html:218 .\hoteles\templates\infoHoteles.html:171
+#: .\hoteles\templates\index.html:215 .\hoteles\templates\infoHoteles.html:171
 #: .\hoteles\templates\perfilUsuario.html:213
 #: .\hoteles\templates\ver_reserva.html:194
 msgid "Inicia sesión aquí"
 msgstr "Log-in here"
 
-#: .\hoteles\templates\index.html:227 .\hoteles\templates\infoHoteles.html:180
+#: .\hoteles\templates\index.html:224 .\hoteles\templates\infoHoteles.html:180
 #: .\hoteles\templates\perfilUsuario.html:222
 #: .\hoteles\templates\ver_reserva.html:203
 msgid "Crear usuario"
 msgstr "Create an user"
 
-#: .\hoteles\templates\index.html:256 .\hoteles\templates\ver_reserva.html:232
+#: .\hoteles\templates\index.html:253 .\hoteles\templates\ver_reserva.html:232
 #, fuzzy
 #| msgid "Crear usuario"
 msgid "Usuario"
 msgstr "Create an user"
 
-#: .\hoteles\templates\index.html:272 .\hoteles\templates\infoHoteles.html:222
+#: .\hoteles\templates\index.html:269 .\hoteles\templates\infoHoteles.html:222
 #: .\hoteles\templates\perfilUsuario.html:264
 #: .\hoteles\templates\ver_reserva.html:248
 msgid "¿Aún no tienes cuenta?"
 msgstr "Don't have an account yet?"
 
-#: .\hoteles\templates\index.html:279 .\hoteles\templates\infoHoteles.html:229
+#: .\hoteles\templates\index.html:276 .\hoteles\templates\infoHoteles.html:229
 #: .\hoteles\templates\perfilUsuario.html:271
 #: .\hoteles\templates\ver_reserva.html:255
 msgid "Registrate aqui"
 msgstr "Sign-up here"
 
-#: .\hoteles\templates\index.html:308 .\hoteles\templates\infoHoteles.html:256
+#: .\hoteles\templates\index.html:305 .\hoteles\templates\infoHoteles.html:256
 #: .\hoteles\templates\perfilUsuario.html:386
 #: .\hoteles\templates\ver_reserva.html:354
 msgid "Copyright 2024. Todos los derechos reservados. ProyectoHotel."
 msgstr "Copyright 2024. All rights reserved. ProyectotHotel."
 
-#: .\hoteles\templates\index.html:310 .\hoteles\templates\infoHoteles.html:259
+#: .\hoteles\templates\index.html:307 .\hoteles\templates\infoHoteles.html:259
 #: .\hoteles\templates\perfilUsuario.html:389
 #: .\hoteles\templates\ver_reserva.html:356
 msgid "Idioma:"

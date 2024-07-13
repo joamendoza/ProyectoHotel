@@ -24,7 +24,7 @@ msgstr ""
 
 #: .\ProyectoHoteles\settings.py:117
 msgid "Español"
-msgstr ""
+msgstr "Spanish"
 
 #: .\hoteles\templates\index.html:8 .\hoteles\templates\perfilUsuario.html:8
 #: .\hoteles\templates\ver_reserva.html:8
@@ -33,7 +33,7 @@ msgstr "Hotel"
 
 #: .\hoteles\templates\index.html:28 .\hoteles\templates\ver_reserva.html:28
 msgid "Mensaje"
-msgstr ""
+msgstr "Message"
 
 #: .\hoteles\templates\index.html:54 .\hoteles\templates\index.html:85
 #: .\hoteles\templates\infoHoteles.html:37
@@ -41,7 +41,7 @@ msgstr ""
 #: .\hoteles\templates\perfilUsuario.html:88
 #: .\hoteles\templates\ver_reserva.html:56
 msgid "Ofertas"
-msgstr "Hotel offers"
+msgstr "Sale"
 
 #: .\hoteles\templates\index.html:60 .\hoteles\templates\index.html:91
 #: .\hoteles\templates\infoHoteles.html:43
@@ -87,10 +87,9 @@ msgstr "Generate reports"
 #: .\hoteles\templates\index.html:118 .\hoteles\templates\infoHoteles.html:80
 #: .\hoteles\templates\perfilUsuario.html:122
 #: .\hoteles\templates\ver_reserva.html:98
-#, fuzzy
 #| msgid "Crear usuario"
 msgid "Crear cupones"
-msgstr "Create an user"
+msgstr "Create cupons"
 
 #: .\hoteles\templates\index.html:119 .\hoteles\templates\infoHoteles.html:81
 #: .\hoteles\templates\perfilUsuario.html:123
@@ -101,10 +100,9 @@ msgstr "Create rooms"
 #: .\hoteles\templates\index.html:121 .\hoteles\templates\infoHoteles.html:83
 #: .\hoteles\templates\perfilUsuario.html:125
 #: .\hoteles\templates\ver_reserva.html:101
-#, fuzzy
 #| msgid "Iniciar sesión"
 msgid "Cerrar sesión"
-msgstr "Log-in"
+msgstr "Log-out"
 
 #: .\hoteles\templates\index.html:123 .\hoteles\templates\index.html:145
 #: .\hoteles\templates\infoHoteles.html:85
@@ -203,10 +201,9 @@ msgid "Crear usuario"
 msgstr "Create an user"
 
 #: .\hoteles\templates\index.html:253 .\hoteles\templates\ver_reserva.html:232
-#, fuzzy
 #| msgid "Crear usuario"
 msgid "Usuario"
-msgstr "Create an user"
+msgstr "User"
 
 #: .\hoteles\templates\index.html:269 .\hoteles\templates\infoHoteles.html:222
 #: .\hoteles\templates\perfilUsuario.html:264
@@ -238,10 +235,9 @@ msgid "Inicio"
 msgstr "Home"
 
 #: .\hoteles\templates\perfilUsuario.html:294
-#, fuzzy
 #| msgid "Confirmar contraseña"
 msgid "Confirmar Eliminación"
-msgstr "Confirm password"
+msgstr "Confirm delete"
 
 #: .\hoteles\templates\perfilUsuario.html:298
 msgid ""
@@ -260,10 +256,9 @@ msgid "Eliminar cuenta"
 msgstr "Delete account"
 
 #: .\hoteles\templates\perfilUsuario.html:327
-#, fuzzy
 #| msgid "canjear puntos"
 msgid "puntos"
-msgstr "Points"
+msgstr "points"
 
 #: .\hoteles\templates\perfilUsuario.html:331
 msgid "informacion de perfil"
@@ -274,10 +269,9 @@ msgid "canjear puntos"
 msgstr "Points"
 
 #: .\hoteles\templates\perfilUsuario.html:333
-#, fuzzy
 #| msgid "Confirmar contraseña"
 msgid "cambiar la contraseña"
-msgstr "Confirm password"
+msgstr "change the password"
 
 #: .\hoteles\templates\perfilUsuario.html:334
 msgid "vistos recientemente"
@@ -296,20 +290,18 @@ msgid "Valoración de tu reserva"
 msgstr "Value your reservation"
 
 #: .\hoteles\templates\perfilUsuario.html:358
-#, fuzzy
 #| msgid "Habitación:"
 msgid "Puntuación"
-msgstr "Room:"
+msgstr "Score"
 
 #: .\hoteles\templates\perfilUsuario.html:369
 msgid "Comentario"
 msgstr "Comment"
 
 #: .\hoteles\templates\perfilUsuario.html:372
-#, fuzzy
 #| msgid "Confirmar contraseña"
 msgid "Enviar Valoración"
-msgstr "Confirm password"
+msgstr "Send Feedback"
 
 #: .\hoteles\templates\qr_code_template.html:28
 msgid "Código QR de pago:"
@@ -320,7 +312,6 @@ msgid "Monto Total:"
 msgstr "Total payment:"
 
 #: .\hoteles\templates\qr_code_template.html:30
-#, fuzzy
 #| msgid "Hoteles"
 msgid "Hotel:"
 msgstr "Hotel:"

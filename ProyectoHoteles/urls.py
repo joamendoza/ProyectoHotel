@@ -37,6 +37,7 @@ urlpatterns = [
     path('habitaciones/crear/', crear_multiple_habitaciones, name='crear_multiple_habitaciones'),
     path('habitaciones/actualizar/<int:pk>/', actualizar_habitacion, name='actualizar_habitacion'),
     path('habitaciones/eliminar/<int:pk>/', eliminar_habitacion, name='eliminar_habitacion'),
+    path('actualizar-habitacion/<int:habitacion_id>/', actualizar_estado_habitacion, name='actualizar_estado_habitacion'),
 
     path('reporte-reservas/', reporte_reservas, name='reporte_reservas'),
     path('ver_reserva/<int:reserva_id>/', ver_reserva, name='ver_reserva'),

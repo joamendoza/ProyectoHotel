@@ -2,12 +2,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const hotelesContainer = document.getElementById('hoteles-container');
     const navLinks = document.querySelectorAll('.nav-link');
     const searchInput = document.getElementById('busquedaHoteles');
+    const usuarioAutenticado = document.body.getAttribute('data-authenticated') === 'true';
 
     if (!hotelesContainer) {
         console.error('El contenedor de hoteles no existe en el DOM.');
         return;
     }
-    
+
     function formatearPrecio(precio) {
         if (isNaN(precio)) return 'N/A';
         const formatter = new Intl.NumberFormat('es-CL', {
@@ -109,6 +110,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const botonVerMas = card.querySelector('.ver-mas-info');
         botonVerMas.addEventListener('click', () => {
+            if (!usuarioAutenticado) {
+                alert('Antes de ver más información sobre los hoteles, debes registrarte/iniciar sesión.');
+                return;
+            }
             localStorage.setItem('hotelSeleccionado', JSON.stringify(hotel));
             window.location.href = `/informacion-hotel/${hotel.id}/`;
         });
@@ -201,6 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
+
 document.addEventListener('DOMContentLoaded', () => {
     const hotelInfoContainer = document.getElementById('hotel-info');
     const hotelId = window.location.pathname.split('/')[2];
@@ -287,10 +293,10 @@ document.addEventListener('DOMContentLoaded', () => {
                                     </select>
                                     <br><br>
                                     <label for="fechaInicio">Ingreso:</label>
-                                    <input type="date" id="fechaInicio" name="fechaInicio" min="${new Date().toISOString().split('T')[0]}">
+                                    <input type="datetime-local" id="fechaInicio" name="fechaInicio" value="${new Date().toISOString().split('T')[0]}T14:00">
                                     <br><br>
                                     <label for="fechaSalida">Salida (opcional):</label>
-                                    <input type="date" id="fechaSalida" name="fechaSalida" disabled>
+                                    <input type="datetime-local" id="fechaSalida" name="fechaSalida" disabled>
                                     <br><br>
                                     <div class="servicios-adicionales mt-3 mb-3">
                                          ${badgesServicios.join(' ')}
@@ -320,13 +326,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const reservarBtn = document.getElementById('reservarBtn');
                 reservarBtn.addEventListener('click', () => {
-                    const isAuthenticated = true; // Aquí puedes integrar tu lógica de autenticación
+                    const isAuthenticated = true;
                     const habitacionSeleccionada = habitacionesSelect.value;
                     const fechaInicioValue = fechaInicio.value;
                     const fechaSalidaValue = fechaSalida.value;
 
                     if (!fechaInicioValue) {
                         alert('Debes seleccionar una fecha de inicio para la reserva.');
+                        return;
+                    }
+
+                    if (!habitacionSeleccionada) {
+                        alert('Debes seleccionar una habitación para la reserva.');
                         return;
                     }
 

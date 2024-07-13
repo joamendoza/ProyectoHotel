@@ -187,6 +187,14 @@ def infoHotelesID(request, hotel_id):
     except Hotel.DoesNotExist:
         return HttpResponse('Hotel no encontrado', status=404)
     
+def actualizar_estado_habitacion(request, habitacion_id):
+    if request.method == 'POST':
+        habitacion = get_object_or_404(Habitacion, id=habitacion_id)
+        habitacion.ocupada = False
+        habitacion.save()
+        return JsonResponse({'status': 'success'})
+    return JsonResponse({'status': 'fail'}, status=400)
+    
 @login_required
 def reservar_habitacion(request):
     if request.method == 'POST':

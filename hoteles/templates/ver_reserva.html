@@ -288,7 +288,9 @@
                             {% if reserva.fecha_salida %}
                             <p id="hotelFechaS" class="card-text"><strong>Fecha de Salida:</strong> {{ reserva.fecha_salida }}</p>
                             {% endif %}
-                            <p id="hotelHabitacion" class="card-text"><strong>Habitación:</strong> {{ reserva.habitacion.numero }}</p>
+                            <p id="hotelHabitacion" class="card-text" data-habitacion-id="{{ reserva.habitacion.id }}">
+                                <strong>Habitación:</strong> {{ reserva.habitacion.numero }}
+                            </p>
                             <p class="card-text">{{ reserva.hotel.descripcion_detallada }}</p>
                             <p class="card-text">
                                 <strong>Precio Total:</strong> 
@@ -541,19 +543,38 @@
                 const fechaIngreso = document.getElementById('hotelFechaI').textContent;
                 const fechaSalida = formatDate(new Date());
                 const habitacionNumero = document.getElementById('hotelHabitacion').textContent;
-                
-                // Verificar si hay un cupón seleccionado
+            
                 let cupon = '';
                 if (selectedCupon && selectedCupon.dataset.cupon) {
                     cupon = selectedCupon.dataset.cupon;
                 }
-        
+            
                 const checkoutUrl = "{% url 'checkout_url' %}";
                 const finalUrl = `${checkoutUrl}?amount=${nuevoPrecioTotal.toFixed(2)}&hotel=${encodeURIComponent(hotelName)}&fecha_reserva=${encodeURIComponent(fechaReserva)}&fecha_ingreso=${encodeURIComponent(fechaIngreso)}&fecha_salida=${encodeURIComponent(fechaSalida)}&room=${encodeURIComponent(habitacionNumero)}&cupon=${encodeURIComponent(cupon)}`;
-        
+            
                 console.log('Final URL:', finalUrl);
-        
-                window.location.href = finalUrl;
+            
+                const habitacionId = document.getElementById('hotelHabitacion').dataset.habitacionId;
+                console.log('Habitación ID:', habitacionId);
+            
+                fetch(`/actualizar-habitacion/${habitacionId}/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        // Redirigir al checkout si la actualización fue exitosa
+                        window.location.href = finalUrl;
+                    } else {
+                        console.error('Error al actualizar el estado de la habitación.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error en la solicitud AJAX:', error);
+                });
             });
         
             function formatDate(date) {

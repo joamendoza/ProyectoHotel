@@ -530,7 +530,6 @@
                     `;
                     document.getElementById("div3Content").style.display = "block";
                     
-                    // Add event listener for the buttons to redeem coupons
                     const botonesCanje = document.querySelectorAll('.canjearCuponBtn');
                     botonesCanje.forEach(boton => {
                         boton.addEventListener('click', function() {
@@ -804,7 +803,13 @@
                     console.log('Checkout is true, button will not be rendered.');
                     return '';
                 }
-            
+                
+                console.log('La hora de ahora essssss:', ahoraUTC);
+
+                console.log('La hora de la fecha de inicio es:', fechaInicioUTC);
+
+                console.log('La hora de la fecha de salida es:', fechaSalidaUTC);
+
                 if (ahoraUTC >= fechaInicioUTC && (!fechaSalidaUTC || ahoraUTC <= fechaSalidaUTC)) {
                     console.log('Button will be rendered.');
                     return `<button class="btn btn-info ver-reserva-btn mt-2" data-ver-reserva-url="${reserva.ver_reserva_url}">Ver Reserva</button>`;

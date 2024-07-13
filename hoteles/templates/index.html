@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="{% static 'style.css' %}" />
 </head>
 
-<body>
+<body data-authenticated="{{ user.is_authenticated|yesno:'true,false' }}">
     {% if messages %}
         <div aria-live="polite" aria-atomic="true" class="position-relative">
             <div class="toast-container position-fixed p-3" style="bottom: 20px; right: 20px; z-index: 1050;">
